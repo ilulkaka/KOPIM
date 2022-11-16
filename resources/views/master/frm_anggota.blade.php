@@ -101,9 +101,6 @@
                 ]
             });
 
-            $("#btn_tambah").click(function() {
-                alert('test');
-            })
 
 
         });

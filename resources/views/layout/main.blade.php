@@ -369,7 +369,7 @@
 
             <!-- /.content -->
             <footer class="p-3 mb-2 bg-light text-dark">
-                <strong>Copyright &copy; 2020 <a href="#">PT. NPR Manufacturing Indonesia</a>.</strong>
+                <strong>Copyright &copy; 2023 <a href="#">Koperasi Insan Mandiri.</a>.</strong>
                 <!-- All rights reserved.-->
                 <div class="float-right d-none d-sm-inline-block">
                     <b>Version</b> 3.0.2
