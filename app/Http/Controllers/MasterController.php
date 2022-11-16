@@ -32,4 +32,9 @@ class MasterController extends Controller
             'data' => $Datas,
         ];
     }
+
+    public function tambah_anggota(Request $request)
+    {
+        dd($request->all());
+    }
 }

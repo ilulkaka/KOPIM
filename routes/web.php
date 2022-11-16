@@ -16,6 +16,8 @@ Route::get('master/frm_anggota', 'MasterController@frm_anggota');
 Route::middleware('auth')->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('logoutaksi', 'LoginController@logoutaksi')->name('logoutaksi');
+
     Route::get('master/frm_anggota', 'MasterController@frm_anggota');
     Route::post('master/list_anggota', 'MasterController@list_anggota');
+    Route::post('master/tambah_anggota', 'MasterController@tambah_anggota');
 });

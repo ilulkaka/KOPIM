@@ -47,6 +47,66 @@
         </div>
         <!-- /.card -->
     </div>
+
+    <!-- Modal Tambah Anggota (TA) -->
+    <div class="modal fade" id="modal_tambah_anggota" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h4 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-plus"> Tambah Anggota</i></b> </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_ta">
+                        @csrf
+                        <div class="row">
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-file-prescription"> NIK</i></strong>
+                                <input type="text" id="ta_nik" name="ta_nik"
+                                    class="form-control rounded-0" placeholder="NIK Perusahaan">
+                                </div>
+                                <div class="col col-md-6">
+                                    <strong padding-top="20%"><i class="fas fa-file-signature"> No KTP</i>
+                                    </strong>
+                                    <input type="text" id="ta_noktp" name="ta_noktp"
+                                        class="form-control rounded-0 col-md-12" placeholder="Masukkan Nomer KTP">
+                                </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <strong><i class="fas fa-quote-left"> Nama</i></strong>
+                                <input type="text" id="ta_nama" name="ta_nama" class="form-control rounded-0" placeholder="Masukkan Nama Anda .">
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <strong><i class="fas fa-location-arrow"> alamat</i></strong>
+                                    <textarea name="ta_alamat" id="ta_alamat" class="form-control rounded-0" cols="30" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-location-arrow"> No Telp</i></strong>
+                                <input type="tel" id="ta_notelp" name="ta_notelp" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}"
+                                    class="form-control rounded-0" placeholder="0811-2453-6789">
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-flat" id="btn_save_ta">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -95,10 +155,61 @@
                         name: 'id_anggota'
                     },
                     {
+                        data: 'nik',
+                        name: 'nik'
+                    },
+                    {
                         data: 'nama',
                         name: 'nama'
+                    },
+                    {
+                        data: 'no_ktp',
+                        name: 'no_ktp'
+                    },
+                    {
+                        data: 'alamat',
+                        name: 'alamat'
+                    },
+                    {
+                        data: 'no_telp',
+                        name: 'no_telp'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     }
                 ]
+            });
+
+            $("#btn_tambah").click(function(){
+                $("#modal_tambah_anggota").modal('show');
+            });
+
+            $("#btn_save_ta").click(function(){
+                alert('test');
+            });
+
+            $("#form_ta").submit(function(){
+                //e.preventDefault();
+                //var data = $(this).serialize();
+                var data = 'test';
+                alert(data);
+                $.ajax({
+                        type: "POST",
+                        url: 'master/tambah_anggota',
+                        dataType: "json",
+                        data: {'data':data},
+                        //processData: false,
+                        //contentType: false,
+                    })
+                    /*.done(function(resp) {
+                        if (resp.success) {
+                            alert(resp.message);
+                            location.reload();
+                        } else {
+                            alert(resp.message);
+                        }
+                    })*/
             });
 
 
