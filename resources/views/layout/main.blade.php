@@ -61,8 +61,9 @@
                 <!-- Notifications Dropdown Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">Anda Login
-                        sebagai : {{ Auth::user()->role }}
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">Selamat Datang :
+                        <b> {{ Auth::user()->name }}, </b> Anda Login
+                        sebagai : <b> {{ Auth::user()->role }} </b>
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
@@ -89,7 +90,7 @@
                         <img src="{{ asset('/assets/img/user.png') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="{{ url('/userprofil') }}" class="d-block">{{ Auth::user()->name }}</a>
+                        <a href="{{ url('/userprofil') }}" class="d-block">{{ Auth::user()->email }}</a>
                     </div>
                 </div>
 
@@ -110,23 +111,11 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Transaksi
-
-                                </p>
-                            </a>
-                        </li>
-
-
-
                         <li class="nav-item has-treeview {{ Request::is('produksi/*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ Request::is('produksi/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    SIMPANAN
+                                    Transaksi
                                     <i class="fas fa-angle-left right"></i>
                                     <!-- <span class="badge badge-info right">6</span> -->
                                 </p>
@@ -136,29 +125,34 @@
                                     <a href="{{ url('produksi/formmasalah') }}"
                                         class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
                                         <i class="far fa-keyboard nav-icon"></i>
-                                        <p>Informasi Masalah</p>
+                                        <p>Belanja</p>
                                     </a>
                                 </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('/produksi/menu_hasil_produksi') }}"
-                                        class="nav-link {{ Request::is('produksi/menu_hasil_produksi') ? 'active' : '' }}">
-                                        <i class="far fa-file-alt nav-icon"></i>
-                                        <p>Report Produksi</p>
+                                    <a href="{{ url('produksi/formmasalah') }}"
+                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
+                                        <i class="far fa-keyboard nav-icon"></i>
+                                        <p>Simpanan</p>
                                     </a>
                                 </li>
-
+                            </ul>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('produksi/NGreport') }}"
-                                        class="nav-link {{ Request::is('produksi/NGreport') ? 'active' : '' }}">
-                                        <i class="fas fa-chart-pie nav-icon"></i>
-                                        <p>NG Report</p>
+                                    <a href="{{ url('produksi/formmasalah') }}"
+                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
+                                        <i class="far fa-keyboard nav-icon"></i>
+                                        <p>Pinjaman</p>
                                     </a>
                                 </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('produksi/lembur') }}"
-                                        class="nav-link {{ Request::is('produksi/lembur') ? 'active' : '' }}">
-                                        <i class="fas fa-clock nav-icon"></i>
-                                        <p>Report Lembur</p>
+                                    <a href="{{ url('produksi/formmasalah') }}"
+                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
+                                        <i class="far fa-keyboard nav-icon"></i>
+                                        <p>Pembayaran</p>
                                     </a>
                                 </li>
                             </ul>
@@ -168,7 +162,7 @@
                             <a href="#" class="nav-link {{ Request::is('maintenance/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-toolbox"></i>
                                 <p>
-                                    PINJAMAN
+                                    Laporan
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -177,7 +171,7 @@
                                     <a href="{{ url('/maintenance/perbaikan') }}"
                                         class="nav-link {{ Request::is('maintenance/perbaikan') ? 'active' : '' }}">
                                         <i class="fas fa-hammer nav-icon"></i>
-                                        <p>Perbaikan</p>
+                                        <p>SHU</p>
                                     </a>
 
                                 </li>
@@ -185,14 +179,21 @@
                                     <a href="{{ url('/maintenance/schedule') }}"
                                         class="nav-link {{ Request::is('maintenance/schedule') ? 'active' : '' }}">
                                         <i class="far fa-calendar-alt nav-icon"></i>
-                                        <p>Schedule</p>
+                                        <p>Simpanan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/maintenance/mesin') }}"
                                         class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
                                         <i class="fas fa-cogs nav-icon"></i>
-                                        <p>Mesin</p>
+                                        <p>Pinjaman</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('/maintenance/mesin') }}"
+                                        class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
+                                        <i class="fas fa-cogs nav-icon"></i>
+                                        <p>Pembayaran</p>
                                     </a>
                                 </li>
                             </ul>
@@ -203,7 +204,7 @@
                             <a href="#" class="nav-link {{ Request::is('technical/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-drafting-compass"></i>
                                 <p>
-                                    LAPORAN
+                                    Grafik
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -212,28 +213,21 @@
                                     <a href="{{ url('/undermaintenance') }}"
                                         class="nav-link {{ Request::is('') ? 'active' : '' }}">
                                         <i class="fas fa-plus-square nav-icon"></i>
-                                        <p>Jigu Control</p>
+                                        <p>Simpanan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/technical/inquery-permintaan') }}"
                                         class="nav-link {{ Request::is('technical/inquery-permintaan') ? 'active' : '' }}">
                                         <i class="fas fa-plus-square nav-icon"></i>
-                                        <p>Request</p>
+                                        <p>Pinjaman</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/technical/update') }}"
                                         class="nav-link {{ Request::is('technical/update') ? 'active' : '' }}">
                                         <i class="fas fa-clipboard-check nav-icon"></i>
-                                        <p>Update Denpyou</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/technical/list_master') }}"
-                                        class="nav-link {{ Request::is('technical/list_master') ? 'active' : '' }}">
-                                        <i class="fa fa-asterisk nav-icon"></i>
-                                        <p>Master Tanegata</p>
+                                        <p>SHU</p>
                                     </a>
                                 </li>
                             </ul>
@@ -244,40 +238,23 @@
                             <a href="#" class="nav-link {{ Request::is('qa/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-ruler-combined"></i>
                                 <p>
-                                    MASTER DATA
+                                    Master Data
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="{{ url('/master/frm_anggota') }}"
+                                        class="nav-link {{ Request::is('master/frm_anggota') ? 'active' : '' }}">
+                                        <i class="fas fa-plus-square nav-icon"></i>
+                                        <p>Anggota</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ url('/qa/qamenu') }}"
                                         class="nav-link {{ Request::is('qa/qamenu') ? 'active' : '' }}">
                                         <i class="fas fa-plus-square nav-icon"></i>
-                                        <p>QA Menu</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                        <li class="nav-item has-treeview {{ Request::is('document/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('document/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>
-                                    DOCUMENT
-                                    <i class="fas fa-angle-left right"></i>
-                                    <span class="badge badge-danger right" id="notifdocument"
-                                        name="notifdocument"></span>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('/document/inquery_document') }}"
-                                        class="nav-link {{ Request::is('document/inquery_document') ? 'active' : '' }}">
-                                        <i class="fa fa-file-contract nav-icon"></i>
-                                        <p>My Document</p>
-                                        <!--<span class="badge badge-danger right" id="notifdocument_1"
-                                        name="notifdocument_1"></span>-->
+                                        <p>Pengguna</p>
                                     </a>
                                 </li>
                             </ul>
@@ -348,7 +325,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link" id="logout">
+                            <a href="{{ route('logoutaksi') }}" class="nav-link" id="logout">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
                                     LOGOUT
@@ -440,7 +417,7 @@
 
 
 
-        $("#logout").click(function(event) {
+        /*$("#logout").click(function(event) {
             event.preventDefault();
             var user = localStorage.getItem('npr_id_user');
             $.ajax({
@@ -471,98 +448,7 @@
                     //toastr['warning']('Tidak dapat terhubung ke server !!!');
                 });
 
-        });
-    </script>
-
-    @if (Session::get('dept') == 'PPIC')
-        <script type="text/javascript">
-            $(document).ready(function() {
-
-                Echo.channel('mesin')
-                    .listen('EventPPIC', (e) => notifikasi(e.message.judul, e.message.sub, e.message.isi));
-            });
-
-            function notifikasi(judul, sub, isi) {
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 10000
-
-                });
-                $(document).Toasts('create', {
-                    class: 'bg-danger',
-                    title: judul,
-                    subtitle: sub,
-                    body: isi
-                })
-
-
-            }
-        </script>
-    @endif
-
-    @if (Session::get('level') == 'Supervisor' ||
-        Session::get('level') == 'Assisten Manager' ||
-        Session::get('level') == 'Manager' ||
-        Session::get('level') == 'Admin')
-        <script>
-            $(document).ready(function() {
-                var key = localStorage.getItem('npr_token');
-                $.ajax({
-                        type: "POST",
-                        url: APP_URL + "/api/notifskill",
-                        headers: {
-                            "token_req": key
-                        },
-                        dataType: "json",
-                    })
-                    .done(function(resp) {
-                        if (resp.skillmatrik >= 1) {
-                            //alert(resp.skillmatrik[0].total);
-                            $("#notifskill").html(resp.skillmatrik);
-                            $("#notifskill_1").html(resp.skillmatrik);
-                        } else {
-                            $("#notifskill").html('');
-                            $("#notifskill_1").html('');
-                        }
-                    })
-                    .fail(function() {
-                        $("#error").html(
-                            "<div class='alert alert-danger'><div>Tidak dapat terhubung ke server !!!</div></div>"
-                        );
-                    });
-
-            });
-        </script>
-    @endif
-
-    <script>
-        var key = localStorage.getItem('npr_token');
-        $.ajax({
-                type: "POST",
-                url: APP_URL + "/api/notifdocument",
-                headers: {
-                    "token_req": key
-                },
-                dataType: "json",
-            })
-            .done(function(resp) {
-                if (resp.document >= 1) {
-                    //alert(resp.skillmatrik[0].total);
-                    $("#notifdocument").html(resp.document);
-                    $("#notifdocument_1").html(resp.document);
-                } else {
-                    $("#notifdocument").html('');
-                    $("#notifdocument_1").html('');
-                }
-            })
-            .fail(function() {
-                $("#error").html(
-                    "<div class='alert alert-danger'><div>Tidak dapat terhubung ke server !!!</div></div>"
-                );
-            });
+        });*/
     </script>
 
 
