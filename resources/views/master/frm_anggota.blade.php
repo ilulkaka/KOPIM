@@ -49,12 +49,13 @@
     </div>
 
     <!-- Modal Tambah Anggota (TA) -->
-    <div class="modal fade" id="modal_tambah_anggota" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="modal_tambah_anggota" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h4 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-plus"> Tambah Anggota</i></b> </h4>
+                    <h4 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-plus"> Tambah
+                                Anggota</i></b> </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -65,36 +66,37 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-file-prescription"> NIK</i></strong>
-                                <input type="text" id="ta_nik" name="ta_nik"
-                                    class="form-control rounded-0" placeholder="NIK Perusahaan">
-                                </div>
-                                <div class="col col-md-6">
-                                    <strong padding-top="20%"><i class="fas fa-file-signature"> No KTP</i>
-                                    </strong>
-                                    <input type="text" id="ta_noktp" name="ta_noktp"
-                                        class="form-control rounded-0 col-md-12" placeholder="Masukkan Nomer KTP">
-                                </div>
+                                <input type="text" id="ta_nik" name="ta_nik" class="form-control rounded-0"
+                                    placeholder="NIK Perusahaan">
+                            </div>
+                            <div class="col col-md-6">
+                                <strong padding-top="20%"><i class="fas fa-file-signature"> No KTP</i>
+                                </strong>
+                                <input type="text" id="ta_noktp" name="ta_noktp"
+                                    class="form-control rounded-0 col-md-12" placeholder="Masukkan Nomer KTP">
+                            </div>
                         </div>
                         <p></p>
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong><i class="fas fa-quote-left"> Nama</i></strong>
-                                <input type="text" id="ta_nama" name="ta_nama" class="form-control rounded-0" placeholder="Masukkan Nama Anda .">
+                                <input type="text" id="ta_nama" name="ta_nama" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Anda .">
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong><i class="fas fa-location-arrow"> alamat</i></strong>
-                                    <textarea name="ta_alamat" id="ta_alamat" class="form-control rounded-0" cols="30" rows="2"></textarea>
+                                <textarea name="ta_alamat" id="ta_alamat" class="form-control rounded-0" cols="30" rows="2"></textarea>
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-location-arrow"> No Telp</i></strong>
-                                <input type="tel" id="ta_notelp" name="ta_notelp" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}"
-                                    class="form-control rounded-0" placeholder="0811-2453-6789">
+                                <input type="tel" id="ta_notelp" name="ta_notelp" class="form-control rounded-0"
+                                    placeholder="0811-2453-6789">
                             </div>
                         </div>
                         <p></p>
@@ -116,13 +118,13 @@
     <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
 
 
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            $.ajaxSetup({
+            /*$.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
+            });*/
 
             var list_anggota = $('#tb_anggota').DataTable({
                 processing: true,
@@ -132,6 +134,9 @@
                 ajax: {
                     url: '/master/list_anggota',
                     type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     dataType: "json",
                 },
 
@@ -181,35 +186,34 @@
                 ]
             });
 
-            $("#btn_tambah").click(function(){
+            $("#btn_tambah").click(function() {
                 $("#modal_tambah_anggota").modal('show');
             });
 
-            $("#btn_save_ta").click(function(){
-                alert('test');
-            });
 
-            $("#form_ta").submit(function(){
-                //e.preventDefault();
-                //var data = $(this).serialize();
-                var data = 'test';
-                alert(data);
+            $("#form_ta").submit(function(e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+
                 $.ajax({
                         type: "POST",
-                        url: 'master/tambah_anggota',
+                        url: APP_URL + '/api/master/tambah_anggota',
                         dataType: "json",
-                        data: {'data':data},
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: data,
                         //processData: false,
                         //contentType: false,
                     })
-                    /*.done(function(resp) {
+                    .done(function(resp) {
                         if (resp.success) {
                             alert(resp.message);
                             location.reload();
                         } else {
                             alert(resp.message);
                         }
-                    })*/
+                    })
             });
 
 

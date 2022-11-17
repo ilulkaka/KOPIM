@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Models\AnggotaModel;
 
 class MasterController extends Controller
 {
@@ -35,6 +37,24 @@ class MasterController extends Controller
 
     public function tambah_anggota(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
+        //$test = Auth('api')->user();
+        $test = Auth::user()->name;
+        dd($test);
+        $idAnggota = Str::uuid();
+        $insert_anggota = AnggotaModel::create([
+            'id_anggota' => $idAnggota,
+            'nama' => $request->ta_nama,
+            'nik' => $request->ta_nik,
+            'alamat' => $request->ta_alamat,
+            'no_telp' => $request->ta_notelp,
+            'no_ktp' => $request->ta_noktp,
+            'status' => 'Aktif',
+        ]);
+
+        return [
+            'message' => 'Tambah Anggota Berhasil .',
+            'success' => true,
+        ];
     }
 }
