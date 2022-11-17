@@ -200,8 +200,7 @@
                         url: APP_URL + '/api/master/tambah_anggota',
                         dataType: "json",
                         headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
+        'Authorization': 'Bearer 43243fc537f3612f8e7647dd21f826c9db0885f8245597bf764d2eb6c772daf3',},
                         data: data,
                         //processData: false,
                         //contentType: false,

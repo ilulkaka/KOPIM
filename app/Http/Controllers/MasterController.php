@@ -39,7 +39,7 @@ class MasterController extends Controller
     {
         //dd($request->all());
         //$test = Auth('api')->user();
-        $test = Auth::user()->name;
+        $test = auth()->user();
         dd($test);
         $idAnggota = Str::uuid();
         $insert_anggota = AnggotaModel::create([
