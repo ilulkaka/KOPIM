@@ -25,5 +25,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/home', function (Request $request) {
         return auth()->user();
     });
-    Route::post('master/tambah_anggota', 'MasterController@tambah_anggota');
 });
+Route::post('master/tambah_anggota', 'MasterController@tambah_anggota');
+Route::post('master/edit_anggota', 'MasterController@edit_anggota');
+Route::post('master/hapus_anggota', 'MasterController@hapus_anggota');

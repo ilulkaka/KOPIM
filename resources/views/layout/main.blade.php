@@ -361,6 +361,7 @@
             <section class="content">
                 <div class="container-fluid">
                     <!-- Main row -->
+                    <input type="hidden" id="userr" name="userr" value="{{ Auth::user() }}">
 
                     @yield('content')
                     <!-- /.row (main row) -->
@@ -415,40 +416,7 @@
     <script type="text/javascript">
         var APP_URL = {!! json_encode(url('/')) !!}
 
-
-
-        /*$("#logout").click(function(event) {
-            event.preventDefault();
-            var user = localStorage.getItem('npr_id_user');
-            $.ajax({
-                    url: APP_URL + '/logout',
-                    type: 'POST',
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: {
-                        id: user
-                    },
-                })
-                .done(function(resp) {
-                    if (resp.success) {
-                        localStorage.removeItem('npr_name');
-                        localStorage.removeItem('npr_token');
-                        localStorage.removeItem('npr_id_user');
-                        window.location.href = "{{ route('login') }}";
-
-                    } else
-                        $("#error").html("<div class='alert alert-danger'><div>Error</div></div>");
-                })
-                .fail(function() {
-                    $("#error").html(
-                        "<div class='alert alert-danger'><div>Tidak dapat terhubung ke server !!!</div></div>"
-                    );
-                    //toastr['warning']('Tidak dapat terhubung ke server !!!');
-                });
-
-        });*/
+        var us = $("#userr").val();
     </script>
 
 

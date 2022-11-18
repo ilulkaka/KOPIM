@@ -19,5 +19,6 @@ class AnggotaModel extends Model
         'no_telp',
         'status',
         'no_ktp',
+        'no_barcode',
     ];
 }

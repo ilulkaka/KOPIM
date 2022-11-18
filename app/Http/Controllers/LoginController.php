@@ -49,6 +49,7 @@ class LoginController extends Controller
     {
         //dd($request->all());
         if (!Auth::attempt($request->only('email', 'password'))) {
+            Session::flash('error', 'Email atau Password Salah');
             return redirect('/');
             //return response()->json(['message' => 'Unauthorized'], 401);
         }
