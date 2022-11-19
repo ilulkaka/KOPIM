@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\AnggotaModel;
 use Carbon\Carbon;
@@ -125,6 +126,106 @@ class MasterController extends Controller
         } else {
             return [
                 'message' => 'Hapus gagal, Access Denied .',
+                'success' => false,
+            ];
+        }
+    }
+
+    // ========================== PENGGUNA =================================================
+
+    public function frm_pengguna()
+    {
+        return view('master/frm_pengguna');
+    }
+
+    public function list_pengguna(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+        $Datas = DB::table('users')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('name', 'like', '%' . $search . '%')
+                    ->orwhere('email', 'like', '%' . $search . '%')
+                    ->orwhere('role', 'like', '%' . $search . '%');
+            })
+            ->orderBy('name', 'asc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $count = DB::table('users')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('name', 'like', '%' . $search . '%')
+                    ->orwhere('email', 'like', '%' . $search . '%')
+                    ->orwhere('role', 'like', '%' . $search . '%');
+            })
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
+    }
+
+    public function tambah_pengguna(Request $request)
+    {
+        //dd($request->all());
+        $cek = DB::table('users')
+            ->select('email')
+            ->count();
+
+        if ($request->role == 'Administrator') {
+            if ($cek >= 1) {
+                $idPengguna = Str::uuid();
+                $insert_pengguna = User::create([
+                    'id' => $idPengguna,
+                    'name' => $request->tp_nama,
+                    'email' => $request->tp_email,
+                    'role' => $request->tp_level,
+                    'status' => 'Aktif',
+                    'password' => Hash::make($request->tp_password),
+                    //'remember_token' => $insert_pengguna->createToken(
+                    //    'auth_token'
+                    //)->plainTextToken,
+                ]);
+
+                return [
+                    'message' => 'Tambah data Pengguna baru Berhasil .',
+                    'success' => true,
+                ];
+            }
+        } else {
+            return [
+                'message' => 'Level ini tidak bisa tambah Pengguna baru .',
+                'success' => false,
+            ];
+        }
+    }
+
+    public function edit_pengguna(Request $request)
+    {
+        //dd($request->all());
+        $findid = User::find($request->ep_id_pengguna);
+
+        if ($request->role == 'Administrator') {
+            $findid->password = $request->ea_password;
+            $findid->role = $request->ep_level;
+
+            $findid->save();
+
+            return [
+                'message' => 'Edit data Pengguna Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Edit gagal, Level tidak diperbolehkan .',
                 'success' => false,
             ];
         }

@@ -19,4 +19,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('master/frm_anggota', 'MasterController@frm_anggota');
     Route::post('master/list_anggota', 'MasterController@list_anggota');
+    Route::get('master/frm_pengguna', 'MasterController@frm_pengguna');
+    Route::post('master/list_pengguna', 'MasterController@list_pengguna');
 });

@@ -251,8 +251,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/qa/qamenu') }}"
-                                        class="nav-link {{ Request::is('qa/qamenu') ? 'active' : '' }}">
+                                    <a href="{{ url('/master/frm_pengguna') }}"
+                                        class="nav-link {{ Request::is('master/pengguna') ? 'active' : '' }}">
                                         <i class="fas fa-plus-square nav-icon"></i>
                                         <p>Pengguna</p>
                                     </a>
@@ -400,11 +400,11 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('/dist/js/adminlte.js') }}"></script>
 
-    <script src="{{ asset('/assets/script/aplikasi.js') }}"></script>
+    <!--<script src="{{ asset('/assets/script/aplikasi.js') }}"></script>-->
     <script src="{{ asset('/assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script>
+    <!--<script src="{{ asset('js/app.js') }}"></script>-->
+    <!--<script>
         function loadingon() {
             document.getElementById("loadingscreen").style.display = "block";
         }
@@ -412,7 +412,7 @@
         function loadingoff() {
             document.getElementById("loadingscreen").style.display = "none";
         }
-    </script>
+    </script>-->
     <script type="text/javascript">
         var APP_URL = {!! json_encode(url('/')) !!}
 
