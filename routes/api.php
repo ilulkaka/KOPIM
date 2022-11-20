@@ -32,3 +32,6 @@ Route::post('master/hapus_anggota', 'MasterController@hapus_anggota');
 
 Route::post('master/tambah_pengguna', 'MasterController@tambah_pengguna');
 Route::post('master/edit_pengguna', 'MasterController@edit_pengguna');
+
+Route::post('transaksi/get_barcode', 'TransaksiController@get_barcode');
+Route::post('transaksi/trx_simpan', 'TransaksiController@trx_simpan');

@@ -113,7 +113,7 @@
 
                         <li class="nav-item has-treeview {{ Request::is('produksi/*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ Request::is('produksi/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <i class="nav-icon fas fa-cart-plus"></i>
                                 <p>
                                     Transaksi
                                     <i class="fas fa-angle-left right"></i>
@@ -122,9 +122,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('produksi/formmasalah') }}"
-                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
-                                        <i class="far fa-keyboard nav-icon"></i>
+                                    <a href="{{ url('transaksi/belanja') }}"
+                                        class="nav-link {{ Request::is('transaksi/belanja') ? 'active' : '' }}">
+                                        <i class="fas fa-cart-arrow-down nav-icon"></i>
                                         <p>Belanja</p>
                                     </a>
                                 </li>
@@ -133,7 +133,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('produksi/formmasalah') }}"
                                         class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
-                                        <i class="far fa-keyboard nav-icon"></i>
+                                        <i class="fas fa-shopping-bag nav-icon"></i>
                                         <p>Simpanan</p>
                                     </a>
                                 </li>
@@ -142,7 +142,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('produksi/formmasalah') }}"
                                         class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
-                                        <i class="far fa-keyboard nav-icon"></i>
+                                        <i class="fas fa-shopping-bag nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>
                                 </li>
@@ -151,7 +151,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('produksi/formmasalah') }}"
                                         class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
-                                        <i class="far fa-keyboard nav-icon"></i>
+                                        <i class="far fa-credit-card nav-icon"></i>
                                         <p>Pembayaran</p>
                                     </a>
                                 </li>
@@ -160,7 +160,7 @@
 
                         <li class="nav-item has-treeview {{ Request::is('maintenance/*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ Request::is('maintenance/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-toolbox"></i>
+                                <i class="nav-icon fas fa-folder-open"></i>
                                 <p>
                                     Laporan
                                     <i class="right fas fa-angle-left"></i>
@@ -170,7 +170,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('/maintenance/perbaikan') }}"
                                         class="nav-link {{ Request::is('maintenance/perbaikan') ? 'active' : '' }}">
-                                        <i class="fas fa-hammer nav-icon"></i>
+                                        <i class="fas fa-file-alt nav-icon"></i>
                                         <p>SHU</p>
                                     </a>
 
@@ -178,21 +178,21 @@
                                 <li class="nav-item">
                                     <a href="{{ url('/maintenance/schedule') }}"
                                         class="nav-link {{ Request::is('maintenance/schedule') ? 'active' : '' }}">
-                                        <i class="far fa-calendar-alt nav-icon"></i>
+                                        <i class="fas fa-file-alt nav-icon"></i>
                                         <p>Simpanan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/maintenance/mesin') }}"
                                         class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
-                                        <i class="fas fa-cogs nav-icon"></i>
+                                        <i class="fas fa-file-alt nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/maintenance/mesin') }}"
                                         class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
-                                        <i class="fas fa-cogs nav-icon"></i>
+                                        <i class="fas fa-file-alt nav-icon"></i>
                                         <p>Pembayaran</p>
                                     </a>
                                 </li>
@@ -202,7 +202,7 @@
 
                         <li class="nav-item has-treeview {{ Request::is('technical/*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ Request::is('technical/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-drafting-compass"></i>
+                                <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Grafik
                                     <i class="right fas fa-angle-left"></i>
@@ -212,21 +212,21 @@
                                 <li class="nav-item">
                                     <a href="{{ url('/undermaintenance') }}"
                                         class="nav-link {{ Request::is('') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-square nav-icon"></i>
+                                        <i class="fas fas fa-handshake nav-icon"></i>
                                         <p>Simpanan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/technical/inquery-permintaan') }}"
                                         class="nav-link {{ Request::is('technical/inquery-permintaan') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-square nav-icon"></i>
+                                        <i class="fas fa-hand-holding-usd nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/technical/update') }}"
                                         class="nav-link {{ Request::is('technical/update') ? 'active' : '' }}">
-                                        <i class="fas fa-clipboard-check nav-icon"></i>
+                                        <i class="fab fa-bitcoin nav-icon"></i>
                                         <p>SHU</p>
                                     </a>
                                 </li>
@@ -236,7 +236,7 @@
 
                         <li class="nav-item has-treeview {{ Request::is('qa/*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ Request::is('qa/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-ruler-combined"></i>
+                                <i class="nav-icon fas fa-file-code"></i>
                                 <p>
                                     Master Data
                                     <i class="right fas fa-angle-left"></i>
@@ -246,14 +246,14 @@
                                 <li class="nav-item">
                                     <a href="{{ url('/master/frm_anggota') }}"
                                         class="nav-link {{ Request::is('master/frm_anggota') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-square nav-icon"></i>
+                                        <i class="fas fa-users nav-icon"></i>
                                         <p>Anggota</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/master/frm_pengguna') }}"
                                         class="nav-link {{ Request::is('master/pengguna') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-square nav-icon"></i>
+                                        <i class="fas fa-user-lock nav-icon"></i>
                                         <p>Pengguna</p>
                                     </a>
                                 </li>

@@ -63,10 +63,22 @@ class MasterController extends Controller
         //dd($request->all());
         $cb = Carbon::now();
         $tahun = $cb->format('Ym');
+
+        $leng = DB::select(
+            'select length(no_barcode)as panjang from tb_anggota WHERE no_barcode in (SELECT max(no_barcode)FROM tb_anggota) '
+        );
         $cek = DB::select(
             'SELECT substring(no_barcode,-4)as terakhir FROM tb_anggota WHERE no_barcode in (SELECT max(no_barcode)FROM tb_anggota) '
         );
-        $no_barcode = $tahun . $cek[0]->terakhir + 1;
+        //dd($cek[0]->terakhir);
+
+        if ($leng[0]->panjang == 0) {
+            $no_barcode = $tahun . '0001';
+        } elseif ($cek[0]->terakhir == 9999) {
+            $no_barcode = $tahun . '0001';
+        } else {
+            $no_barcode = $tahun . $cek[0]->terakhir + 1;
+        }
 
         $idAnggota = Str::uuid();
         $insert_anggota = AnggotaModel::create([
@@ -116,7 +128,7 @@ class MasterController extends Controller
     {
         $findid = AnggotaModel::find($request->ha_id_anggota);
 
-        if ($request->role == 'Staff') {
+        if ($request->role == 'Administrator') {
             $findid->delete();
 
             return [
