@@ -15,7 +15,20 @@ class TransaksiController extends Controller
 {
     public function belanja()
     {
-        return view('transaksi/belanja');
+        $tgl_sekarang = date('Y-m-d');
+        $hasil_anggota = DB::select(
+            "select sum(nominal)as nominal from tb_trx_belanja where tgl_trx = '$tgl_sekarang' and kategori = 'Anggota'"
+        );
+        $hasil_umum = DB::select(
+            "select sum(nominal)as nominal from tb_trx_belanja where tgl_trx = '$tgl_sekarang' and kategori = 'Umum'"
+        );
+        $hasil_total = $hasil_anggota[0]->nominal + $hasil_umum[0]->nominal;
+        //dd($hasil_anggota[0]->nominal);
+        return view('transaksi/belanja', [
+            'hasil_anggota' => $hasil_anggota[0],
+            'hasil_umum' => $hasil_umum[0],
+            'hasil_total' => $hasil_total,
+        ]);
     }
 
     public function get_barcode(Request $request)
@@ -79,5 +92,41 @@ class TransaksiController extends Controller
                 'success' => false,
             ];
         }
+    }
+
+    public function detail_trx(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+        $tgl_sekarang = date('Y-m-d');
+        $Datas = DB::table('tb_trx_belanja')
+            ->where('tgl_trx', '=', $tgl_sekarang)
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('no_barcode', 'like', '%' . $search . '%')
+                    ->orwhere('nama', 'like', '%' . $search . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $count = DB::table('tb_trx_belanja')
+            ->where('tgl_trx', '=', $tgl_sekarang)
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('no_barcode', 'like', '%' . $search . '%')
+                    ->orwhere('nama', 'like', '%' . $search . '%');
+            })
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
     }
 }

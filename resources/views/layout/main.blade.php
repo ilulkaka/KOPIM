@@ -168,6 +168,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="{{ url('') }}"
+                                        class="nav-link {{ Request::is('') ? 'active' : '' }}">
+                                        <i class="fas fa-file-alt nav-icon"></i>
+                                        <p>Transaksi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ url('/maintenance/perbaikan') }}"
                                         class="nav-link {{ Request::is('maintenance/perbaikan') ? 'active' : '' }}">
                                         <i class="fas fa-file-alt nav-icon"></i>

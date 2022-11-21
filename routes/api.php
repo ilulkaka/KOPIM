@@ -35,3 +35,5 @@ Route::post('master/edit_pengguna', 'MasterController@edit_pengguna');
 
 Route::post('transaksi/get_barcode', 'TransaksiController@get_barcode');
 Route::post('transaksi/trx_simpan', 'TransaksiController@trx_simpan');
+
+Route::post('transaksi/detail_trx', 'TransaksiController@detail_trx');
