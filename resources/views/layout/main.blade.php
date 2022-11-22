@@ -257,13 +257,15 @@
                                         <p>Anggota</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/master/frm_pengguna') }}"
-                                        class="nav-link {{ Request::is('master/pengguna') ? 'active' : '' }}">
-                                        <i class="fas fa-user-lock nav-icon"></i>
-                                        <p>Pengguna</p>
-                                    </a>
-                                </li>
+                                @if (Auth::user()->role == 'Administrator')
+                                    <li class="nav-item">
+                                        <a href="{{ url('/master/frm_pengguna') }}"
+                                            class="nav-link {{ Request::is('master/pengguna') ? 'active' : '' }}">
+                                            <i class="fas fa-user-lock nav-icon"></i>
+                                            <p>Pengguna</p>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
 

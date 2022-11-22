@@ -226,7 +226,7 @@ class MasterController extends Controller
         $findid = User::find($request->ep_id_pengguna);
 
         if ($request->role == 'Administrator') {
-            $findid->password = $request->ea_password;
+            $findid->password = Hash::make($request->ep_password);
             $findid->role = $request->ep_level;
 
             $findid->save();

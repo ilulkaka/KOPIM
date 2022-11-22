@@ -56,7 +56,7 @@
                         @csrf
                         <div class="row">
                             <div class="col col-md-12">
-                            <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
+                                <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                                 <strong><i class="fas fa-quote-left"> Nama</i></strong>
                                 <input type="text" id="tp_nama" name="tp_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
@@ -81,9 +81,9 @@
                                 <select id="tp_level" name="tp_level" class="form-control rounded-0"
                                     placeholder="0811-2453-6789" required>
                                     <option value="">Pilih Level ...</option>
-                                <option value="Administrator">Administrator</option>
-                                <option value="Staff">Staff</option>    
-                                <option value="Kasir">Kasir</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Staff">Staff</option>
+                                    <option value="Kasir">Kasir</option>
                                 </select>
                             </div>
                         </div>
@@ -131,8 +131,8 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-low-vision"> Password</i></strong>
-                                <input type="password" id="ep_password" name="ep_password" class="form-control rounded-0"
-                                    placeholder="0811-2453-6789" required>
+                                <input type="password" id="ep_password" name="ep_password"
+                                    class="form-control rounded-0" required>
                             </div>
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-adjust"> Level</i></strong>
@@ -342,7 +342,7 @@
                         if (resp.success) {
                             alert(resp.message);
                             $("#modal_edit_pengguna").modal('toggle');
-                            list_anggota.ajax.reload(null, false);
+                            list_pengguna.ajax.reload(null, false);
                         } else {
                             alert(resp.message);
                         }

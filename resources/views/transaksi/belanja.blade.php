@@ -59,8 +59,8 @@
                         </div>
                         <p></p>
                         <!--<div class="modal-footer">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>-->
                     </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -170,18 +170,24 @@
                     </div>
 
                     <div class="row">
-
-                        <div class="col col-md-4">
-                            <strong><i class="fas fa-caret-square-down"> Beginning</i></strong>
-                            <input type="date" id="tgl_awal" name="tgl_awal" class="form-control rounded-0">
+                        <div class="col col-md-6">
+                            <strong><i class="fas fa-date"> Beginning</i></strong>
+                            <input type="date" id="tgl_awal" name="tgl_awal" class="form-control rounded-0"
+                                required>
                         </div>
 
-                        <div class="col col-md-2">
-                            <strong><i class="fas fa-caret-square-down"> Ending</i></strong>
-                            <input type="date" id="tgl_akhir" name="tgl_akhir" class="form-control rounded-0">
+                        <div class="col col-md-6">
+                            <strong><i class="fas fa-date"> Ending</i></strong>
+                            <input type="date" id="tgl_akhir" name="tgl_akhir" class="form-control rounded-0"
+                                required>
                         </div>
                     </div>
-
+                    <hr>
+                    <div class="row float-right">
+                        <button type="button" id="btn_preview" name="btn_preview">Preview</button>
+                        <button type="button" id="btn_download" name="btn_download"> Download </button>
+                        <button type="button" data-dismiss="modal"> Close </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -379,6 +385,43 @@
 
             $("#btn_download_trx").click(function() {
                 $("#modal_download_trx").modal('show');
+            });
+
+            $("#btn_download").click(function() {
+                var format = $("#dot_format").val();
+                var tgl_awal = $("#tgl_awal").val();
+                var tgl_akhir = $("#tgl_akhir").val();
+
+                if (format == '' || tgl_awal == '' || tgl_akhir == '') {
+                    alert('Kolom Harus terisi semua .');
+                } else if (format == 'Pdf') {
+                    alert('Format PDF Belum tersedia .');
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: APP_URL + '/api/transaksi/download',
+                        dataType: "json",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: {
+                            'format': format,
+                            'tgl_awal': tgl_awal,
+                            'tgl_akhir': tgl_akhir
+                        },
+                        //processData: false,
+                        //contentType: false,
+                        success: function(response) {
+                            if (response.file) {
+                                var fpath = response.file;
+                                window.open(fpath, '_blank');
+                            } else {
+                                alert(response.message);
+                            }
+                        }
+                    })
+                }
+
             });
 
 

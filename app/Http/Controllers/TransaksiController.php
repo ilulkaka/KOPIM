@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\AnggotaModel;
 use App\Models\BelanjaModel;
 use Carbon\Carbon;
@@ -128,5 +130,42 @@ class TransaksiController extends Controller
             'recordsFiltered' => $count,
             'data' => $Datas,
         ];
+    }
+
+    public function download(Request $request)
+    {
+        //dd($request->all());
+        $Datas = DB::select(
+            "select no_barcode, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nama, kategori "
+        );
+
+        if (count($Datas) > 0) {
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'No');
+            $sheet->setCellValue('B1', 'No Barcode');
+            $sheet->setCellValue('C1', 'NAMA');
+            $sheet->setCellValue('D1', 'Nominal');
+            $sheet->setCellValue('E1', 'Kategori');
+
+            $line = 2;
+            $no = 1;
+            foreach ($Datas as $data) {
+                $sheet->setCellValue('A' . $line, $no++);
+                $sheet->setCellValue('B' . $line, $data->no_barcode);
+                $sheet->setCellValue('C' . $line, $data->nama);
+                $sheet->setCellValue('D' . $line, $data->nominal);
+                $sheet->setCellValue('E' . $line, $data->kategori);
+
+                $line++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'Transaksi_' . date('Ymd His') . '.xlsx';
+            $writer->save(public_path('storage/excel/' . $filename));
+            return ['file' => url('/') . '/storage/excel/' . $filename];
+        } else {
+            return ['message' => 'No Data .', 'success' => false];
+        }
     }
 }

@@ -34,14 +34,14 @@
                         </thead>
                     </table>
                 </div>
-                <div class="card-footer">
-                    <button class="btn btn-secondary btn-flat" id="btn-print">Print</button>
-                    <button type="submit" class="btn btn-success btn-flat" id="btn-excel">Download Excel</button>
-                    <button type="button" class="btn btn-primary btn-flat" id="btn-report"><a
-                            href="{{ url('hse/hhkyrekap') }}" style="color: white;">
-                            Rekap
-                        </a></button>
-                </div>
+                <!--<div class="card-footer">
+                        <button class="btn btn-secondary btn-flat" id="btn-print">Print</button>
+                        <button type="submit" class="btn btn-success btn-flat" id="btn-excel">Download Excel</button>
+                        <button type="button" class="btn btn-primary btn-flat" id="btn-report"><a
+                                href="{{ url('hse/hhkyrekap') }}" style="color: white;">
+                                Rekap
+                            </a></button>
+                    </div>-->
 
             </div>
             <!-- /.card-body -->
