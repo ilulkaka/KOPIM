@@ -59,8 +59,8 @@
                         </div>
                         <p></p>
                         <!--<div class="modal-footer">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>-->
                     </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -303,7 +303,7 @@
                     alert('Inputan harus terisi semua');
                 } else {
                     var conf = confirm('Apakah Ingin simpan data ?');
-                    $("#btn_simpan_trx").prop('disabled', false);
+                    $("#btn_simpan_trx").prop('disabled', true);
                     if (conf) {
                         $.ajax({
                                 type: "POST",
@@ -320,7 +320,7 @@
                                 if (resp.success) {
                                     alert(resp.message);
                                     location.reload();
-                                    $("#btn_simpan_trx").prop('disabled', true);
+                                    $("#btn_simpan_trx").prop('disabled', false);
                                     $("#trx_kategori").focus();
                                 } else {
                                     alert(resp.message);
