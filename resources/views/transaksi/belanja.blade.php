@@ -47,7 +47,7 @@
                             </div>
                             <div class="col col-md-8">
                                 <br>
-                                <button type="submit" class="btn btn-success btn-flat btn-lg"
+                                <button type="button" class="btn btn-success btn-flat btn-lg"
                                     id="btn_simpan_trx">Simpan</button>
                                 <button type="button" class="btn btn-outline btn-flat btn-lg" id="btn_detail_trx"
                                     style="color: blue"><u> Detail
@@ -59,8 +59,8 @@
                         </div>
                         <p></p>
                         <!--<div class="modal-footer">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>-->
                     </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -204,6 +204,22 @@
         $(document).ready(function() {
             $("#trx_kategori").focus();
 
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 50000
+            });
+
+            var fg = 0;
+
+            $('.swalDefaultSuccess').click(function() {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+
             $("#trx_kategori").change(function(event) {
                 var no_barcode = $("#trx_nobarcode").val('');
                 if ($("#trx_kategori").val() == 'Anggota') {
@@ -269,29 +285,50 @@
                 }
             });
 
-            $("#form_trx").submit(function(e) {
-                e.preventDefault();
-                var data = $(this).serialize();
+            $("#trx_nominal").keypress(function(event) {
+                if (event.keyCode === 13) {
+                    $("#btn_simpan_trx").focus();
+                }
+            });
 
-                $.ajax({
-                        type: "POST",
-                        url: APP_URL + '/api/transaksi/trx_simpan',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        },
-                        data: data,
-                        //processData: false,
-                        //contentType: false,
-                    })
-                    .done(function(resp) {
-                        if (resp.success) {
-                            alert(resp.message);
-                            location.reload();
-                        } else {
-                            alert(resp.message);
-                        }
-                    })
+            //$("#form_trx").submit(function(e) {
+            //    e.preventDefault();
+            $("#btn_simpan_trx").click(function() {
+                var data = $("#form_trx").serializeArray();
+                //var data = $(this).serialize();
+                var kategori = $("#trx_kategori").val();
+                var nobarcode = $("#trx_nobarcode").val();
+                var nominal = $("#trx_nominal").val();
+                if (kategori == '' || nobarcode == '' || nominal == '') {
+                    alert('Inputan harus terisi semua');
+                } else {
+                    var conf = confirm('Apakah Ingin simpan data ?');
+                    $("#btn_simpan_trx").prop('disabled', false);
+                    if (conf) {
+                        $.ajax({
+                                type: "POST",
+                                url: APP_URL + '/api/transaksi/trx_simpan',
+                                dataType: "json",
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                data: data,
+                                //processData: false,
+                                //contentType: false,
+                            })
+                            .done(function(resp) {
+                                if (resp.success) {
+                                    alert(resp.message);
+                                    location.reload();
+                                    $("#btn_simpan_trx").prop('disabled', true);
+                                    $("#trx_kategori").focus();
+                                } else {
+                                    alert(resp.message);
+                                }
+
+                            });
+                    }
+                }
             });
 
             $("#btn_detail_trx").click(function() {
@@ -402,7 +439,8 @@
                         url: APP_URL + '/api/transaksi/download',
                         dataType: "json",
                         headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content'),
                         },
                         data: {
                             'format': format,

@@ -60,37 +60,30 @@ class TransaksiController extends Controller
     {
         //dd($request->all());
         $kategori = $request->input('trx_kategori');
-        $idTrx = Str::uuid();
         if ($kategori == 'Anggota') {
-            $insert_trx = BelanjaModel::create([
-                'id_trx_belanja' => $idTrx,
-                'tgl_trx' => date('Y-m-d'),
-                'nama' => $request->trx_nama,
-                'nominal' => $request->trx_nominal,
-                'no_barcode' => $request->trx_nobarcode,
-                'kategori' => $kategori,
-                'inputor' => $request->role,
-            ]);
+            $no_barcode = $request->trx_nobarcode;
         } else {
-            $insert_trx = BelanjaModel::create([
-                'id_trx_belanja' => $idTrx,
-                'tgl_trx' => date('Y-m-d'),
-                'nama' => $request->trx_nama,
-                'nominal' => $request->trx_nominal,
-                'no_barcode' => $request->trx_nobarcode1,
-                'kategori' => $kategori,
-                'inputor' => $request->role,
-            ]);
+            $no_barcode = '999999';
         }
+        $idTrx = Str::uuid();
+        $insert_trx = BelanjaModel::create([
+            'id_trx_belanja' => $idTrx,
+            'tgl_trx' => date('Y-m-d'),
+            'nama' => $request->trx_nama,
+            'nominal' => $request->trx_nominal,
+            'no_barcode' => $no_barcode,
+            'kategori' => $kategori,
+            'inputor' => $request->role,
+        ]);
 
         if ($insert_trx) {
             return [
-                'message' => 'Transaksi Berhasil .',
+                'message' => 'Update Berhasil !',
                 'success' => true,
             ];
         } else {
             return [
-                'message' => 'Input Gagal .',
+                'message' => 'Gagal Update request !',
                 'success' => false,
             ];
         }
