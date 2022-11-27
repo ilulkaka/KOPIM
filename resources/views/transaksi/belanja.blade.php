@@ -302,32 +302,29 @@
                 if (kategori == '' || nobarcode == '' || nominal == '') {
                     alert('Inputan harus terisi semua');
                 } else {
-                    var conf = confirm('Apakah Ingin simpan data ?');
                     $("#btn_simpan_trx").prop('disabled', true);
-                    if (conf) {
-                        $.ajax({
-                                type: "POST",
-                                url: APP_URL + '/api/transaksi/trx_simpan',
-                                dataType: "json",
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                },
-                                data: data,
-                                //processData: false,
-                                //contentType: false,
-                            })
-                            .done(function(resp) {
-                                if (resp.success) {
-                                    alert(resp.message);
-                                    location.reload();
-                                    $("#btn_simpan_trx").prop('disabled', false);
-                                    $("#trx_kategori").focus();
-                                } else {
-                                    alert(resp.message);
-                                }
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/transaksi/trx_simpan',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: data,
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                location.reload();
+                                $("#btn_simpan_trx").prop('disabled', false);
+                                $("#trx_kategori").focus();
+                            } else {
+                                alert(resp.message);
+                            }
 
-                            });
-                    }
+                        });
                 }
             });
 

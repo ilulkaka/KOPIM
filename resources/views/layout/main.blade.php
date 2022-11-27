@@ -250,6 +250,13 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                    <a href="{{ url('/master/frm_barang') }}"
+                                        class="nav-link {{ Request::is('master/frm_barang') ? 'active' : '' }}">
+                                        <i class="fab fa-codepen nav-icon"></i>
+                                        <p>Barang</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/master/frm_anggota') }}"
                                         class="nav-link {{ Request::is('master/frm_anggota') ? 'active' : '' }}">

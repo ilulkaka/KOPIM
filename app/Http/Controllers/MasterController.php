@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\AnggotaModel;
+use App\Models\BarangModel;
 use Carbon\Carbon;
 use App\Models\User;
 
@@ -241,5 +242,79 @@ class MasterController extends Controller
                 'success' => false,
             ];
         }
+    }
+
+    //================================== BARANG ---------------------------------------------------
+
+    public function frm_barang()
+    {
+        return view('master/frm_barang');
+    }
+
+    public function tambah_barang(Request $request)
+    {
+        //dd($request->all());
+        $cek = DB::table('tb_barang')
+            ->select('kode_barang')
+            ->count();
+
+        if ($cek <= 0) {
+            $idbarang = Str::uuid();
+            $insert_barang = BarangModel::create([
+                'id_barang' => $idbarang,
+                'kode' => $request->tb_kode,
+                'nama' => $request->tb_nama,
+                'spesifikasi' => $request->tb_spesifikasi,
+                'supplier' => $request->tb_supplier,
+                'harga' => $request->tb_harga,
+            ]);
+
+            return [
+                'message' => 'Tambah data Barang Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Level ini tidak bisa tambah barang baru .',
+                'success' => false,
+            ];
+        }
+    }
+
+    public function list_barang(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+        $Datas = DB::table('tb_barang')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('kode', 'like', '%' . $search . '%')
+                    ->orwhere('nama', 'like', '%' . $search . '%')
+                    ->orwhere('supplier', 'like', '%' . $search . '%')
+                    ->orwhere('spesifikasi', 'like', '%' . $search . '%');
+            })
+            ->orderBy('kode', 'asc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $count = DB::table('tb_barang')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('kode', 'like', '%' . $search . '%')
+                    ->orwhere('nama', 'like', '%' . $search . '%')
+                    ->orwhere('supplier', 'like', '%' . $search . '%')
+                    ->orwhere('spesifikasi', 'like', '%' . $search . '%');
+            })
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
     }
 }
