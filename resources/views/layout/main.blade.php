@@ -167,6 +167,13 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                    <a href="{{ url('/maintenance/mesin') }}"
+                                        class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
+                                        <i class="fas fa-file-alt nav-icon"></i>
+                                        <p>Stock Barang</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ url('') }}"
                                         class="nav-link {{ Request::is('') ? 'active' : '' }}">
@@ -194,13 +201,6 @@
                                         class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
                                         <i class="fas fa-file-alt nav-icon"></i>
                                         <p>Pinjaman</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/maintenance/mesin') }}"
-                                        class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
-                                        <p>Pembayaran</p>
                                     </a>
                                 </li>
                             </ul>

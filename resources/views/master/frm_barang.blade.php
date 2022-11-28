@@ -24,10 +24,9 @@
                                 <th>id</th>
                                 <th>Kode</th>
                                 <th>Nama</th>
-                                <th>type</th>
+                                <th>Spesifikasi</th>
                                 <th>Supplier</th>
                                 <th>Harga</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -98,109 +97,64 @@
         </div>
     </div>
 
-    <!-- Modal Edit Pengguna (EP) -->
-    <div class="modal fade" id="modal_edit_pengguna" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <!-- Modal Edit Barang (EB) -->
+    <div class="modal fade" id="modal_edit_barang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-edit"> Edit Data
-                                Pengguna</i></b> </h5>
+                                Barang</i></b> </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_ep">
+                    <form id="form_eb">
                         @csrf
                         <div class="row">
                             <div class="col col-md-6">
-                                <input type="hidden" id="ep_id_pengguna" name="ep_id_pengguna">
+                                <input type="hidden" id="eb_id_barang" name="eb_id_barang">
                                 <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
                             <div class="col col-md-12">
-                                <strong><i class="fas fa-quote-left"> Email</i></strong>
-                                <input type="text" id="ep_email" name="ep_email" class="form-control rounded-0"
+                                <strong><i class="fas fa-quote-left"> Kode Barang</i></strong>
+                                <input type="text" id="eb_kode" name="eb_kode" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Anda ." required disabled>
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
                             <div class="col col-md-6">
-                                <strong><i class="fas fa-low-vision"> Password</i></strong>
-                                <input type="password" id="ep_password" name="ep_password"
-                                    class="form-control rounded-0" required>
+                                <strong><i class="fas fa-low-vision"> Nama Barang</i></strong>
+                                <input type="text" id="eb_nama" name="eb_nama"
+                                    class="form-control rounded-0" required disabled>
                             </div>
                             <div class="col col-md-6">
-                                <strong><i class="fas fa-adjust"> Level</i></strong>
-                                <select name="ep_level" id="ep_level" class="form-control rounded-0" required>
-                                    <option value="Administrator">Administrator</option>
-                                    <option value="Staff">Staff </option>
-                                    <option value="Kasir">Kasir</option>
-                                </select>
+                            <strong><i class="fas fa-low-vision"> Spesifikasi</i></strong>
+                                <input type="text" id="eb_spesifikasi" name="eb_spesifikasi"
+                                    class="form-control rounded-0" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-low-vision"> Supplier</i></strong>
+                                <input type="text" id="eb_supplier" name="eb_supplier"
+                                    class="form-control rounded-0" required disabled>
+                            </div>
+                            <div class="col col-md-6">
+                            <strong><i class="fas fa-low-vision"> Harga</i></strong>
+                                <input type="text" id="eb_harga" name="eb_harga"
+                                    class="form-control rounded-0" required>
                             </div>
                         </div>
                         <p></p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary btn-flat" id="btn_save_ep">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Hapus Anggota (HA) -->
-    <div class="modal fade" id="modal_hapus_anggota" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-danger">
-                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-trash"> Hapus Data
-                                Anggota</i></b> </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form_ha">
-                        @csrf
-                        <h5>Apakah Data berikut akan dihapus ?</h5>
-                        <div class="row">
-                            <div class="col col-md-6">
-                                <input type="hidden" id="ha_id_anggota" name="ha_id_anggota">
-                                <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="row">
-                            <div class="col col-md-12">
-                                <strong> No Barcode</strong>
-                                <input type="text" id="ha_nobarcode" name="ha_nobarcode"
-                                    class="form-control rounded-0" disabled>
-                            </div>
-                            <div class="col col-md-12">
-                                <strong> Nama</i></strong>
-                                <input type="text" id="ha_nama" name="ha_nama" class="form-control rounded-0"
-                                    disabled>
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="row">
-                            <div class="col col-md-6">
-                                <strong> Status</i></strong>
-                                <input type="text" name="ha_status" id="ha_status" class="form-control rounded-0"
-                                    disabled>
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger btn-flat" id="btn_save_ha">Hapus</button>
                         </div>
                     </form>
                 </div>
@@ -244,7 +198,7 @@
                         searchable: false
                     },
                     {
-                        targets: [7],
+                        targets: [6],
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
@@ -270,12 +224,12 @@
                         name: 'spesifikasi'
                     },
                     {
-                        data: 'harga',
-                        name: 'harga'
-                    },
-                    {
                         data: 'supplier',
                         name: 'supplier'
+                    },
+                    {
+                        data: 'harga',
+                        name: 'harga'
                     },
                 ]
             });
@@ -310,22 +264,25 @@
                     })
             });
 
-            $('#tb_pengguna').on('click', '.ta_edit', function() {
-                var data = list_pengguna.row($(this).parents('tr')).data();
-                $("#ep_id_pengguna").val(data.id);
-                $("#ep_email").val(data.email);
-                $("#ep_password").val(data.password);
-                $("#ep_level").val(data.role);
-                $("#modal_edit_pengguna").modal('show');
+            $('#tb_barang').on('click', '.ta_edit', function() {
+                var data = list_barang.row($(this).parents('tr')).data();
+                $("#eb_id_barang").val(data.id_barang);
+                $("#eb_kode").val(data.kode);
+                $("#eb_nama").val(data.nama);
+                $("#eb_spesifikasi").val(data.spesifikasi);
+                $("#eb_supplier").val(data.supplier);
+                $("#eb_harga").val(data.harga);
+                $("#eb_level").val(data.role);
+                $("#modal_edit_barang").modal('show');
             });
 
-            $("#form_ep").submit(function(e) {
+            $("#form_eb").submit(function(e) {
                 e.preventDefault();
                 var data = $(this).serialize();
 
                 $.ajax({
                         type: "POST",
-                        url: APP_URL + '/api/master/edit_pengguna',
+                        url: APP_URL + '/api/master/edit_barang',
                         dataType: "json",
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -337,51 +294,13 @@
                     .done(function(resp) {
                         if (resp.success) {
                             alert(resp.message);
-                            $("#modal_edit_pengguna").modal('toggle');
-                            list_pengguna.ajax.reload(null, false);
+                            $("#modal_edit_barang").modal('toggle');
+                            list_barang.ajax.reload(null, false);
                         } else {
                             alert(resp.message);
                         }
                     })
             });
-
-            /*$('#tb_anggota').on('click', '.ta_hapus', function() {
-                var data = list_anggota.row($(this).parents('tr')).data();
-                $("#ha_id_anggota").val(data.id_anggota);
-                $("#ha_nama").val(data.nama);
-                $("#ha_noktp").html(data.no_ktp);
-                $("#ha_nobarcode").val(data.no_barcode);
-                $("#ha_status").val(data.status);
-                $("#modal_hapus_anggota").modal('show');
-            });
-
-            $("#form_ha").submit(function(e) {
-                e.preventDefault();
-                var data = $(this).serialize();
-
-                $.ajax({
-                        type: "POST",
-                        url: APP_URL + '/api/master/hapus_anggota',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        },
-                        data: data,
-                        //processData: false,
-                        //contentType: false,
-                    })
-                    .done(function(resp) {
-                        if (resp.success) {
-                            alert(resp.message);
-                            $("#modal_hapus_anggota").modal('toggle');
-                            list_anggota.ajax.reload(null, false);
-                        } else {
-                            alert(resp.message);
-                        }
-                    })
-            });*/
-
-
 
         });
     </script>

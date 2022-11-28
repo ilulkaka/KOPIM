@@ -255,7 +255,8 @@ class MasterController extends Controller
     {
         //dd($request->all());
         $cek = DB::table('tb_barang')
-            ->select('kode_barang')
+            ->select('kode')
+            ->where('kode', $request->tb_kode)
             ->count();
 
         if ($cek <= 0) {
@@ -275,7 +276,7 @@ class MasterController extends Controller
             ];
         } else {
             return [
-                'message' => 'Level ini tidak bisa tambah barang baru .',
+                'message' => 'Kode barang sudah ada .',
                 'success' => false,
             ];
         }
@@ -316,5 +317,28 @@ class MasterController extends Controller
             'recordsFiltered' => $count,
             'data' => $Datas,
         ];
+    }
+
+    public function edit_barang(Request $request)
+    {
+        //dd($request->all());
+        $findid = BarangModel::find($request->eb_id_barang);
+
+        if ($request->role == 'Administrator') {
+            $findid->spesifikasi = $request->eb_spesifikasi;
+            $findid->harga = $request->eb_harga;
+
+            $findid->save();
+
+            return [
+                'message' => 'Edit data Barang Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Edit gagal, Level tidak diperbolehkan .',
+                'success' => false,
+            ];
+        }
     }
 }
