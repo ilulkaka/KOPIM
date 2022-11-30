@@ -17,12 +17,13 @@
                     <table class="table table-hover text-nowrap" id="tb_stock">
                         <thead>
                             <tr>
-                                <th>id</th>
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Spesifikasi</th>
                                 <th>Supplier</th>
-                                <th>Qty</th>
+                                <th>In</th>
+                                <th>Out</th>
+                                <th>Stock Qty</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -34,58 +35,47 @@
         <!-- /.card -->
     </div>
 
-    <!-- Modal Tambah Barang (TB) -->
-    <div class="modal fade" id="modal_tambah_barang" tabindex="-1" role="dialog"
+    <!-- Modal Tambah Stock (TS) -->
+    <div class="modal fade" id="modal_tambah_stock" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-plus"> Tambah
-                                Barang</i></b> </h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-plus"> Tambah
+                                Stock</i></b> </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_tb">
+                    <form id="form_ts">
                         @csrf
                         <div class="row">
-                            <div class="col col-md-6">
+                            <div class="col col-md-12">
+                                <strong> Tanggal Masuk</strong>
+                                <input type="date" name="ts_tglmsk" id="ts_tglmsk" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col col-md-9">
                                 <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                                 <strong> Kode Barang</strong>
-                                <input type="text" id="tb_kode" name="tb_kode" class="form-control rounded-0"
-                                    placeholder="Masukkan Kode Barang ." required>
+                                <input type="hidden" id="ts_kode" name="ts_kode" class="form-control rounded-0"
+                                placeholder="Masukkan Kode Barang ." required>
+                                <input type="text" id="ts_kode1" name="ts_kode1" class="form-control rounded-0"
+                                    placeholder="Masukkan Kode Barang ." required disabled>
                             </div>
-                            <div class="col col-md-6">
-                                <strong> Supplier</strong>
-                                <input type="text" id="tb_supplier" name="tb_supplier" class="form-control rounded-0"
-                                    placeholder="Masukkan Nama Supplier ." required>
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="row">
-                            <div class="col col-md-12">
-                                <strong> Nama Barang</strong>
-                                <input name="tb_nama" id="tb_nama" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="row">
-                            <div class="col col-md-7">
-                                <strong> Spesifikasi</strong>
-                                <input type="type" id="tb_spesifikasi" name="tb_spesifikasi" class="form-control rounded-0"
-                                    placeholder="Masukkan Spesifikasi Barang ." required>
-                            </div>
-                            <div class="col col-md-5">
-                                <strong> Harga</strong>
-                                <input type="type" id="tb_harga" name="tb_harga" class="form-control rounded-0"
-                                    placeholder="Masukkan Harga Barang ." >
+                            <div class="col col-md-3">
+                                <strong> Qty In</strong>
+                                <input type="text" id="ts_qty" name="ts_qty" class="form-control rounded-0"
+                                    placeholder="Qty In ." required>
                             </div>
                         </div>
                         <p></p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary btn-flat" id="btn_save_tp">Simpan</button>
+                            <button type="button" class="btn btn-primary btn-flat" id="btn_simpan_ts">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -93,64 +83,47 @@
         </div>
     </div>
 
-    <!-- Modal Edit Barang (EB) -->
-    <div class="modal fade" id="modal_edit_barang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+<!-- Modal Kurang Stock (KS) -->
+<div class="modal fade" id="modal_kurang_stock" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-edit"> Edit Data
-                                Barang</i></b> </h5>
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-minus"> Kurang
+                                Stock</i></b> </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_eb">
+                    <form id="form_ks">
                         @csrf
                         <div class="row">
-                            <div class="col col-md-6">
-                                <input type="hidden" id="eb_id_barang" name="eb_id_barang">
-                                <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
-                            </div>
-                        </div>
-                        <p></p>
-                        <div class="row">
                             <div class="col col-md-12">
-                                <strong><i class="fas fa-quote-left"> Kode Barang</i></strong>
-                                <input type="text" id="eb_kode" name="eb_kode" class="form-control rounded-0"
-                                    placeholder="Masukkan Nama Anda ." required disabled>
+                                <strong> Tanggal Keluar</strong>
+                                <input type="date" name="ks_tglklr" id="ks_tglklr" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
-                            <div class="col col-md-6">
-                                <strong><i class="fas fa-low-vision"> Nama Barang</i></strong>
-                                <input type="text" id="eb_nama" name="eb_nama"
-                                    class="form-control rounded-0" required disabled>
+                            <div class="col col-md-9">
+                                <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
+                                <strong> Kode Barang</strong>
+                                <input type="hidden" id="ks_kode" name="ks_kode" class="form-control rounded-0"
+                                placeholder="Masukkan Kode Barang ." required>
+                                <input type="text" id="ks_kode1" name="ks_kode1" class="form-control rounded-0"
+                                    placeholder="Masukkan Kode Barang ." required disabled>
                             </div>
-                            <div class="col col-md-6">
-                            <strong><i class="fas fa-low-vision"> Spesifikasi</i></strong>
-                                <input type="text" id="eb_spesifikasi" name="eb_spesifikasi"
-                                    class="form-control rounded-0" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-md-6">
-                                <strong><i class="fas fa-low-vision"> Supplier</i></strong>
-                                <input type="text" id="eb_supplier" name="eb_supplier"
-                                    class="form-control rounded-0" required disabled>
-                            </div>
-                            <div class="col col-md-6">
-                            <strong><i class="fas fa-low-vision"> Harga</i></strong>
-                                <input type="text" id="eb_harga" name="eb_harga"
-                                    class="form-control rounded-0" required>
+                            <div class="col col-md-3">
+                                <strong> Qty In</strong>
+                                <input type="text" id="ks_qty" name="ks_qty" class="form-control rounded-0"
+                                    placeholder="Qty Out ." required>
                             </div>
                         </div>
                         <p></p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary btn-flat" id="btn_save_ep">Simpan</button>
+                            <button type="button" class="btn btn-primary btn-flat" id="btn_simpan_ks">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -174,13 +147,13 @@
                 }
             });*/
 
-            var list_barang = $('#tb_barang').DataTable({
+            var list_stock = $('#tb_stock').DataTable({
                 processing: true,
                 serverSide: true,
                 searching: true,
 
                 ajax: {
-                    url: '/master/list_barang',
+                    url: APP_URL + '/api/laporan/list_stock_barang',
                     type: "POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -190,23 +163,20 @@
 
                 columnDefs: [{
                         targets: [0],
-                        visible: false,
-                        searchable: false
+                        visible: true,
+                        searchable: true
                     },
                     {
-                        targets: [6],
+                        targets: [7],
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
-                            return "<a href = '#' style='font-size:14px' class = 'ta_edit'> Edit </a>";
+                            return "<a href = '#' style='font-size:14px' class = 'ts_tambah'> Tambah </a> || <a href = '#' style='font-size:14px' class = 'ts_kurang'> Kurang </a>";
                         }
                     }
                 ],
 
-                columns: [{
-                        data: 'id_barang',
-                        name: 'id_barang'
-                    },
+                columns: [
                     {
                         data: 'kode',
                         name: 'kode'
@@ -224,79 +194,121 @@
                         name: 'supplier'
                     },
                     {
-                        data: 'harga',
-                        name: 'harga'
+                        data: 'qty_in',
+                        name: 'qty_in'
+                    },
+                    {
+                        data: 'qty_out',
+                        name: 'qty_out'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'stock'
                     },
                 ]
             });
 
-            $("#btn_tambah").click(function() {
-                $("#modal_tambah_barang").modal('show');
+            $('#tb_stock').on('click', '.ts_tambah', function() {
+                var data = list_stock.row($(this).parents('tr')).data();
+                $("#ts_kode").val(data.kode);
+                $("#ts_kode1").val(data.kode);
+                get_ts();
+                $("#modal_tambah_stock").modal('show');
             });
 
+            $("#btn_simpan_ts").click(function() {
+                var data = $("#form_ts").serializeArray();
+                var tglmsk = $("#ts_tglmsk").val();
+                var qty = $("#ts_qty").val();
 
-            $("#form_tb").submit(function(e) {
-                e.preventDefault();
-                var data = $(this).serialize();
+                if(tglmsk == '' || tglmsk == null){
+                    alert ('Tanggal Masuk harus diisi .');
+                }else if (qty == '' || qty == null){
+                    alert('Qty harus terisi .');
+                } else {
+                    $("#btn_simpan_ts").prop('disabled', true);
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/laporan/tambah_stock',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: data,
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                //location.reload();
+                                $("#btn_simpan_ts").prop('disabled', false);
+                                $("#modal_tambah_stock").modal('toggle');
+                                list_stock.ajax.reload(null, false);
+                            } else {
+                                alert(resp.message);
+                            }
 
-                $.ajax({
-                        type: "POST",
-                        url: APP_URL + '/api/master/tambah_barang',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        },
-                        data: data,
-                        //processData: false,
-                        //contentType: false,
-                    })
-                    .done(function(resp) {
-                        if (resp.success) {
-                            alert(resp.message);
-                            location.reload();
-                        } else {
-                            alert(resp.message);
-                        }
-                    })
+                        });
+                }
+
             });
 
-            $('#tb_barang').on('click', '.ta_edit', function() {
-                var data = list_barang.row($(this).parents('tr')).data();
-                $("#eb_id_barang").val(data.id_barang);
-                $("#eb_kode").val(data.kode);
-                $("#eb_nama").val(data.nama);
-                $("#eb_spesifikasi").val(data.spesifikasi);
-                $("#eb_supplier").val(data.supplier);
-                $("#eb_harga").val(data.harga);
-                $("#eb_level").val(data.role);
-                $("#modal_edit_barang").modal('show');
+            function get_ts (){
+                $("#ts_tglmsk").val('');
+                $("#ts_qty").val('');
+            }
+
+            $('#tb_stock').on('click', '.ts_kurang', function() {
+                var data = list_stock.row($(this).parents('tr')).data();
+                $("#ks_kode").val(data.kode);
+                $("#ks_kode1").val(data.kode);
+                get_ks();
+                $("#modal_kurang_stock").modal('show');
             });
 
-            $("#form_eb").submit(function(e) {
-                e.preventDefault();
-                var data = $(this).serialize();
+            $("#btn_simpan_ks").click(function() {
+                var data = $("#form_ks").serializeArray();
+                var tglklr = $("#ks_tglklr").val();
+                var qty = $("#ks_qty").val();
 
-                $.ajax({
-                        type: "POST",
-                        url: APP_URL + '/api/master/edit_barang',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        },
-                        data: data,
-                        //processData: false,
-                        //contentType: false,
-                    })
-                    .done(function(resp) {
-                        if (resp.success) {
-                            alert(resp.message);
-                            $("#modal_edit_barang").modal('toggle');
-                            list_barang.ajax.reload(null, false);
-                        } else {
-                            alert(resp.message);
-                        }
-                    })
+                if(tglklr == '' || tglklr == null){
+                    alert ('Tanggal Masuk harus diisi .');
+                }else if (qty == '' || qty == null){
+                    alert('Qty harus terisi .');
+                } else {
+                    $("#btn_simpan_ks").prop('disabled', true);
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/laporan/kurang_stock',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: data,
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                //location.reload();
+                                $("#btn_simpan_ks").prop('disabled', false);
+                                $("#modal_kurang_stock").modal('toggle');
+                                list_stock.ajax.reload(null, false);
+                            } else {
+                                alert(resp.message);
+                            }
+
+                        });
+                }
+
             });
+
+            function get_ks (){
+                $("#ks_tglmsk").val('');
+                $("#ks_qty").val('');
+            }
 
         });
     </script>

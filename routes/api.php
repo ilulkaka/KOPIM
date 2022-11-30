@@ -40,3 +40,7 @@ Route::post('transaksi/trx_simpan', 'TransaksiController@trx_simpan');
 
 Route::post('transaksi/detail_trx', 'TransaksiController@detail_trx');
 Route::post('transaksi/download', 'TransaksiController@download');
+
+Route::post('laporan/list_stock_barang', 'StockController@list_stock_barang');
+Route::post('laporan/tambah_stock', 'StockController@tambah_stock');
+Route::post('laporan/kurang_stock', 'StockController@kurang_stock');

@@ -25,4 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::post('master/list_barang', 'MasterController@list_barang');
 
     Route::get('transaksi/belanja', 'TransaksiController@belanja');
+
+    Route::get('laporan/stock_barang', 'StockController@stock_barang');
 });

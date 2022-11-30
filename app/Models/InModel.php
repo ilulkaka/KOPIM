@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class InModel extends Model
 {
-    use HasFactory;
+    protected $table = 'tb_in';
+    protected $primaryKey = 'id_in';
+    public $incrementing = false;
+    protected $fillable = ['id_in', 'kode', 'tgl_in', 'qty_in'];
 }

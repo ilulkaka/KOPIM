@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OutModel extends Model
 {
-    use HasFactory;
+    protected $table = 'tb_out';
+    protected $primaryKey = 'id_out';
+    public $incrementing = false;
+    protected $fillable = ['id_out', 'kode', 'tgl_out', 'qty_out'];
 }
