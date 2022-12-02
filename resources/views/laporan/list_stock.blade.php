@@ -100,6 +100,7 @@
                         @csrf
                         <div class="row">
                             <div class="col col-md-12">
+                                <input type="hidden" id="ks_stock" name="ks_stock">
                                 <strong> Tanggal Keluar</strong>
                                 <input type="date" name="ks_tglklr" id="ks_tglklr" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
                             </div>
@@ -171,8 +172,13 @@
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
-                            return "<a href = '#' style='font-size:14px' class = 'ts_tambah'> Tambah </a> || <a href = '#' style='font-size:14px' class = 'ts_kurang'> Kurang </a>";
-                        }
+                            if(data.stock <= 0){
+                                return "<a href = '#' style='font-size:14px' class = 'ts_tambah'> Tambah </a> || <a href = '#' style='font-size:14px' class = 'ts_minus' enabled> Kurang </a>";
+                            } else {
+                                return "<a href = '#' style='font-size:14px' class = 'ts_tambah'> Tambah </a> || <a href = '#' style='font-size:14px' class = 'ts_kurang'> Kurang </a>";
+                            }
+
+                            }
                     }
                 ],
 
@@ -195,7 +201,14 @@
                     },
                     {
                         data: 'qty_in',
-                        name: 'qty_in'
+                        name: 'qty_in',
+                        render: function(data, type, row, meta) {
+                            if (data > 0) {
+                                return "<u><a href='' class='detailIn'>" + data + "</a></u>";
+                            } else {
+                                return data;
+                            }
+                        }
                     },
                     {
                         data: 'qty_out',
@@ -259,10 +272,15 @@
                 $("#ts_qty").val('');
             }
 
+            $('#tb_stock').on('click', '.ts_minus', function() {
+                alert('Stock 0 ');
+            });
+
             $('#tb_stock').on('click', '.ts_kurang', function() {
                 var data = list_stock.row($(this).parents('tr')).data();
                 $("#ks_kode").val(data.kode);
                 $("#ks_kode1").val(data.kode);
+                $("#ks_stock").val(data.stock);
                 get_ks();
                 $("#modal_kurang_stock").modal('show');
             });
@@ -271,11 +289,14 @@
                 var data = $("#form_ks").serializeArray();
                 var tglklr = $("#ks_tglklr").val();
                 var qty = $("#ks_qty").val();
+                var sto = $("#ks_stock").val();
 
                 if(tglklr == '' || tglklr == null){
                     alert ('Tanggal Masuk harus diisi .');
                 }else if (qty == '' || qty == null){
                     alert('Qty harus terisi .');
+                } else if (qty > sto){
+                    alert ('Qty melebihi stock .');
                 } else {
                     $("#btn_simpan_ks").prop('disabled', true);
                     $.ajax({
