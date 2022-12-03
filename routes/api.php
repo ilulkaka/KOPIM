@@ -44,3 +44,5 @@ Route::post('transaksi/download', 'TransaksiController@download');
 Route::post('laporan/list_stock_barang', 'StockController@list_stock_barang');
 Route::post('laporan/tambah_stock', 'StockController@tambah_stock');
 Route::post('laporan/kurang_stock', 'StockController@kurang_stock');
+Route::post('laporan/detail_bm', 'StockController@detail_bm');
+Route::post('laporan/detail_bk', 'StockController@detail_bk');

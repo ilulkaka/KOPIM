@@ -123,4 +123,90 @@ class StockController extends Controller
             ];
         }
     }
+
+    public function barang_masuk()
+    {
+        return view('laporan/barang_masuk');
+    }
+
+    public function detail_bm(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+
+        $tgl_awal = $request->input('tgl_awal');
+        $tgl_akhir = $request->input('tgl_akhir');
+
+        $Datas = DB::select(
+            "SELECT a.tgl_in, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
+            (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
+            LEFT JOIN
+            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
+            where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
+            LIMIT  $length OFFSET $start  "
+        );
+
+        $co = DB::select(
+            "SELECT a.tgl_in, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
+            (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
+            LEFT JOIN
+            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
+                where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
+                LIMIT  $length OFFSET $start  "
+        );
+
+        $count = count($co);
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
+    }
+
+    public function barang_keluar()
+    {
+        return view('laporan/barang_keluar');
+    }
+
+    public function detail_bk(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+
+        $tgl_awal = $request->input('tgl_awal');
+        $tgl_akhir = $request->input('tgl_akhir');
+
+        $Datas = DB::select(
+            "SELECT a.tgl_out, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_out,0)as qty_out FROM
+            (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
+            LEFT JOIN
+            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
+            where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
+            LIMIT  $length OFFSET $start  "
+        );
+
+        $co = DB::select(
+            "SELECT a.tgl_out, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_out,0)as qty_out FROM
+            (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
+            LEFT JOIN
+            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
+                where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
+                LIMIT  $length OFFSET $start  "
+        );
+
+        $count = count($co);
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
+    }
 }

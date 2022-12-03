@@ -31,6 +31,9 @@
                 </div>
             </div>
             <!-- /.card-body -->
+            <button id="btn_bm" name="btn_bm">Detail Barang Masuk</button>
+            <button id="btn_bk" name="btn_bk">Detail Barang Keluar</button>
+            <button id="btn_excel" name="btn_excel">Excel</button>
         </div>
         <!-- /.card -->
     </div>
@@ -83,8 +86,8 @@
         </div>
     </div>
 
-<!-- Modal Kurang Stock (KS) -->
-<div class="modal fade" id="modal_kurang_stock" tabindex="-1" role="dialog"
+    <!-- Modal Kurang Stock (KS) -->
+    <div class="modal fade" id="modal_kurang_stock" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -202,13 +205,13 @@
                     {
                         data: 'qty_in',
                         name: 'qty_in',
-                        render: function(data, type, row, meta) {
+                        /*render: function(data, type, row, meta) {
                             if (data > 0) {
-                                return "<u><a href='' class='detailIn'>" + data + "</a></u>";
+                                return "<a href='' class='detailIn'>" + data + "</a>";
                             } else {
                                 return data;
                             }
-                        }
+                        }*/
                     },
                     {
                         data: 'qty_out',
@@ -324,6 +327,14 @@
                         });
                 }
 
+            });
+
+            $("#btn_bm").click(function(){
+                window.location.href = APP_URL + "/laporan/barang_masuk";
+            });
+
+            $("#btn_bk").click(function(){
+                window.location.href = APP_URL + "/laporan/barang_keluar";
             });
 
             function get_ks (){
