@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\InModel;
 use App\Models\OutModel;
 
@@ -105,17 +107,24 @@ class StockController extends Controller
     {
         //dd($request->all());
         if ($request->role == 'Administrator' || $request->role == 'Kasir') {
-            $idout = Str::uuid();
-            $kurang_stock = OutModel::create([
-                'id_out' => $idout,
-                'kode' => $request->ks_kode,
-                'tgl_out' => $request->ks_tglklr,
-                'qty_out' => $request->ks_qty,
-            ]);
-            return [
-                'message' => 'Kurang Stock Berhasil .',
-                'success' => true,
-            ];
+            if ($request->input('ks_qty') > $request->input('ks_stock')) {
+                return [
+                    'message' => 'Qty out lebih besar dari Stock .',
+                    'success' => false,
+                ];
+            } else {
+                $idout = Str::uuid();
+                $kurang_stock = OutModel::create([
+                    'id_out' => $idout,
+                    'kode' => $request->ks_kode,
+                    'tgl_out' => $request->ks_tglklr,
+                    'qty_out' => $request->ks_qty,
+                ]);
+                return [
+                    'message' => 'Kurang Stock Berhasil .',
+                    'success' => true,
+                ];
+            }
         } else {
             return [
                 'message' => 'Access tidak diperbolehkan .',
@@ -208,5 +217,48 @@ class StockController extends Controller
             'recordsFiltered' => $count,
             'data' => $Datas,
         ];
+    }
+
+    public function stock_excel(Request $request)
+    {
+        $Datas = DB::select(
+            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
+            (SELECT * FROM tb_barang)a 
+            LEFT JOIN
+            (SELECT kode, sum(qty_in)as qty_in FROM tb_in GROUP BY kode)b on b.kode=a.kode
+            LEFT JOIN
+            (SELECT kode, sum(qty_out)as qty_out FROM tb_out GROUP BY kode)c on c.kode=a.kode"
+        );
+
+        if (count($Datas) > 0) {
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'No');
+            $sheet->setCellValue('B1', 'KODE');
+            $sheet->setCellValue('C1', 'NAMA');
+            $sheet->setCellValue('D1', 'Spesifikasi');
+            $sheet->setCellValue('E1', 'Supplier');
+            $sheet->setCellValue('F1', 'Stock');
+
+            $line = 2;
+            $no = 1;
+            foreach ($Datas as $data) {
+                $sheet->setCellValue('A' . $line, $no++);
+                $sheet->setCellValue('B' . $line, $data->kode);
+                $sheet->setCellValue('C' . $line, $data->nama);
+                $sheet->setCellValue('D' . $line, $data->spesifikasi);
+                $sheet->setCellValue('E' . $line, $data->supplier);
+                $sheet->setCellValue('F' . $line, $data->stock);
+
+                $line++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'List_Stock_' . date('Ymd His') . '.xlsx';
+            $writer->save(public_path('storage/excel/' . $filename));
+            return ['file' => url('/') . '/storage/excel/' . $filename];
+        } else {
+            return ['message' => 'No Data .', 'success' => false];
+        }
     }
 }

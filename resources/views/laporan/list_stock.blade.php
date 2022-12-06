@@ -1,6 +1,5 @@
 @extends('layout.main')
 @section('content')
-
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -39,8 +38,8 @@
     </div>
 
     <!-- Modal Tambah Stock (TS) -->
-    <div class="modal fade" id="modal_tambah_stock" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modal_tambah_stock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
@@ -56,7 +55,8 @@
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong> Tanggal Masuk</strong>
-                                <input type="date" name="ts_tglmsk" id="ts_tglmsk" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
+                                <input type="date" name="ts_tglmsk" id="ts_tglmsk" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Barang ." required>
                             </div>
                         </div>
                         <p></p>
@@ -65,7 +65,7 @@
                                 <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                                 <strong> Kode Barang</strong>
                                 <input type="hidden" id="ts_kode" name="ts_kode" class="form-control rounded-0"
-                                placeholder="Masukkan Kode Barang ." required>
+                                    placeholder="Masukkan Kode Barang ." required>
                                 <input type="text" id="ts_kode1" name="ts_kode1" class="form-control rounded-0"
                                     placeholder="Masukkan Kode Barang ." required disabled>
                             </div>
@@ -87,8 +87,8 @@
     </div>
 
     <!-- Modal Kurang Stock (KS) -->
-    <div class="modal fade" id="modal_kurang_stock" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modal_kurang_stock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-danger">
@@ -105,7 +105,8 @@
                             <div class="col col-md-12">
                                 <input type="hidden" id="ks_stock" name="ks_stock">
                                 <strong> Tanggal Keluar</strong>
-                                <input type="date" name="ks_tglklr" id="ks_tglklr" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
+                                <input type="date" name="ks_tglklr" id="ks_tglklr" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Barang ." required>
                             </div>
                         </div>
                         <p></p>
@@ -114,12 +115,12 @@
                                 <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                                 <strong> Kode Barang</strong>
                                 <input type="hidden" id="ks_kode" name="ks_kode" class="form-control rounded-0"
-                                placeholder="Masukkan Kode Barang ." required>
+                                    placeholder="Masukkan Kode Barang ." required>
                                 <input type="text" id="ks_kode1" name="ks_kode1" class="form-control rounded-0"
                                     placeholder="Masukkan Kode Barang ." required disabled>
                             </div>
                             <div class="col col-md-3">
-                                <strong> Qty In</strong>
+                                <strong> Qty Out</strong>
                                 <input type="text" id="ks_qty" name="ks_qty" class="form-control rounded-0"
                                     placeholder="Qty Out ." required>
                             </div>
@@ -175,18 +176,17 @@
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
-                            if(data.stock <= 0){
+                            if (data.stock <= 0) {
                                 return "<a href = '#' style='font-size:14px' class = 'ts_tambah'> Tambah </a> || <a href = '#' style='font-size:14px' class = 'ts_minus' enabled> Kurang </a>";
                             } else {
                                 return "<a href = '#' style='font-size:14px' class = 'ts_tambah'> Tambah </a> || <a href = '#' style='font-size:14px' class = 'ts_kurang'> Kurang </a>";
                             }
 
-                            }
+                        }
                     }
                 ],
 
-                columns: [
-                    {
+                columns: [{
                         data: 'kode',
                         name: 'kode'
                     },
@@ -237,9 +237,9 @@
                 var tglmsk = $("#ts_tglmsk").val();
                 var qty = $("#ts_qty").val();
 
-                if(tglmsk == '' || tglmsk == null){
-                    alert ('Tanggal Masuk harus diisi .');
-                }else if (qty == '' || qty == null){
+                if (tglmsk == '' || tglmsk == null) {
+                    alert('Tanggal Masuk harus diisi .');
+                } else if (qty == '' || qty == null) {
                     alert('Qty harus terisi .');
                 } else {
                     $("#btn_simpan_ts").prop('disabled', true);
@@ -270,7 +270,7 @@
 
             });
 
-            function get_ts (){
+            function get_ts() {
                 $("#ts_tglmsk").val('');
                 $("#ts_qty").val('');
             }
@@ -294,12 +294,10 @@
                 var qty = $("#ks_qty").val();
                 var sto = $("#ks_stock").val();
 
-                if(tglklr == '' || tglklr == null){
-                    alert ('Tanggal Masuk harus diisi .');
-                }else if (qty == '' || qty == null){
+                if (tglklr == '' || tglklr == null) {
+                    alert('Tanggal Masuk harus diisi .');
+                } else if (qty == '' || qty == null) {
                     alert('Qty harus terisi .');
-                } else if (qty > sto){
-                    alert ('Qty melebihi stock .');
                 } else {
                     $("#btn_simpan_ks").prop('disabled', true);
                     $.ajax({
@@ -322,6 +320,7 @@
                                 list_stock.ajax.reload(null, false);
                             } else {
                                 alert(resp.message);
+                                $("#btn_simpan_ks").prop('disabled', false);
                             }
 
                         });
@@ -329,15 +328,35 @@
 
             });
 
-            $("#btn_bm").click(function(){
+            $("#btn_bm").click(function() {
                 window.location.href = APP_URL + "/laporan/barang_masuk";
             });
 
-            $("#btn_bk").click(function(){
+            $("#btn_bk").click(function() {
                 window.location.href = APP_URL + "/laporan/barang_keluar";
             });
 
-            function get_ks (){
+            $("#btn_excel").click(function() {
+                $.ajax({
+                    url: APP_URL + '/api/laporan/stock_excel',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+
+                    success: function(response) {
+                        if (response.file) {
+                            var fpath = response.file;
+                            window.open(fpath, '_blank');
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                })
+            });
+
+            function get_ks() {
                 $("#ks_tglmsk").val('');
                 $("#ks_qty").val('');
             }
