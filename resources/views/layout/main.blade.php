@@ -111,8 +111,8 @@
                             </a>
                         </li>
 
-                        <li class="nav-item has-treeview {{ Request::is('produksi/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('produksi/*') ? 'active' : '' }}">
+                        <li class="nav-item has-treeview {{ Request::is('transaksi/*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ Request::is('transaksi/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cart-plus"></i>
                                 <p>
                                     Transaksi
@@ -131,8 +131,8 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('produksi/formmasalah') }}"
-                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
+                                    <a href="{{ url('transaksi/#') }}"
+                                        class="nav-link {{ Request::is('transaksi/#') ? 'active' : '' }}">
                                         <i class="fas fa-shopping-bag nav-icon"></i>
                                         <p>Simpanan</p>
                                     </a>
@@ -140,8 +140,8 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('produksi/formmasalah') }}"
-                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
+                                    <a href="{{ url('transaksi/#') }}"
+                                        class="nav-link {{ Request::is('transaksi/#') ? 'active' : '' }}">
                                         <i class="fas fa-shopping-bag nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>
@@ -149,8 +149,8 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('produksi/formmasalah') }}"
-                                        class="nav-link {{ Request::is('produksi/formmasalah') ? 'active' : '' }}">
+                                    <a href="{{ url('transaksi/#') }}"
+                                        class="nav-link {{ Request::is('transaksi/#') ? 'active' : '' }}">
                                         <i class="far fa-credit-card nav-icon"></i>
                                         <p>Pembayaran</p>
                                     </a>
@@ -158,8 +158,8 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item has-treeview {{ Request::is('maintenance/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('maintenance/*') ? 'active' : '' }}">
+                        <li class="nav-item has-treeview {{ Request::is('laporan/*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ Request::is('laporan/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-folder-open"></i>
                                 <p>
                                     Laporan
@@ -182,23 +182,23 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/maintenance/perbaikan') }}"
-                                        class="nav-link {{ Request::is('maintenance/perbaikan') ? 'active' : '' }}">
+                                    <a href="{{ url('/laporan/#') }}"
+                                        class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
                                         <i class="fas fa-file-alt nav-icon"></i>
                                         <p>SHU</p>
                                     </a>
 
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/maintenance/schedule') }}"
-                                        class="nav-link {{ Request::is('maintenance/schedule') ? 'active' : '' }}">
+                                    <a href="{{ url('/laporan/#') }}"
+                                        class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
                                         <i class="fas fa-file-alt nav-icon"></i>
                                         <p>Simpanan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/maintenance/mesin') }}"
-                                        class="nav-link {{ Request::is('maintenance/mesin') ? 'active' : '' }}">
+                                    <a href="{{ url('/laporan/#') }}"
+                                        class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
                                         <i class="fas fa-file-alt nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>
@@ -207,8 +207,8 @@
                         </li>
 
 
-                        <li class="nav-item has-treeview {{ Request::is('technical/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('technical/*') ? 'active' : '' }}">
+                        <li class="nav-item has-treeview {{ Request::is('grafik/*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ Request::is('grafik/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Grafik
@@ -224,15 +224,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/technical/inquery-permintaan') }}"
-                                        class="nav-link {{ Request::is('technical/inquery-permintaan') ? 'active' : '' }}">
+                                    <a href="{{ url('/grafik/#') }}"
+                                        class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
                                         <i class="fas fa-hand-holding-usd nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/technical/update') }}"
-                                        class="nav-link {{ Request::is('technical/update') ? 'active' : '' }}">
+                                    <a href="{{ url('/grafik/#') }}"
+                                        class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
                                         <i class="fab fa-bitcoin nav-icon"></i>
                                         <p>SHU</p>
                                     </a>
@@ -241,8 +241,8 @@
                         </li>
 
 
-                        <li class="nav-item has-treeview {{ Request::is('qa/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('qa/*') ? 'active' : '' }}">
+                        <li class="nav-item has-treeview {{ Request::is('master/*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ Request::is('master/*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-file-code"></i>
                                 <p>
                                     Master Data

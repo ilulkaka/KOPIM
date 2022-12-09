@@ -22,7 +22,7 @@ class MasterController extends Controller
     public function list_anggota(Request $request)
     {
         //dd($request->all());
-        $test = Auth::user()->name;
+        //$test = Auth::user()->name;
         //dd($test);
         $draw = $request->input('draw');
         $search = $request->input('search')['value'];

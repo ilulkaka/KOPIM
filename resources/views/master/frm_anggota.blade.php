@@ -258,7 +258,7 @@
                 searching: true,
 
                 ajax: {
-                    url: '/master/list_anggota',
+                    url: APP_URL + '/api/master/list_anggota',
                     type: "POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

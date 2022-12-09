@@ -230,7 +230,7 @@
                 searching: true,
 
                 ajax: {
-                    url: '/master/list_pengguna',
+                    url: APP_URL + '/api/master/list_pengguna',
                     type: "POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

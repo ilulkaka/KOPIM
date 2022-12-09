@@ -184,7 +184,7 @@
                 searching: true,
 
                 ajax: {
-                    url: '/master/list_barang',
+                    url: APP_URL + '/api/master/list_barang',
                     type: "POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

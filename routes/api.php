@@ -29,11 +29,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::post('master/tambah_anggota', 'MasterController@tambah_anggota');
 Route::post('master/edit_anggota', 'MasterController@edit_anggota');
 Route::post('master/hapus_anggota', 'MasterController@hapus_anggota');
+Route::post('master/list_anggota', 'MasterController@list_anggota');
 
 Route::post('master/tambah_pengguna', 'MasterController@tambah_pengguna');
 Route::post('master/edit_pengguna', 'MasterController@edit_pengguna');
+Route::post('master/list_pengguna', 'MasterController@list_pengguna');
 Route::post('master/tambah_barang', 'MasterController@tambah_barang');
 Route::post('master/edit_barang', 'MasterController@edit_barang');
+Route::post('master/list_barang', 'MasterController@list_barang');
 
 Route::post('transaksi/get_barcode', 'TransaksiController@get_barcode');
 Route::post('transaksi/trx_simpan', 'TransaksiController@trx_simpan');

@@ -18,11 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::get('logoutaksi', 'LoginController@logoutaksi')->name('logoutaksi');
 
     Route::get('master/frm_anggota', 'MasterController@frm_anggota');
-    Route::post('master/list_anggota', 'MasterController@list_anggota');
     Route::get('master/frm_pengguna', 'MasterController@frm_pengguna');
-    Route::post('master/list_pengguna', 'MasterController@list_pengguna');
     Route::get('master/frm_barang', 'MasterController@frm_barang');
-    Route::post('master/list_barang', 'MasterController@list_barang');
 
     Route::get('transaksi/belanja', 'TransaksiController@belanja');
 
