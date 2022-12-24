@@ -61,8 +61,7 @@
                 <!-- Notifications Dropdown Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">Selamat Datang :
-                        <b> {{ Auth::user()->name }}, </b> Anda Login
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"></b> Anda Login
                         sebagai : <b> {{ Auth::user()->role }} </b>
                         <i class="fas fa-th-large"></i>
                     </a>

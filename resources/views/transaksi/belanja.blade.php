@@ -36,6 +36,7 @@
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
                                 <input type="hidden" id="trx_nama" name="trx_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
+                                    <input type="hidden" name="trx_nik" id="trx_nik">
                             </div>
                         </div>
                         <p></p>
@@ -226,6 +227,7 @@
                     $("#trx_nobarcode").removeAttr("disabled");
                     $("#trx_nama").val('');
                     $("#trx_nama1").val('');
+                    $("#trx_nik").val('');
                     $("#trx_nobarcode").val('');
                     $("#trx_nobarcode1").val('');
                     $("#trx_nobarcode").focus();
@@ -234,6 +236,7 @@
                     $("#trx_nobarcode1").val('999999');
                     $("#trx_nama").val('Client Umum');
                     $("#trx_nama1").val('Client Umum');
+                    $("#trx_nik").val('CU00');
                     $("#trx_nominal").val('');
                     $("#trx_nominal").focus();
                     $("#trx_nobarcode").attr("disabled", "disabled");
@@ -271,6 +274,7 @@
                                 if (resp.success) {
                                     $("#trx_nama").val(resp.nama);
                                     $("#trx_nama1").val(resp.nama);
+                                    $("#trx_nik").val(resp.nik);
                                     $("#trx_nominal").val('');
                                     $("#trx_nominal").focus();
                                 } else {

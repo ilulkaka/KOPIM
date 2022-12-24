@@ -14,6 +14,7 @@ class BelanjaModel extends Model
         'id_trx_belanja',
         'tgl_trx',
         'no_barcode',
+        'nik',
         'nama',
         'nominal',
         'kategori',

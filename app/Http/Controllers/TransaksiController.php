@@ -38,7 +38,7 @@ class TransaksiController extends Controller
         //dd($request->all());
         $no_barcode = $request->input('no_barcode');
         $cek_anggota = DB::table('tb_anggota')
-            ->select('nama')
+            ->select('nik', 'nama')
             ->where('no_barcode', $no_barcode)
             ->get();
 
@@ -52,6 +52,7 @@ class TransaksiController extends Controller
                 'message' => 'success',
                 'success' => true,
                 'nama' => $cek_anggota[0]->nama,
+                'nik' => $cek_anggota[0]->nik,
             ];
         }
     }
@@ -72,6 +73,7 @@ class TransaksiController extends Controller
             'nama' => $request->trx_nama,
             'nominal' => $request->trx_nominal,
             'no_barcode' => $no_barcode,
+            'nik' => $request->trx_nik,
             'kategori' => $kategori,
             'inputor' => $request->role,
         ]);
