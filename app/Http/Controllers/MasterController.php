@@ -191,13 +191,24 @@ class MasterController extends Controller
         //dd($request->all());
         $cek = DB::table('users')
             ->select('email')
+            ->where('email', $request->tp_email)
+            ->count();
+        $nik = DB::table('users')
+            ->select('nik')
+            ->where('nik', $request->tp_nik)
             ->count();
 
         if ($request->role == 'Administrator') {
-            if ($cek >= 1) {
+            if ($cek >= 1 || $nik >= 1) {
+                return [
+                    'message' => 'NIK atau Email sudah ada .',
+                    'success' => false,
+                ];
+            } else {
                 $idPengguna = Str::uuid();
                 $insert_pengguna = User::create([
                     'id' => $idPengguna,
+                    'nik' => $request->tp_nik,
                     'name' => $request->tp_nama,
                     'email' => $request->tp_email,
                     'role' => $request->tp_level,
@@ -207,7 +218,6 @@ class MasterController extends Controller
                     //    'auth_token'
                     //)->plainTextToken,
                 ]);
-
                 return [
                     'message' => 'Tambah data Pengguna baru Berhasil .',
                     'success' => true,

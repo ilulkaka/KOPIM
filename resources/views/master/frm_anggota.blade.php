@@ -235,6 +235,75 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Tambah Pengguna (TP) -->
+    <div class="modal fade" id="modal_tambah_pengguna" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fas fa-user-plus"> Tambah
+                                Pengguna</i></b> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_tp">
+                        @csrf
+                        <div class="row">
+                        <div class="col col-md-4">
+                                <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
+                                <strong><i class="fas fa-quote-left"> NIK</i></strong>
+                                <input type="hidden" id="tp_nik" name="tp_nik" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Pengguna ." required>
+                                    <input type="text" id="tp_nik1" name="tp_nik1" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Pengguna ." required disabled>
+                            </div>
+                            <div class="col col-md-8">
+                                <strong><i class="fas fa-quote-left"> Nama</i></strong>
+                                <input type="hidden" id="tp_nama" name="tp_nama" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Pengguna ." required>
+                                    <input type="text" id="tp_nama1" name="tp_nama1" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Pengguna ." required disabled>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <strong><i class="fas fa-at"> Email</i></strong>
+                                <input name="tp_email" id="tp_email" class="form-control rounded-0" required>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-low-vision"> Password</i></strong>
+                                <input type="password" id="tp_password" name="tp_password" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Pengguna ." required>
+                            </div>
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-caret-square-down"> Level</i></strong>
+                                <select id="tp_level" name="tp_level" class="form-control rounded-0"
+                                    placeholder="0811-2453-6789" required>
+                                    <option value="">Pilih Level ...</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Staff">Staff</option>
+                                    <option value="Kasir">Kasir</option>
+                                    <option value="Anggota">Anggota</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-flat" id="btn_save_tp">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -276,7 +345,7 @@
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
-                            return "<a href = '#' style='font-size:14px' class = 'ta_edit'> Edit </a> || <a href = '#' style='font-size:14px' class ='ta_hapus' > Hapus </a>";
+                            return "<a href = '#' style='font-size:14px' class = 'ta_edit'> Edit </a> || <a href = '#' style='font-size:14px' class ='ta_hapus' > Hapus </a> || <a href = '#' style='font-size:14px' class ='ta_user' > Buat User </a>";
                         }
                     }
                 ],
@@ -414,6 +483,41 @@
                             alert(resp.message);
                             $("#modal_hapus_anggota").modal('toggle');
                             list_anggota.ajax.reload(null, false);
+                        } else {
+                            alert(resp.message);
+                        }
+                    })
+            });
+
+            $('#tb_anggota').on('click', '.ta_user', function() {
+                var data = list_anggota.row($(this).parents('tr')).data();
+                $("#tp_nik").val(data.nik);
+                $("#tp_nik1").val(data.nik);
+                $("#tp_nama").val(data.nama);
+                $("#tp_nama1").val(data.nama);
+
+                $("#modal_tambah_pengguna").modal('show');
+            });
+
+            $("#form_tp").submit(function(e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+
+                $.ajax({
+                        type: "POST",
+                        url: APP_URL + '/api/master/tambah_pengguna',
+                        dataType: "json",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: data,
+                        //processData: false,
+                        //contentType: false,
+                    })
+                    .done(function(resp) {
+                        if (resp.success) {
+                            alert(resp.message);
+                            location.reload();
                         } else {
                             alert(resp.message);
                         }
