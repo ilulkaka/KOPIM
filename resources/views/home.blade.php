@@ -2,8 +2,6 @@
 
 @section('content')
     <h4>
-        Selamat Datang 
-        <b>{{ Auth::user()->name }}</b>, 
         Anda Login sebagai 
         <b>{{ Auth::user()->role }}</b>
     </h4>
@@ -17,16 +15,13 @@
 <p class="text-muted text-center">{{ Auth::user()->nik }}</p>
 <ul class="list-group list-group-unbordered mb-3">
 <li class="list-group-item">
-<b>Tagihan Aktif</b> <a class="float-right">{{$aktif}}</a>
+<b>Tagihan Bulan ini</b> <a class="float-right">{{number_format($aktif,0)}}</a>
 </li>
 <li class="list-group-item">
-<b>Tagihan bulan lalu</b> <a class="float-right">543</a>
-</li>
-<li class="list-group-item">
-<b>Transaksi tahun ini</b> <a class="float-right">13,287</a>
+<b>SHU Tahun {{$thn}}</b> <a class="float-right" style="font-size:14px; color:red;"><i> Under Maintenance</i></a>
 </li>
 </ul>
-<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+<a href="#" class="btn btn-primary btn-block btn-flat"><b>Detail Tagihan</b></a>
 </div>
 
 </div>

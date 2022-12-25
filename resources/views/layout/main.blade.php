@@ -61,8 +61,7 @@
                 <!-- Notifications Dropdown Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"></b> Anda Login
-                        sebagai : <b> {{ Auth::user()->role }} </b>
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"></b> Selamat datang : <b> {{ Auth::user()->name }} </b>
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
@@ -99,7 +98,29 @@
                         role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+                        @if (Auth::user()->role == 'Anggota')
+                        <li class="nav-item">
+                            <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    DASHBOARD
 
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('logoutaksi') }}" class="nav-link" id="logout">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>
+                                    LOGOUT
+                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                                </p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (Auth::user()->role != 'Anggota')
                         <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-th"></i>
@@ -349,6 +370,7 @@
                                 </p>
                             </a>
                         </li>
+                        @endif
                         <!-- /.sidebar-menu -->
                     </ul>
                 </nav>
