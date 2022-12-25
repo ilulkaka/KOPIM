@@ -12,7 +12,7 @@
                         @csrf
                         <div class="row">
                             <input type="hidden" id="role" name="role" value="{{ Auth::user()->name }}">
-                            <div class="col col-md-2">
+                            <div class="col col-md-6">
                                 <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
                                 <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
                                     <option value="">Kategori ...</option>
@@ -23,14 +23,16 @@
                         </div>
                         <p></p>
                         <div class="row">
-                            <div class="col col-md-4">
+                            <div class="col col-md-12">
                                 <strong><i class="fas fa-qrcode"> No Barcode</i></strong>
                                 <input type="text" id="trx_nobarcode" name="trx_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
                                 <input type="hidden" id="trx_nobarcode1" name="trx_nobarcode1"
                                     class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
                             </div>
-                            <div class="col col-md-8">
+</div>
+<div class="row">
+                            <div class="col col-md-12">
                                 <strong disabled><i class="fas fa-quote-left"> Nama</i></strong>
                                 <input type="text" id="trx_nama1" name="trx_nama1" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
@@ -41,21 +43,16 @@
                         </div>
                         <p></p>
                         <div class="row">
-                            <div class="col col-md-4">
+                            <div class="col col-md-6">
                                 <strong><i class="fas fa-dollar-sign"> Nominal</i></strong>
                                 <input type="number" name="trx_nominal" id="trx_nominal"
                                     class="form-control form-control-lg rounded-0" required>
                             </div>
-                            <div class="col col-md-8">
+                            <div class="col col-md-6">
                                 <br>
-                                <button type="button" class="btn btn-success btn-flat btn-lg"
+                                <button type="button" class="btn btn-success btn-flat btn-lg float-right"
                                     id="btn_simpan_trx">Simpan</button>
-                                <button type="button" class="btn btn-outline btn-flat btn-lg" id="btn_detail_trx"
-                                    style="color: blue"><u> Detail
-                                        Trx</u></button>
-                                <button type="button" class="btn btn-outline btn-flat btn-lg" id="btn_download_trx"
-                                    style="color: blue"><u>Download
-                                        Trx</u></button>
+
                             </div>
                         </div>
                         <p></p>
@@ -65,7 +62,12 @@
                     </form>
                 </div>
                 <div class="card-footer text-muted">
-                    {{ date('d-M-Y') }}
+                                <button type="button" class="btn btn-outline btn-flat float-right" id="btn_detail_trx"
+                                    style="color: blue"><u> Detail
+                                        Trx</u></button>
+                                <button type="button" class="btn btn-outline btn-flat float-right" id="btn_download_trx"
+                                    style="color: blue"><u>Download
+                                        Trx</u></button>
                 </div>
             </div>
         </div>
