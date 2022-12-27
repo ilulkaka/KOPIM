@@ -19,6 +19,12 @@
                     <b>Tagihan Bulan ini</b> <a class="float-right">{{number_format($aktif,0)}}</a>
                     </li>
                     <li class="list-group-item">
+                    <i> - Barcode</i> <a class="float-right">{{number_format($aktif,0)}}</a>
+                    </li>
+                    <li class="list-group-item">
+                    <i> - Pinjaman</i> <a class="float-right">{{number_format($aktif,0)}}</a>
+                    </li>
+                    <li class="list-group-item">
                     <b>SHU Tahun {{$thn}}</b> <a class="float-right" style="font-size:14px; color:red;"><i> Under Maintenance</i></a>
                     </li>
                 </ul>

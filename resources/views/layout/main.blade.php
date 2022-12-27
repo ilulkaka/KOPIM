@@ -160,8 +160,8 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('transaksi/#') }}"
-                                        class="nav-link {{ Request::is('transaksi/#') ? 'active' : '' }}">
+                                    <a href="{{ url('transaksi/frm_pinjaman') }}"
+                                        class="nav-link {{ Request::is('transaksi/frm_pinjaman') ? 'active' : '' }}">
                                         <i class="fas fa-shopping-bag nav-icon"></i>
                                         <p>Pinjaman</p>
                                     </a>

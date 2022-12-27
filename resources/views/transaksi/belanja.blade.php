@@ -46,7 +46,7 @@
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-dollar-sign"> Nominal</i></strong>
                                 <input type="number" name="trx_nominal" id="trx_nominal"
-                                    class="form-control form-control-lg rounded-0" required>
+                                    class="form-control form-control-lg rounded-0" required>  
                             </div>
                             <div class="col col-md-6">
                                 <br>
@@ -56,9 +56,7 @@
                             </div>
                         </div>
                         <p></p>
-                        <!--<div class="modal-footer">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>-->
+                        <!--<div class="modal-footer">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div>-->
                     </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -258,6 +256,47 @@
                 if (event.keyCode === 13) {
                     if (no_barcode == null || no_barcode == '') {
                         alert('Masukkan Nomer Barcode .');
+                    } else {
+                        $.ajax({
+                                type: "POST",
+                                url: APP_URL + '/api/transaksi/get_barcode',
+                                dataType: "json",
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                data: {
+                                    'no_barcode': no_barcode
+                                },
+                                //processData: false,
+                                //contentType: false,
+                            })
+                            .done(function(resp) {
+                                if (resp.success) {
+                                    $("#trx_nama").val(resp.nama);
+                                    $("#trx_nama1").val(resp.nama);
+                                    $("#trx_nik").val(resp.nik);
+                                    $("#trx_nominal").val('');
+                                    $("#trx_nominal").focus();
+                                } else {
+                                    alert(resp.message);
+                                    $("#trx_nama").val('');
+                                    $("#trx_nama1").val('');
+                                    $("#trx_nobarcode").val('');
+                                    $("#trx_nobarcode").focus();
+                                }
+                            })
+                    }
+                }
+            });
+
+            $("#trx_nobarcode").keydown(function(e) {
+                var no_barcode = $("#trx_nobarcode").val();
+                var code = (e.keyCode || e.which);
+                if (code === 9) {
+                    if (no_barcode == null || no_barcode == '') {
+                        alert('Masukkan Nomer Barcode .');
+                        $("#trx_nobarcode").val('');
+                        $("#trx_nobarcode").focus();
                     } else {
                         $.ajax({
                                 type: "POST",
