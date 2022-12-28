@@ -4,7 +4,7 @@
         <div class="col col-md-7">
             <div class="card card-info">
                 <div class="card-header">
-                    <h4><b><i class="fas fa-cart-plus"> Transaksi</i></b>
+                    <h4><b><i class="fas fa-dollar-sign"> Pinjaman</i></b>
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -12,47 +12,41 @@
                         @csrf
                         <div class="row">
                             <input type="hidden" id="role" name="role" value="{{ Auth::user()->name }}">
-                            <div class="col col-md-6">
-                                <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                    <option value="">Kategori ...</option>
-                                    <option value="Anggota">Anggota</option>
-                                    <option value="Umum">Umum</option>
+                            <div class="col col-md-3">
+                                <strong><i class="fas fa-caret-square-down"> NIK</i></strong>
+                                <select id="trx_nik" name="trx_nik" class="form-control rounded-0" required>
+                                    <option value="">Pilih NIK ...</option>
                                 </select>
                             </div>
-                        </div>
-                        <p></p>
-                        <div class="row">
-                            <div class="col col-md-12">
+                            <div class="col col-md-9">
                                 <strong><i class="fas fa-qrcode"> No Barcode</i></strong>
-                                <input type="text" id="trx_nobarcode" name="trx_nobarcode" class="form-control rounded-0"
+                                <input type="text" id="trx_nobarcode1" name="trx_nobarcode1"
+                                    class="form-control rounded-0" placeholder="Masukkan No Barcode ." required disabled>
+                                <input type="hidden" id="trx_nobarcode" name="trx_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
-                                <input type="hidden" id="trx_nobarcode1" name="trx_nobarcode1"
-                                    class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
                             </div>
-</div>
-<div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col col-md-12">
                                 <strong disabled><i class="fas fa-quote-left"> Nama</i></strong>
                                 <input type="text" id="trx_nama1" name="trx_nama1" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
                                 <input type="hidden" id="trx_nama" name="trx_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
-                                    <input type="hidden" name="trx_nik" id="trx_nik">
+                                <input type="hidden" name="trx_nik" id="trx_nik">
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
-                            <div class="col col-md-6">
-                                <strong><i class="fas fa-dollar-sign"> Nominal</i></strong>
+                            <div class="col col-md-9">
+                                <strong><i class="fas fa-dollar-sign"> Jumlah Pinjaman</i></strong>
                                 <input type="number" name="trx_nominal" id="trx_nominal"
-                                    class="form-control form-control-lg rounded-0" required>  
+                                    class="form-control form-control-lg rounded-0" required>
                             </div>
-                            <div class="col col-md-6">
-                                <br>
-                                <button type="button" class="btn btn-success btn-flat btn-lg float-right"
-                                    id="btn_simpan_trx">Simpan</button>
-
+                            <div class="col col-md-3">
+                                <strong><i class="fas fa-dollar-sign"> Tenor (Bulan)</i></strong>
+                                <input type="number" name="trx_nominal" id="trx_nominal"
+                                    class="form-control form-control-lg rounded-0" required>
                             </div>
                         </div>
                         <p></p>
@@ -60,44 +54,14 @@
                     </form>
                 </div>
                 <div class="card-footer text-muted">
-                                <button type="button" class="btn btn-outline btn-flat float-right" id="btn_detail_trx"
-                                    style="color: blue"><u> Detail
-                                        Trx</u></button>
-                                <button type="button" class="btn btn-outline btn-flat float-right" id="btn_download_trx"
-                                    style="color: blue"><u>Download
-                                        Trx</u></button>
+                    <button type="button" class="btn btn-outline btn-flat float-left" id="btn_detail_trx"
+                        style="color: blue"><u> Detail
+                            Trx</u></button>
+                    <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_trx"
+                        style="color: blue"><u>Download
+                            Trx</u></button>
+                    <button type="button" class="btn btn-success btn-flat float-right" id="btn_simpan_trx">Simpan</button>
                 </div>
-            </div>
-        </div>
-
-        <div class="col col-md-5">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text"><u> Transaksi Hari ini</u></span>
-                    <div class="row">
-                        <div class="col col-md-4">
-                            <span class="info-box-number">Anggota</span>
-                            <span class="info-box-number"></span>
-                        </div>
-                        <div class="col col-md-4">
-                            <span class="info-box-number">Umum</span>
-                            <span class="info-box-number"></span>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text"><u> Total Transaksi</u></span>
-                    <span class="info-box-number"><b
-                            style="font-size: 24px; color:red"></b></span>
-                </div>
-                <!-- /.info-box-content -->
             </div>
         </div>
     </div>
