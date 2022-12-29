@@ -99,34 +99,40 @@
             $("#btn_simpan_pin").click(function() {
                 var data = $("#form_pin").serializeArray();
 
-                var kategori = $("#trx_kategori").val();
-                var nobarcode = $("#trx_nobarcode").val();
-                var nominal = $("#trx_nominal").val();
+                var no_anggota = $("#pin_nobarcode").val();
+                var tglreal = $("#pin_tglreal").val();
+                var nama = $("#pin_nama").val();
+                var jmlpin = $("#pin_jmlpin").val();
+                var tenor = $("#pin_tenor").val();
 
-                $("#btn_simpan_").prop('disabled', true);
-                $.ajax({
-                        type: "POST",
-                        url: APP_URL + '/api/transaksi/pinjaman/simpan_pin',
-                        dataType: "json",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        },
-                        data: data,
-                        //processData: false,
-                        //contentType: false,
-                    })
-                    .done(function(resp) {
-                        if (resp.success) {
-                            alert(resp.message);
-                            location.reload();
-                            $("#btn_simpan_trx").prop('disabled', false);
-                            $("#trx_kategori").focus();
-                        } else {
-                            alert(resp.message);
-                        }
+                if (no_anggota == '' || tglreal == '' || nama == '' || jmlpin == '' || tenor ==
+                    '') {
+                    alert('Inputan harus terisi semua');
+                } else {
+                    $("#btn_simpan_pin").prop('disabled', true);
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/transaksi/pinjaman/simpan_pin',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: data,
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                location.reload();
+                                $("#btn_simpan_pin").prop('disabled', false);
+                            } else {
+                                alert(resp.message);
+                            }
 
-                    });
+                        });
 
+                }
             });
         });
     </script>
