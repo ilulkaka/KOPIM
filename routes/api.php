@@ -40,6 +40,7 @@ Route::post('master/list_barang', 'MasterController@list_barang');
 
 Route::post('transaksi/get_barcode', 'TransaksiController@get_barcode');
 Route::post('transaksi/trx_simpan', 'TransaksiController@trx_simpan');
+Route::post('transaksi/pinjaman/simpan_pin', 'PinjamanController@simpan_pin');
 
 Route::post('transaksi/detail_trx', 'TransaksiController@detail_trx');
 Route::post('transaksi/download', 'TransaksiController@download');

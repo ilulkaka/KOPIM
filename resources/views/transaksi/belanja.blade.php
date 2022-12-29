@@ -30,15 +30,15 @@
                                 <input type="hidden" id="trx_nobarcode1" name="trx_nobarcode1"
                                     class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
                             </div>
-</div>
-<div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col col-md-12">
                                 <strong disabled><i class="fas fa-quote-left"> Nama</i></strong>
                                 <input type="text" id="trx_nama1" name="trx_nama1" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
                                 <input type="hidden" id="trx_nama" name="trx_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
-                                    <input type="hidden" name="trx_nik" id="trx_nik">
+                                <input type="hidden" name="trx_nik" id="trx_nik">
                             </div>
                         </div>
                         <p></p>
@@ -46,7 +46,7 @@
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-dollar-sign"> Nominal</i></strong>
                                 <input type="number" name="trx_nominal" id="trx_nominal"
-                                    class="form-control form-control-lg rounded-0" required>  
+                                    class="form-control form-control-lg rounded-0" required>
                             </div>
                             <div class="col col-md-6">
                                 <br>
@@ -60,12 +60,12 @@
                     </form>
                 </div>
                 <div class="card-footer text-muted">
-                                <button type="button" class="btn btn-outline btn-flat float-right" id="btn_detail_trx"
-                                    style="color: blue"><u> Detail
-                                        Trx</u></button>
-                                <button type="button" class="btn btn-outline btn-flat float-right" id="btn_download_trx"
-                                    style="color: blue"><u>Download
-                                        Trx</u></button>
+                    <button type="button" class="btn btn-outline btn-flat float-right" id="btn_detail_trx"
+                        style="color: blue"><u> Detail
+                            Trx</u></button>
+                    <button type="button" class="btn btn-outline btn-flat float-right" id="btn_download_trx"
+                        style="color: blue"><u>Download
+                            Trx</u></button>
                 </div>
             </div>
         </div>
