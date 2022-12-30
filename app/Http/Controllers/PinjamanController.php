@@ -52,6 +52,7 @@ class PinjamanController extends Controller
                 'jml_pinjaman' => $request->pin_jmlpin,
                 'tgl_realisasi' => $request->pin_tglreal,
                 'tenor' => $request->pin_tenor,
+                'status_pinjaman' => 'Open',
             ]);
 
             return [
@@ -64,5 +65,43 @@ class PinjamanController extends Controller
                 'success' => false,
             ];
         }
+    }
+
+    public function list_pin(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+        $Datas = DB::table('tb_pinjaman')
+            ->select('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
+            ->where('status_pinjaman', '=', 'Aktif')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->orwhere('nama', 'like', '%' . $search . '%')
+                    ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
+            })
+            ->groupBy('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
+            ->orderBy('no_pinjaman', 'asc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $count = DB::table('tb_pinjaman')
+            ->select('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
+            ->where('status_pinjaman', '=', 'Aktif')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->orwhere('nama', 'like', '%' . $search . '%')
+                    ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
+            })
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
     }
 }

@@ -19,5 +19,6 @@ class PinjamanModel extends Model
         'jml_pinjaman',
         'tgl_realisasi',
         'tenor',
+        'status_pinjaman',
     ];
 }
