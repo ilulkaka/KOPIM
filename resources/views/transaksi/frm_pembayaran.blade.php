@@ -4,50 +4,56 @@
         <div class="col col-md-6">
             <div class="card card-info">
                 <div class="card-header">
-                    <h4><b><i class="fas fa-dollar-sign"> Pinjaman</i></b>
+                    <h4><b><i class="fas fa-dollar-sign"> Angsuran</i></b>
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form id="form_pin" autocomplete="off">
+                    <form id="form_pem" autocomplete="off">
                         @csrf
                         <div class="row">
                             <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
-                            <div class="col col-md-3">
-                                <strong><i class="fas fa-caret-square-down"> No Anggota</i></strong>
-                                <select id="pin_no" name="pin_no" class="form-control rounded-0 select2" required>
-                                    <option value="">Pilih No Anggota ...</option>
-                                    @foreach ($no as $n)
-                                        <option value="{{ $n->nama }}">{{ $n->no_barcode }}
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-caret-square-down"> No Pinjaman</i></strong>
+                                <select id="pem_nopin" name="pem_nopin" class="form-control rounded-0 select2" required>
+                                    <option value="">Pilih No Pinjaman ...</option>
+                                    @foreach ($no_pin as $n)
+                                        <option value="{{ $n->no_pinjaman }}">{{ $n->no_pinjaman }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col col-md-9">
-                                <strong><i class="fas fa-qrcode"> Tgl Realisasi</i></strong>
-                                <input type="date" id="pin_tglreal" name="pin_tglreal" class="form-control rounded-0"
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-qrcode"> No Anggota</i></strong>
+                                <input type="text" id="pem_nobarcode" name="pem_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
-                                <input type="hidden" id="pin_nobarcode" name="pin_nobarcode" class="form-control rounded-0"
+                                <input type="hidden" id="pem_nobarcode" name="pem_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong disabled><i class="fas fa-quote-left"> Nama</i></strong>
-                                <input type="text" id="pin_nama1" name="pin_nama1" class="form-control rounded-0"
+                                <input type="text" id="pem_nama1" name="pem_nama1" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
-                                <input type="hidden" id="pin_nama" name="pin_nama" class="form-control rounded-0"
+                                <input type="hidden" id="pem_nama" name="pem_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
                             </div>
                         </div>
-                        <p></p>
+                        <div class="row">
+                        <div class="col col-md-12">
+                                <strong><i class="fas fa-qrcode"> Periode Ang</i></strong>
+                                <input type="date" id="pem_perang" name="pem_perang" class="form-control rounded-0"
+                                    placeholder="Masukkan No Barcode ." required>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col col-md-9">
-                                <strong><i class="fas fa-dollar-sign"> Jumlah Pinjaman</i></strong>
-                                <input type="number" name="pin_jmlpin" id="pin_jmlpin"
+                                <strong><i class="fas fa-dollar-sign"> Jumlah Angsuran</i></strong>
+                                <input type="number" name="pem_jmlang" id="pem_jmlang"
                                     class="form-control form-control-lg rounded-0" required>
                             </div>
                             <div class="col col-md-3">
-                                <strong><i class="fas fa-dollar-sign"> Tenor (Bulan)</i></strong>
+                                <strong><i class="fas fa-dollar-sign"> Ke</i></strong>
                                 <input type="number" name="pin_tenor" id="pin_tenor"
                                     class="form-control form-control-lg rounded-0" required>
                             </div>
@@ -117,15 +123,8 @@
         });
         $(document).ready(function() {
 
-            $("#pin_no").change(function() {
-                var no_anggota = $(this).children("option:selected").html();
-                var nama = $(this).children("option:selected").val();
-                //    var dept = $(this).children("option:selected").val();
-
-                $("#pin_nobarcode").val(no_anggota);
-                $("#pin_nama").val(nama);
-                $("#pin_nama1").val(nama);
-                //    $("#departemen").val(dept);
+            $("#pem_nopin").change(function() {
+                get_nopinjaman();
             });
 
             $("#btn_simpan_pin").click(function() {
@@ -206,6 +205,33 @@
                     },
                 ]
             });
+
+            function get_nopinjaman(){
+                var nopin = $("#pem_nopin").val();
+                if (nopin == '' || nopin == null){
+                    alert('Masukkan Nomer Pinjaman .');
+                } else {
+                    $.ajax({
+                                type: "POST",
+                                url: APP_URL + '/api/transaksi/pembayaran/get_nopin',
+                                dataType: "json",
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                data: {'nopin':nopin},
+                                //processData: false,
+                                //contentType: false,
+                            })
+                            .done(function(resp) {
+                                if (resp.success) {
+                                    alert(resp.message);
+                                } else {
+                                    alert(resp.message);
+                                }
+    
+                            });
+                }
+            }
 
         });
     </script>

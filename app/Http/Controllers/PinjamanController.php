@@ -75,7 +75,7 @@ class PinjamanController extends Controller
         $length = (int) $request->input('length');
         $Datas = DB::table('tb_pinjaman')
             ->select('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
-            ->where('status_pinjaman', '=', 'Aktif')
+            ->where('status_pinjaman', '=', 'Open')
             ->where(function ($q) use ($search) {
                 $q
                     ->orwhere('nama', 'like', '%' . $search . '%')
@@ -89,7 +89,7 @@ class PinjamanController extends Controller
 
         $count = DB::table('tb_pinjaman')
             ->select('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
-            ->where('status_pinjaman', '=', 'Aktif')
+            ->where('status_pinjaman', '=', 'Open')
             ->where(function ($q) use ($search) {
                 $q
                     ->orwhere('nama', 'like', '%' . $search . '%')

@@ -169,8 +169,8 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('transaksi/#') }}"
-                                        class="nav-link {{ Request::is('transaksi/#') ? 'active' : '' }}">
+                                    <a href="{{ url('transaksi/frm_pembayaran') }}"
+                                        class="nav-link {{ Request::is('transaksi/frm_pembayaran') ? 'active' : '' }}">
                                         <i class="far fa-credit-card nav-icon"></i>
                                         <p>Pembayaran</p>
                                     </a>
