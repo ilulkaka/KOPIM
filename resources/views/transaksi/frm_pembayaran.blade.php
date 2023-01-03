@@ -25,7 +25,7 @@
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-qrcode"> No Anggota</i></strong>
                                 <input type="text" id="pem_nobarcode" name="pem_nobarcode" class="form-control rounded-0"
-                                    placeholder="Masukkan No Barcode ." required>
+                                    placeholder="Masukkan No Barcode ." required disabled>
                                 <input type="hidden" id="pem_nobarcode" name="pem_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
                             </div>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="row">
-                        <div class="col col-md-12">
+                            <div class="col col-md-12">
                                 <strong><i class="fas fa-qrcode"> Periode Ang</i></strong>
                                 <input type="date" id="pem_perang" name="pem_perang" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
@@ -64,47 +64,47 @@
                 </div>
                 <div class="card-footer text-muted">
                     <!--<button type="button" class="btn btn-outline btn-flat float-left" id="btn_detail_pin"
-                        style="color: blue"><u> Detail
-                            Trx</u></button>
-                    <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
-                        style="color: blue"><u>Download
-                            Trx</u></button>-->
+                                            style="color: blue"><u> Detail
+                                                Trx</u></button>
+                                        <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
+                                            style="color: blue"><u>Download
+                                                Trx</u></button>-->
                     <button type="button" class="btn btn-success btn-flat float-right" id="btn_simpan_pin">Simpan</button>
                 </div>
             </div>
         </div>
         <div class="col col-md-6">
-        <div class="card">
-        <div class="card-header">
-            <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
 
-                <div class="col-12">
-                    <h3 class="card-title"><u>Data Pinjaman</u></h3>
+                        <div class="col-12">
+                            <h3 class="card-title"><u>Data Pinjaman</u></h3>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+
+                            <table class="table table-hover text-nowrap" id="tb_pinjaman">
+                                <thead>
+                                    <tr>
+                                        <th>No Pinjaman</th>
+                                        <th>Nama</th>
+                                        <th>Pinjaman</th>
+                                        <th>Tenor</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
+                <!-- /.card -->
             </div>
-
-            <div class="modal-body">
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-
-                    <table class="table table-hover text-nowrap" id="tb_pinjaman">
-                        <thead>
-                            <tr>
-                                <th>No Pinjaman</th>
-                                <th>Nama</th>
-                                <th>Pinjaman</th>
-                                <th>Tenor</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-    </div>
-        </div>
-        
+
     </div>
 @endsection
 
@@ -181,11 +181,10 @@
                 },
 
                 columnDefs: [{
-                        targets: [0],
-                        visible: false,
-                        searchable: false
-                    },
-                ],
+                    targets: [0],
+                    visible: false,
+                    searchable: false
+                }, ],
 
                 columns: [{
                         data: 'no_pinjaman',
@@ -197,7 +196,8 @@
                     },
                     {
                         data: 'jml_pinjaman',
-                        name: 'jml_pinjaman', render: $.fn.dataTable.render.number(',', '.')
+                        name: 'jml_pinjaman',
+                        render: $.fn.dataTable.render.number(',', '.')
                     },
                     {
                         data: 'tenor',
@@ -206,30 +206,36 @@
                 ]
             });
 
-            function get_nopinjaman(){
+            function get_nopinjaman() {
                 var nopin = $("#pem_nopin").val();
-                if (nopin == '' || nopin == null){
+                if (nopin == '' || nopin == null) {
                     alert('Masukkan Nomer Pinjaman .');
                 } else {
                     $.ajax({
-                                type: "POST",
-                                url: APP_URL + '/api/transaksi/pembayaran/get_nopin',
-                                dataType: "json",
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                },
-                                data: {'nopin':nopin},
-                                //processData: false,
-                                //contentType: false,
-                            })
-                            .done(function(resp) {
-                                if (resp.success) {
-                                    alert(resp.message);
-                                } else {
-                                    alert(resp.message);
-                                }
-    
-                            });
+                            type: "POST",
+                            url: APP_URL + '/api/transaksi/pembayaran/get_nopin',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                'nopin': nopin
+                            },
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                //alert(resp.message);
+                                $("#pem_nobarcode").val(resp.datas[0].no_anggota);
+                                $("#pem_nobarcode1").val(resp.datas[0].no_anggota);
+                                $("#pem_nama").val(resp.datas[0].nama);
+                                $("#pem_nama1").val(resp.datas[0].nama);
+                            } else {
+                                alert(resp.message);
+                            }
+
+                        });
                 }
             }
 

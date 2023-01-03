@@ -26,5 +26,25 @@ class PembayaranController extends Controller
         $datas = PinjamanModel::where('no_pinjaman', $nopin)
             ->where('status_pinjaman', '=', 'Open')
             ->get();
+        $ang = PembayaranModel::where('no_pinjaman', $nopin)
+            ->where(
+                'angsuran_ke',
+                \DB::raw("(select max('angsuran_ke')from tb_pembayaran)")
+            )
+            ->get();
+
+        if (count($datas) > 0) {
+            return [
+                'message' => 'get detail pinjaman .',
+                'success' => true,
+                'datas' => $datas,
+                'angsuran_ke' => $ang,
+            ];
+        } else {
+            return [
+                'message' => 'Nomer pinjaman tidak ada .',
+                'success' => false,
+            ];
+        }
     }
 }
