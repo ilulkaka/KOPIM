@@ -24,7 +24,7 @@
                             </div>
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-qrcode"> No Anggota</i></strong>
-                                <input type="text" id="pem_nobarcode" name="pem_nobarcode" class="form-control rounded-0"
+                                <input type="text" id="pem_nobarcode1" name="pem_nobarcode1" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required disabled>
                                 <input type="hidden" id="pem_nobarcode" name="pem_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
@@ -54,8 +54,12 @@
                             </div>
                             <div class="col col-md-3">
                                 <strong><i class="fas fa-dollar-sign"> Ke</i></strong>
-                                <input type="number" name="pem_angke" id="pem_angke"
+                                <input type="number" name="pem_angke1" id="pem_angke1"
+                                    class="form-control form-control-lg rounded-0" required disabled>
+                                    <input type="hidden" name="pem_angke" id="pem_angke"
                                     class="form-control form-control-lg rounded-0" required>
+                                    <input type="hidden" name="pem_tenor" id="pem_tenor" required>
+                                    <input type="hidden" name="pem_ban" id="pem_ban" required>
                             </div>
                         </div>
                         <p></p>
@@ -69,7 +73,7 @@
                                                     <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
                                                         style="color: blue"><u>Download
                                                             Trx</u></button>-->
-                    <button type="button" class="btn btn-success btn-flat float-right" id="btn_simpan_pin">Simpan</button>
+                    <button type="button" class="btn btn-success btn-flat float-right" id="btn_simpan_pem">Simpan</button>
                 </div>
             </div>
         </div>
@@ -79,7 +83,7 @@
                     <div class="row">
 
                         <div class="col-12">
-                            <h3 class="card-title"><u>Data Pinjaman</u></h3>
+                            <h3 class="card-title"><u>Data Angsuran</u></h3>
                         </div>
                     </div>
 
@@ -87,13 +91,13 @@
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
 
-                            <table class="table table-hover text-nowrap" id="tb_pinjaman">
+                            <table class="table table-hover text-nowrap" id="tb_angsuran">
                                 <thead>
                                     <tr>
                                         <th>No Pinjaman</th>
                                         <th>Nama</th>
-                                        <th>Pinjaman</th>
-                                        <th>Tenor</th>
+                                        <th>Jml Ang</th>
+                                        <th>Ke</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -166,13 +170,14 @@
                 }
             });
 
-            var list_pinjaman = $('#tb_pinjaman').DataTable({
+            var list_angsuran = $('#tb_angsuran').DataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true
+                ,
 
                 ajax: {
-                    url: APP_URL + '/api/transaksi/pinjaman/list_pin',
+                    url: APP_URL + '/api/transaksi/pembayaran/list_ang',
                     type: "POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -180,11 +185,11 @@
                     dataType: "json",
                 },
 
-                columnDefs: [{
-                    targets: [0],
-                    visible: false,
-                    searchable: false
-                }, ],
+                //columnDefs: [{
+                //    targets: [0],
+                //    visible: false,
+                //    searchable: false
+                //}, ],
 
                 columns: [{
                         data: 'no_pinjaman',
@@ -195,13 +200,13 @@
                         name: 'nama'
                     },
                     {
-                        data: 'jml_pinjaman',
-                        name: 'jml_pinjaman',
+                        data: 'jml_angsuran',
+                        name: 'jml_angsuran',
                         render: $.fn.dataTable.render.number(',', '.')
                     },
                     {
-                        data: 'tenor',
-                        name: 'tenor'
+                        data: 'angsuran_ke',
+                        name: 'angsuran_ke'
                     },
                 ]
             });
@@ -231,7 +236,10 @@
                                 $("#pem_nobarcode1").val(resp.datas[0].no_anggota);
                                 $("#pem_nama").val(resp.datas[0].nama);
                                 $("#pem_nama1").val(resp.datas[0].nama);
+                                $("#pem_angke1").val(resp.angsuran_ke + 1);
                                 $("#pem_angke").val(resp.angsuran_ke + 1);
+                                $("#pem_tenor").val(resp.datas[0].tenor);
+                                $("#pem_ban").val(resp.datas[0].angsuran_ke);
                             } else {
                                 alert(resp.message);
                             }
@@ -239,6 +247,43 @@
                         });
                 }
             }
+
+            $("#btn_simpan_pem").click(function() {
+                var data = $("#form_pem").serializeArray();
+
+                var nopin = $("#pem_nopin").val();
+                var per = $("#pem_perang").val();
+                var jmlang = $("#pem_jmlang").val();
+
+
+                if (nopin == '' || per == '' || jmlang == '' ) {
+                    alert('Inputan harus terisi semua');
+                } else {
+                    $("#btn_simpan_pem").prop('disabled', true);
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/transaksi/pembayaran/simpan_pem',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: data,
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                location.reload();
+                                $("#btn_simpan_pem").prop('disabled', false);
+                            } else {
+                                alert(resp.message);
+                            }
+
+                        });
+
+                }
+            });
 
         });
     </script>

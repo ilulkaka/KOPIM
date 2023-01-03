@@ -45,6 +45,11 @@ Route::post('transaksi/pinjaman/simpan_pin', 'PinjamanController@simpan_pin');
 Route::post('transaksi/pinjaman/list_pin', 'PinjamanController@list_pin');
 
 Route::post('transaksi/pembayaran/get_nopin', 'PembayaranController@get_nopin');
+Route::post(
+    'transaksi/pembayaran/simpan_pem',
+    'PembayaranController@simpan_pem'
+);
+Route::post('transaksi/pembayaran/list_ang', 'PembayaranController@list_ang');
 
 Route::post('transaksi/detail_trx', 'TransaksiController@detail_trx');
 Route::post('transaksi/download', 'TransaksiController@download');

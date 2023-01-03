@@ -36,7 +36,7 @@ class PembayaranController extends Controller
             ->get();*/
 
         $ang = DB::select(
-            'select length(angsuran_ke)as angsuran_ke from tb_pembayaran WHERE angsuran_ke in (SELECT max(angsuran_ke)FROM tb_pembayaran) '
+            "select max(angsuran_ke)as angsuran_ke from tb_pembayaran where no_pinjaman='$nopin'"
         );
 
         if (empty($ang)) {
@@ -58,5 +58,81 @@ class PembayaranController extends Controller
                 'success' => false,
             ];
         }
+    }
+
+    public function simpan_pem(Request $request)
+    {
+        dd($request->pem_ban);
+        if ($request->role == 'Administrator') {
+            $ins_pin = PembayaranModel::create([
+                'id_pembayaran' => str::uuid(),
+                'no_pinjaman' => $request->pem_nopin,
+                'no_anggota' => $request->pem_nobarcode,
+                'nama' => $request->pem_nama,
+                'jml_angsuran' => $request->pem_jmlang,
+                'tgl_angsuran' => $request->pem_perang,
+                'angsuran_ke' => $request->pem_angke,
+            ]);
+
+            if ($request->pem_ban == $request->pem_tenor) {
+                $upd_pin = PinjamanModel::where(
+                    'no_pinjaman',
+                    $request->pem_nopin
+                )->update([
+                    'status_pinjaman' => 'Close',
+                ]);
+                return [
+                    'message' => 'Angsuran Lunas . . .',
+                    'success' => true,
+                ];
+            }
+
+            return [
+                'message' => 'Input Angsuran Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Input Angsuran Gagal .',
+                'success' => false,
+            ];
+        }
+    }
+
+    public function list_ang(Request $request)
+    {
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+
+        $Datas = DB::table('tb_pembayaran')
+            ->select('no_pinjaman', 'nama', 'jml_angsuran', 'angsuran_ke')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->orwhere('nama', 'like', '%' . $search . '%')
+                    ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
+            })
+            //->groupBy('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
+            ->orderBy('no_pinjaman', 'desc', 'angsuran_ke', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $count = DB::table('tb_pembayaran')
+            ->select('no_pinjaman', 'nama', 'jml_angsuran', 'angsuran_ke')
+            ->where(function ($q) use ($search) {
+                $q
+                    ->orwhere('nama', 'like', '%' . $search . '%')
+                    ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
+            })
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
     }
 }

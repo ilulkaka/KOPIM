@@ -29,13 +29,14 @@ class PinjamanController extends Controller
         $cek = DB::select(
             'SELECT substring(no_pinjaman,-4)as terakhir FROM tb_pinjaman WHERE no_pinjaman in (SELECT max(no_pinjaman)FROM tb_pinjaman) '
         );
+        //dd($cek[0]->terakhir);
 
         if (empty($leng)) {
             $no_pinjaman = 'P' . $tahun . '0001';
         } elseif ($cek[0]->terakhir == 9999) {
-            $no_pinjaman = 'P' . $tahun . '0001';
+            $no_pinjaman = 'P' . $tahun;
         } else {
-            $no_pinjaman = 'P' . $tahun . $cek[0]->terakhir + 1;
+            $no_pinjaman = 'P' . ($tahun . $cek[0]->terakhir + 1);
         }
 
         $nik = AnggotaModel::select('nik')
