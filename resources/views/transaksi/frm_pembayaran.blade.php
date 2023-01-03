@@ -54,7 +54,7 @@
                             </div>
                             <div class="col col-md-3">
                                 <strong><i class="fas fa-dollar-sign"> Ke</i></strong>
-                                <input type="number" name="pin_tenor" id="pin_tenor"
+                                <input type="number" name="pem_angke" id="pem_angke"
                                     class="form-control form-control-lg rounded-0" required>
                             </div>
                         </div>
@@ -64,11 +64,11 @@
                 </div>
                 <div class="card-footer text-muted">
                     <!--<button type="button" class="btn btn-outline btn-flat float-left" id="btn_detail_pin"
-                                            style="color: blue"><u> Detail
-                                                Trx</u></button>
-                                        <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
-                                            style="color: blue"><u>Download
-                                                Trx</u></button>-->
+                                                        style="color: blue"><u> Detail
+                                                            Trx</u></button>
+                                                    <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
+                                                        style="color: blue"><u>Download
+                                                            Trx</u></button>-->
                     <button type="button" class="btn btn-success btn-flat float-right" id="btn_simpan_pin">Simpan</button>
                 </div>
             </div>
@@ -231,6 +231,7 @@
                                 $("#pem_nobarcode1").val(resp.datas[0].no_anggota);
                                 $("#pem_nama").val(resp.datas[0].nama);
                                 $("#pem_nama1").val(resp.datas[0].nama);
+                                $("#pem_angke").val(resp.angsuran_ke + 1);
                             } else {
                                 alert(resp.message);
                             }
