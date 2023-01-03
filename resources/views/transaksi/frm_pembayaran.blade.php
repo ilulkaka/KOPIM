@@ -59,7 +59,6 @@
                                     <input type="hidden" name="pem_angke" id="pem_angke"
                                     class="form-control form-control-lg rounded-0" required>
                                     <input type="hidden" name="pem_tenor" id="pem_tenor" required>
-                                    <input type="hidden" name="pem_ban" id="pem_ban" required>
                             </div>
                         </div>
                         <p></p>
@@ -83,7 +82,7 @@
                     <div class="row">
 
                         <div class="col-12">
-                            <h3 class="card-title"><u>Data Angsuran</u></h3>
+                            <h3 class="card-title"><u>Angsuran Terkakhir</u></h3>
                         </div>
                     </div>
 
@@ -239,7 +238,6 @@
                                 $("#pem_angke1").val(resp.angsuran_ke + 1);
                                 $("#pem_angke").val(resp.angsuran_ke + 1);
                                 $("#pem_tenor").val(resp.datas[0].tenor);
-                                $("#pem_ban").val(resp.datas[0].angsuran_ke);
                             } else {
                                 alert(resp.message);
                             }

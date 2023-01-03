@@ -62,7 +62,6 @@ class PembayaranController extends Controller
 
     public function simpan_pem(Request $request)
     {
-        dd($request->pem_ban);
         if ($request->role == 'Administrator') {
             $ins_pin = PembayaranModel::create([
                 'id_pembayaran' => str::uuid(),
@@ -74,7 +73,7 @@ class PembayaranController extends Controller
                 'angsuran_ke' => $request->pem_angke,
             ]);
 
-            if ($request->pem_ban == $request->pem_tenor) {
+            if ($request->pem_angke == $request->pem_tenor) {
                 $upd_pin = PinjamanModel::where(
                     'no_pinjaman',
                     $request->pem_nopin

@@ -16,13 +16,13 @@
             <input type="hidden" id="nik" name="nik" value="{{ Auth::user()->nik }}">
                 <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                    <b>Tagihan Bulan ini</b> <a class="float-right">{{number_format($aktif,0)}}</a>
+                    <b>Tagihan Bulan ini</b> <a class="float-right">{{number_format(($aktif + $angsuran->jml_angsuran),0)}}</a>
                     </li>
                     <li class="list-group-item">
                     <i> - Barcode</i> <a class="float-right">{{number_format($aktif,0)}}</a>
                     </li>
                     <li class="list-group-item">
-                    <i> - Pinjaman</i> <a class="float-right">{{number_format($aktif,0)}}</a>
+                    <i> - Pinjaman</i> <a class="float-right">{{number_format($angsuran->jml_angsuran,0)}}</a>
                     </li>
                     <li class="list-group-item">
                     <b>SHU Tahun {{$thn}}</b> <a class="float-right" style="font-size:14px; color:red;"><i> Under Maintenance</i></a>

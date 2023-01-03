@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\BelanjaModel;
+use App\Models\PinjamanModel;
+use App\Models\PembayaranModel;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -40,9 +42,25 @@ class HomeController extends Controller
                 ->get();
         }
 
+        $nopin = PinjamanModel::select('no_pinjaman')
+            ->where('nik', $nik)
+            ->where('status_pinjaman', '=', 'Open')
+            ->get();
+
+        if (empty($ang)) {
+            $nom = 0;
+        } else {
+            $nom = $ang[0]->no_pinjaman;
+        }
+
+        $ang = PembayaranModel::select('jml_angsuran')
+            ->where('no_pinjaman', $nom)
+            ->first();
+
         return view('home', [
             'thn' => $thn,
             'aktif' => $aktif[0]->nominal,
+            'angsuran' => $ang,
         ]);
         //return view('/dashboard/javascript');
     }
@@ -110,5 +128,15 @@ class HomeController extends Controller
                 'data' => $Datas,
             ];
         }
+    }
+
+    public function tot_pem(Request $request)
+    {
+        $nik = $request->nik;
+        $ang = PinjamanModel::select('no_pinjaman')
+            ->where('nik', $nik)
+            ->where('status_pinjaman', '=', 'Open')
+            ->get();
+        dd($ang);
     }
 }
