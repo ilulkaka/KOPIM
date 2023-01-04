@@ -20,5 +20,6 @@ class PembayaranModel extends Model
         'jml_angsuran',
         'tgl_angsuran',
         'angsuran_ke',
+        'status_angsuran',
     ];
 }

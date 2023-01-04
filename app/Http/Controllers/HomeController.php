@@ -23,44 +23,70 @@ class HomeController extends Controller
         $tmb_bulan = $current->addMonth();
         $krg_bulan = Carbon::now()->subMonths(1);
         $thn = date('Y');
+
+        $tgl_awal = date('Y-m') . '-01';
+        $tgl_akhir = date('Y-m') . '-25';
         //dd($tmb_bulan);
         if ($tgl <= 15) {
             $per_awal = $krg_bulan->format('Y-m') . '-16';
             $per_akhir = date('Y-m') . '-15';
-            $aktif = BelanjaModel::select(DB::raw('sum(nominal)as nominal'))
+            /*$aktif = BelanjaModel::select(DB::raw('sum(nominal)as nominal'))
                 ->where('nik', $nik)
                 ->where('tgl_trx', '>=', $per_awal)
                 ->where('tgl_trx', '<=', $per_akhir)
-                ->get();
+                ->get();*/
+
+            $aktif = DB::select(
+                "select sum(nominal)as nominal from tb_trx_belanja where nik = '$nik' and tgl_trx >= '$per_awal' and tgl_trx <= '$per_akhir'"
+            );
         } else {
-            $per_awal = date('Y-m') . '-16';
-            $per_akhir = $tmb_bulan->format('Y-m') . '-15';
-            $aktif = BelanjaModel::select(DB::raw('sum(nominal)as nominal'))
+            $per_awal2 = date('Y-m') . '-16';
+            $per_akhir2 = $tmb_bulan->format('Y-m') . '-15';
+            /*$aktif = BelanjaModel::select(DB::raw('sum(nominal)as nominal'))
                 ->where('nik', $nik)
-                ->where('tgl_trx', '>=', $per_awal)
-                ->where('tgl_trx', '<=', $per_akhir)
-                ->get();
+                ->where('tgl_trx', '>=', $per_awal2)
+                ->where('tgl_trx', '<=', $per_akhir2)
+                ->get();*/
+
+            $aktif = DB::select(
+                "select sum(nominal)as nominal from tb_trx_belanja where nik = '$nik' and tgl_trx >= '$per_awal2' and tgl_trx <= '$per_akhir2'"
+            );
         }
 
-        $nopin = PinjamanModel::select('no_pinjaman')
-            ->where('nik', $nik)
+        /*$nopin = PinjamanModel::select('no_pinjaman')
+            ->where('nik', '=', $nik)
             ->where('status_pinjaman', '=', 'Open')
-            ->get();
+            ->get();*/
+        $nopin = DB::select(
+            "select no_pinjaman from tb_pinjaman where nik = '$nik' and status_pinjaman = 'Open'"
+        );
+
+        if (empty($nopin)) {
+            $nom = '0';
+        } else {
+            $nom = $nopin[0]->no_pinjaman;
+        }
+
+        /*$ang = PembayaranModel::select('jml_angsuran')
+            ->where('no_pinjaman', $nom)
+            ->where('tgl_angsuran', '>=', $per_awal)
+            ->where('tgl_angsuran', '<=', $per_akhir)
+            ->get();*/
+
+        $ang = DB::select(
+            "select jml_angsuran from tb_pembayaran where no_pinjaman='$nom' and tgl_angsuran >= '$tgl_awal' and tgl_angsuran <= '$tgl_akhir'"
+        );
 
         if (empty($ang)) {
-            $nom = 0;
+            $angke = '0';
         } else {
-            $nom = $ang[0]->no_pinjaman;
+            $angke = $ang[0]->jml_angsuran;
         }
-
-        $ang = PembayaranModel::select('jml_angsuran')
-            ->where('no_pinjaman', $nom)
-            ->first();
 
         return view('home', [
             'thn' => $thn,
-            'aktif' => $aktif[0]->nominal,
-            'angsuran' => $ang,
+            'aktif' => $aktif,
+            'angsuran' => $angke,
         ]);
         //return view('/dashboard/javascript');
     }
@@ -128,15 +154,5 @@ class HomeController extends Controller
                 'data' => $Datas,
             ];
         }
-    }
-
-    public function tot_pem(Request $request)
-    {
-        $nik = $request->nik;
-        $ang = PinjamanModel::select('no_pinjaman')
-            ->where('nik', $nik)
-            ->where('status_pinjaman', '=', 'Open')
-            ->get();
-        dd($ang);
     }
 }

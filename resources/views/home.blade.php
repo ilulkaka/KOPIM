@@ -2,39 +2,43 @@
 
 @section('content')
     <h4>
-        Anda Login sebagai 
+        Anda Login sebagai
         <b>{{ Auth::user()->role }}</b>
     </h4>
 
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
             <div class="text-center">
-                <img class="profile-user-img img-fluid img-circle" src="{{asset('/assets/img/userweb.png')}}" alt="User profile picture">
+                <img class="profile-user-img img-fluid img-circle" src="{{ asset('/assets/img/userweb.png') }}"
+                    alt="User profile picture">
             </div>
             <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
             <p class="text-muted text-center">{{ Auth::user()->nik }}</p>
             <input type="hidden" id="nik" name="nik" value="{{ Auth::user()->nik }}">
-                <ul class="list-group list-group-unbordered mb-3">
-                    <li class="list-group-item">
-                    <b>Tagihan Bulan ini</b> <a class="float-right">{{number_format(($aktif + $angsuran->jml_angsuran),0)}}</a>
-                    </li>
-                    <li class="list-group-item">
-                    <i> - Barcode</i> <a class="float-right">{{number_format($aktif,0)}}</a>
-                    </li>
-                    <li class="list-group-item">
-                    <i> - Pinjaman</i> <a class="float-right">{{number_format($angsuran->jml_angsuran,0)}}</a>
-                    </li>
-                    <li class="list-group-item">
-                    <b>SHU Tahun {{$thn}}</b> <a class="float-right" style="font-size:14px; color:red;"><i> Under Maintenance</i></a>
-                    </li>
-                </ul>
-                <button type="button" id="btn_detail" class="btn btn-primary btn-block btn-flat"><b>Detail Tagihan</b></button>
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>Tagihan Bulan ini</b> <a
+                        class="float-right">{{ number_format($aktif[0]->nominal + $angsuran, 0) }}</a>
+                </li>
+                <li class="list-group-item">
+                    <i> - Barcode</i> <a class="float-right">{{ number_format($aktif[0]->nominal, 0) }}</a>
+                </li>
+                <li class="list-group-item">
+                    <i> - Pinjaman</i> <a class="float-right">{{ number_format($angsuran, 0) }}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>SHU Tahun {{ $thn }}</b> <a class="float-right" style="font-size:14px; color:red;"><i>
+                            Under
+                            Maintenance</i></a>
+                </li>
+            </ul>
+            <button type="button" id="btn_detail" class="btn btn-primary btn-block btn-flat"><b>Detail
+                    Tagihan</b></button>
         </div>
     </div>
 
     <!-- Modal Detail (D) -->
-    <div class="modal fade" id="modal_detail" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="modal_detail" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
@@ -68,7 +72,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
@@ -101,17 +104,16 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         dataType: "json",
-                        data :{'nik':nik},
+                        data: {
+                            'nik': nik
+                        },
                     },
-                    'columnDefs': [
-                        {
+                    'columnDefs': [{
                         "targets": 1,
                         "className": "text-right",
-                        }
-                    ],
+                    }],
 
-                    columns: [
-                        {
+                    columns: [{
                             data: 'tgl_trx',
                             name: 'tgl_trx'
                         },

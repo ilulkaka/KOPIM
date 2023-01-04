@@ -62,7 +62,14 @@ class PembayaranController extends Controller
 
     public function simpan_pem(Request $request)
     {
+        //dd($request->all());
         if ($request->role == 'Administrator') {
+            if ($request->pem_angke == $request->pem_tenor) {
+                $st = 'Close';
+            } else {
+                $st = 'Open';
+            }
+
             $ins_pin = PembayaranModel::create([
                 'id_pembayaran' => str::uuid(),
                 'no_pinjaman' => $request->pem_nopin,
@@ -71,6 +78,7 @@ class PembayaranController extends Controller
                 'jml_angsuran' => $request->pem_jmlang,
                 'tgl_angsuran' => $request->pem_perang,
                 'angsuran_ke' => $request->pem_angke,
+                'status_angsuran' => $st,
             ]);
 
             if ($request->pem_angke == $request->pem_tenor) {
@@ -105,27 +113,16 @@ class PembayaranController extends Controller
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
 
-        $Datas = DB::table('tb_pembayaran')
-            ->select('no_pinjaman', 'nama', 'jml_angsuran', 'angsuran_ke')
-            ->where(function ($q) use ($search) {
-                $q
-                    ->orwhere('nama', 'like', '%' . $search . '%')
-                    ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
-            })
-            //->groupBy('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
-            ->orderBy('no_pinjaman', 'desc', 'angsuran_ke', 'desc')
-            ->skip($start)
-            ->take($length)
-            ->get();
+        $Datas = DB::select(
+            "SELECT no_pinjaman, nama, max(jml_angsuran)as jml_angsuran, max(angsuran_ke)as angsuran_ke FROM tb_pembayaran where status_angsuran = 'Open' and (no_pinjaman like '%$search%')group by no_pinjaman, nama
+            LIMIT  $length OFFSET $start  "
+        );
 
-        $count = DB::table('tb_pembayaran')
-            ->select('no_pinjaman', 'nama', 'jml_angsuran', 'angsuran_ke')
-            ->where(function ($q) use ($search) {
-                $q
-                    ->orwhere('nama', 'like', '%' . $search . '%')
-                    ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
-            })
-            ->count();
+        $co = DB::select(
+            "SELECT no_pinjaman, nama, max(jml_angsuran)as jml_angsuran, max(angsuran_ke)as angsuran_ke FROM tb_pembayaran where status_angsuran = 'Open' and (no_pinjaman like '%$search%')group by no_pinjaman, nama
+            LIMIT  $length OFFSET $start  "
+        );
+        $count = count($co);
 
         return [
             'draw' => $draw,
