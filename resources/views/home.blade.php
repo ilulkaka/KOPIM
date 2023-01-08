@@ -13,11 +13,12 @@
                     alt="User profile picture">
             </div>
             <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
-            <p class="text-muted text-center">{{ Auth::user()->nik }}</p>
+            <p class="text-muted text-center">{{ $no_barcode }}</p>
+            <input type="hidden" id="no_barcode" name="no_barcode" value="{{ $no_barcode }}">
             <input type="hidden" id="nik" name="nik" value="{{ Auth::user()->nik }}">
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <b>Tagihan Bulan ini</b> <a
+                    <b style="color:red">Tagihan Bulan ini</b> <a style="color:red"
                         class="float-right">{{ number_format($aktif[0]->nominal + $angsuran, 0) }}</a>
                 </li>
                 <li class="list-group-item">
@@ -26,14 +27,26 @@
                 <li class="list-group-item">
                     <i> - Pinjaman</i> <a class="float-right">{{ number_format($angsuran, 0) }}</a>
                 </li>
+                
+                <li class="list-group-item">
+                    <b style="color:green">Simpanan</b> <a style="color:green"
+                    class="float-right"></a>
+                </li>
+                <li class="list-group-item">
+                    <i> - Pokok</i> <a class="float-right">500,000</a>
+                </li>
+                <li class="list-group-item">
+                    <i> - Wajib</i> <a class="float-right">50,000</a>
+                </li>
                 <li class="list-group-item">
                     <b>SHU Tahun {{ $thn }}</b> <a class="float-right" style="font-size:14px; color:red;"><i>
                             Under
                             Maintenance</i></a>
                 </li>
+                
             </ul>
             <button type="button" id="btn_detail" class="btn btn-primary btn-block btn-flat"><b>Detail
-                    Tagihan</b></button>
+                    Tagihan Barcode</b></button>
         </div>
     </div>
 
@@ -49,6 +62,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+                <div class="row">
+                            <div class="col col-md-5">
+                                <strong> From</strong>
+                                <input type="date" class="form-control rounded-0" id="tgl_awal" value="{{date('Y-m').'-01'}}">
+                            </div>
+                            <div class="col col-md-5">
+                                <strong> End</strong>
+                                <input type="date" class="form-control rounded-0" id="tgl_akhir" value="{{date('Y-m-d')}}">
+                            </div>
+                            <div class="col col-md-2">
+                                <strong> Refs</strong>
+                                <button class="btn btn-primary btn-flat col-md-12 " id="btn_reload"><i class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+
+
+                <div class="row">
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover text-nowrap" width="100%" id="tb_detail">
                             <thead>
@@ -88,6 +119,11 @@
                 $("#modal_detail").modal('show');
             });
 
+            $("#btn_reload").click(function () {
+            //listhk.ajax.reload();
+            get_detail();
+            });
+
             function get_detail() {
                 var nik = $("#nik").val();
                 var list_detail = $('#tb_detail').DataTable({
@@ -104,9 +140,12 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         dataType: "json",
-                        data: {
-                            'nik': nik
-                        },
+                        data: function (d) {
+                        d.nik = $("#nik").val();
+                        d.tgl_awal = $("#tgl_awal").val();
+                        d.tgl_akhir = $("#tgl_akhir").val();
+                        d.no_barcode = $("#no_barcode").val();
+                },
                     },
                     'columnDefs': [{
                         "targets": 1,

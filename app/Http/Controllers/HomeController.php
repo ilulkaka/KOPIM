@@ -18,6 +18,13 @@ class HomeController extends Controller
         $nama = Auth::user()->name;
         $nik = Auth::user()->nik;
 
+        $nobarcode = DB::table('tb_anggota')
+            ->select('no_barcode')
+            ->where('nik', $nik)
+            ->where('status', '=', 'Aktif')
+            ->get();
+        $nobarcode1 = $nobarcode[0]->no_barcode;
+
         $current = Carbon::now();
         $tgl = date('d');
         $tmb_bulan = $current->addMonth();
@@ -27,29 +34,19 @@ class HomeController extends Controller
         $tgl_awal = date('Y-m') . '-01';
         $tgl_akhir = date('Y-m') . '-25';
         //dd($tmb_bulan);
-        if ($tgl <= 15) {
+        if ($tgl <= 25) {
             $per_awal = $krg_bulan->format('Y-m') . '-16';
             $per_akhir = date('Y-m') . '-15';
-            /*$aktif = BelanjaModel::select(DB::raw('sum(nominal)as nominal'))
-                ->where('nik', $nik)
-                ->where('tgl_trx', '>=', $per_awal)
-                ->where('tgl_trx', '<=', $per_akhir)
-                ->get();*/
 
             $aktif = DB::select(
-                "select sum(nominal)as nominal from tb_trx_belanja where nik = '$nik' and tgl_trx >= '$per_awal' and tgl_trx <= '$per_akhir'"
+                "select sum(nominal)as nominal from tb_trx_belanja where no_barcode = '$nobarcode1' and tgl_trx >= '$per_awal' and tgl_trx <= '$per_akhir'"
             );
         } else {
             $per_awal2 = date('Y-m') . '-16';
             $per_akhir2 = $tmb_bulan->format('Y-m') . '-15';
-            /*$aktif = BelanjaModel::select(DB::raw('sum(nominal)as nominal'))
-                ->where('nik', $nik)
-                ->where('tgl_trx', '>=', $per_awal2)
-                ->where('tgl_trx', '<=', $per_akhir2)
-                ->get();*/
 
             $aktif = DB::select(
-                "select sum(nominal)as nominal from tb_trx_belanja where nik = '$nik' and tgl_trx >= '$per_awal2' and tgl_trx <= '$per_akhir2'"
+                "select sum(nominal)as nominal from tb_trx_belanja where no_barcode = '$nobarcode1' and tgl_trx >= '$per_awal2' and tgl_trx <= '$per_akhir2'"
             );
         }
 
@@ -58,7 +55,7 @@ class HomeController extends Controller
             ->where('status_pinjaman', '=', 'Open')
             ->get();*/
         $nopin = DB::select(
-            "select no_pinjaman from tb_pinjaman where nik = '$nik' and status_pinjaman = 'Open'"
+            "select no_pinjaman from tb_pinjaman where no_anggota = '$nobarcode1' and status_pinjaman = 'Open'"
         );
 
         if (empty($nopin)) {
@@ -87,12 +84,14 @@ class HomeController extends Controller
             'thn' => $thn,
             'aktif' => $aktif,
             'angsuran' => $angke,
+            'no_barcode' => $nobarcode[0]->no_barcode,
         ]);
         //return view('/dashboard/javascript');
     }
 
     public function detail_tag(Request $request)
     {
+        //dd($request->all());
         $nik = $request->nik;
 
         $draw = $request->input('draw');
@@ -100,6 +99,27 @@ class HomeController extends Controller
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
 
+        $Datas = BelanjaModel::select('tgl_trx', 'nominal')
+            ->where('no_barcode', $request->no_barcode)
+            ->where('tgl_trx', '>=', $request->tgl_awal)
+            ->where('tgl_trx', '<=', $request->tgl_akhir)
+            ->orderBy('tgl_trx', 'asc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+        $count = BelanjaModel::select('tgl_trx', 'nominal')
+            ->where('no_barcode', $request->no_barcode)
+            ->where('tgl_trx', '>=', $request->tgl_awal)
+            ->where('tgl_trx', '<=', $request->tgl_akhir)
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
+        /*
         $current = Carbon::now();
         $tgl = date('d');
         $tmb_bulan = $current->addMonth();
@@ -153,6 +173,6 @@ class HomeController extends Controller
                 'recordsFiltered' => $count,
                 'data' => $Datas,
             ];
-        }
+        }*/
     }
 }
