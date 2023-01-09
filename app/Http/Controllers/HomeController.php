@@ -18,12 +18,16 @@ class HomeController extends Controller
         $nama = Auth::user()->name;
         $nik = Auth::user()->nik;
 
-        $nobarcode = DB::table('tb_anggota')
-            ->select('no_barcode')
-            ->where('nik', $nik)
-            ->where('status', '=', 'Aktif')
-            ->get();
-        $nobarcode1 = $nobarcode[0]->no_barcode;
+        $nobarcode = DB::select(
+            "select no_barcode from tb_anggota where nik='$nik' and status='Aktif'"
+        );
+
+        if (empty($nobarcode)) {
+            $nobarcode1 = 0;
+        } else {
+            $nobarcode1 = $nobarcode[0]->no_barcode;
+        }
+        //dd($nobarcode1);
 
         $current = Carbon::now();
         $tgl = date('d');
@@ -71,20 +75,23 @@ class HomeController extends Controller
             ->get();*/
 
         $ang = DB::select(
-            "select jml_angsuran from tb_pembayaran where no_pinjaman='$nom' and tgl_angsuran >= '$tgl_awal' and tgl_angsuran <= '$tgl_akhir'"
+            "select jml_angsuran, angsuran_ke from tb_pembayaran where no_pinjaman='$nom' and tgl_angsuran >= '$tgl_awal' and tgl_angsuran <= '$tgl_akhir'"
         );
 
         if (empty($ang)) {
+            $jml_ang = '0';
             $angke = '0';
         } else {
-            $angke = $ang[0]->jml_angsuran;
+            $jml_ang = $ang[0]->jml_angsuran;
+            $angke = $ang[0]->angsuran_ke;
         }
 
         return view('home', [
             'thn' => $thn,
             'aktif' => $aktif,
-            'angsuran' => $angke,
-            'no_barcode' => $nobarcode[0]->no_barcode,
+            'angsuran' => $jml_ang,
+            'angke' => $angke,
+            'no_barcode' => $nobarcode1,
         ]);
         //return view('/dashboard/javascript');
     }

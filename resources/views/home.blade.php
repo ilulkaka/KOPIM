@@ -25,12 +25,12 @@
                     <i> - Barcode</i> <a class="float-right">{{ number_format($aktif[0]->nominal, 0) }}</a>
                 </li>
                 <li class="list-group-item">
-                    <i> - Pinjaman</i> <a class="float-right">{{ number_format($angsuran, 0) }}</a>
+                    <i> - Pinjaman, Angsuran Ke-{{ $angke }}</i> <a
+                        class="float-right">{{ number_format($angsuran, 0) }}</a>
                 </li>
-                
+
                 <li class="list-group-item">
-                    <b style="color:green">Simpanan</b> <a style="color:green"
-                    class="float-right"></a>
+                    <b style="color:green">Simpanan</b> <a style="color:green" class="float-right"></a>
                 </li>
                 <li class="list-group-item">
                     <i> - Pokok</i> <a class="float-right">500,000</a>
@@ -43,7 +43,7 @@
                             Under
                             Maintenance</i></a>
                 </li>
-                
+
             </ul>
             <button type="button" id="btn_detail" class="btn btn-primary btn-block btn-flat"><b>Detail
                     Tagihan Barcode</b></button>
@@ -63,145 +63,148 @@
                 </div>
                 <div class="modal-body">
 
-                <div class="row">
-                            <div class="col col-md-5">
-                                <strong> From</strong>
-                                <input type="date" class="form-control rounded-0" id="tgl_awal" value="{{date('Y-m').'-01'}}">
-                            </div>
-                            <div class="col col-md-5">
-                                <strong> End</strong>
-                                <input type="date" class="form-control rounded-0" id="tgl_akhir" value="{{date('Y-m-d')}}">
-                            </div>
-                            <div class="col col-md-2">
-                                <strong> Refs</strong>
-                                <button class="btn btn-primary btn-flat col-md-12 " id="btn_reload"><i class="fa fa-sync"></i></button>
-                            </div>
+                    <div class="row">
+                        <div class="col col-md-5">
+                            <strong> From</strong>
+                            <input type="date" class="form-control rounded-0" id="tgl_awal"
+                                value="{{ date('Y-m') . '-01' }}">
                         </div>
+                        <div class="col col-md-5">
+                            <strong> End</strong>
+                            <input type="date" class="form-control rounded-0" id="tgl_akhir"
+                                value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col col-md-2">
+                            <strong> Refs</strong>
+                            <button class="btn btn-primary btn-flat col-md-12 " id="btn_reload"><i
+                                    class="fa fa-sync"></i></button>
+                        </div>
+                    </div>
 
 
-                <div class="row">
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap" width="100%" id="tb_detail">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal Trx</th>
-                                    <th style="text-align:center">Nominal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="row">
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap" width="100%" id="tb_detail">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal Trx</th>
+                                        <th style="text-align:center">Nominal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="1" style="text-align:left; ">TOTAL</th>
-                                    <th style="text-align:right; font-size: large;"></th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="1" style="text-align:left; ">TOTAL</th>
+                                        <th style="text-align:right; font-size: large;"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@section('script')
-    <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
+    @section('script')
+        <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
 
 
-    <script type="text/javascript">
-        $(document).ready(function() {
+        <script type="text/javascript">
+            $(document).ready(function() {
 
-            $("#btn_detail").click(function() {
-                get_detail();
-                $("#modal_detail").modal('show');
-            });
-
-            $("#btn_reload").click(function () {
-            //listhk.ajax.reload();
-            get_detail();
-            });
-
-            function get_detail() {
-                var nik = $("#nik").val();
-                var list_detail = $('#tb_detail').DataTable({
-                    destroy: true,
-                    processing: true,
-                    serverSide: true,
-                    searching: false,
-                    lengthChange: false,
-
-                    ajax: {
-                        url: APP_URL + '/api/home/detail_tag',
-                        type: "POST",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        dataType: "json",
-                        data: function (d) {
-                        d.nik = $("#nik").val();
-                        d.tgl_awal = $("#tgl_awal").val();
-                        d.tgl_akhir = $("#tgl_akhir").val();
-                        d.no_barcode = $("#no_barcode").val();
-                },
-                    },
-                    'columnDefs': [{
-                        "targets": 1,
-                        "className": "text-right",
-                    }],
-
-                    columns: [{
-                            data: 'tgl_trx',
-                            name: 'tgl_trx'
-                        },
-                        {
-                            data: 'nominal',
-                            name: 'nominal',
-                            render: $.fn.dataTable.render.number(',', '.', 0, '')
-                        },
-                    ],
-                    "footerCallback": function(row, data, start, end, display) {
-                        var api = this.api(),
-                            data;
-
-                        // Remove the formatting to get integer data for summation
-                        var intVal = function(i) {
-                            return typeof i === 'string' ?
-                                i.replace(/[\$,]/g, '') * 1 :
-                                typeof i === 'number' ?
-                                i : 0;
-                        };
-
-                        // Total over all pages
-                        total = api
-                            .column(0)
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
-
-                        // Total over this page
-                        TotalNominal = api
-                            .column(1, {
-                                page: 'current'
-                            })
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
-
-                        $(api.column(1).footer()).html(
-                            TotalNominal.toLocaleString("en-US")
-                        );
-
-                    }
+                $("#btn_detail").click(function() {
+                    get_detail();
+                    $("#modal_detail").modal('show');
                 });
-            }
+
+                $("#btn_reload").click(function() {
+                    //listhk.ajax.reload();
+                    get_detail();
+                });
+
+                function get_detail() {
+                    var nik = $("#nik").val();
+                    var list_detail = $('#tb_detail').DataTable({
+                        destroy: true,
+                        processing: true,
+                        serverSide: true,
+                        searching: false,
+                        lengthChange: false,
+
+                        ajax: {
+                            url: APP_URL + '/api/home/detail_tag',
+                            type: "POST",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            dataType: "json",
+                            data: function(d) {
+                                d.nik = $("#nik").val();
+                                d.tgl_awal = $("#tgl_awal").val();
+                                d.tgl_akhir = $("#tgl_akhir").val();
+                                d.no_barcode = $("#no_barcode").val();
+                            },
+                        },
+                        'columnDefs': [{
+                            "targets": 1,
+                            "className": "text-right",
+                        }],
+
+                        columns: [{
+                                data: 'tgl_trx',
+                                name: 'tgl_trx'
+                            },
+                            {
+                                data: 'nominal',
+                                name: 'nominal',
+                                render: $.fn.dataTable.render.number(',', '.', 0, '')
+                            },
+                        ],
+                        "footerCallback": function(row, data, start, end, display) {
+                            var api = this.api(),
+                                data;
+
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function(i) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '') * 1 :
+                                    typeof i === 'number' ?
+                                    i : 0;
+                            };
+
+                            // Total over all pages
+                            total = api
+                                .column(0)
+                                .data()
+                                .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            // Total over this page
+                            TotalNominal = api
+                                .column(1, {
+                                    page: 'current'
+                                })
+                                .data()
+                                .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            $(api.column(1).footer()).html(
+                                TotalNominal.toLocaleString("en-US")
+                            );
+
+                        }
+                    });
+                }
 
 
 
-        });
-    </script>
-@endsection
+            });
+        </script>
+    @endsection

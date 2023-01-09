@@ -61,7 +61,8 @@
                 <!-- Notifications Dropdown Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"></b> Selamat datang : <b> {{ Auth::user()->name }} </b>
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"></b> Selamat
+                        datang : <b> {{ Auth::user()->name }} </b>
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
@@ -99,277 +100,277 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         @if (Auth::user()->role == 'Anggota')
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    DASHBOARD
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        DASHBOARD
 
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('logoutaksi') }}" class="nav-link" id="logout">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    LOGOUT
-                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('logoutaksi') }}" class="nav-link" id="logout">
+                                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                                    <p>
+                                        LOGOUT
+                                        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                                </p>
-                            </a>
-                        </li>
+                                    </p>
+                                </a>
+                            </li>
                         @endif
 
                         @if (Auth::user()->role != 'Anggota')
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    DASHBOARD
-
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item has-treeview {{ Request::is('transaksi/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('transaksi/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cart-plus"></i>
-                                <p>
-                                    Transaksi
-                                    <i class="fas fa-angle-left right"></i>
-                                    <!-- <span class="badge badge-info right">6</span> -->
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('transaksi/belanja') }}"
-                                        class="nav-link {{ Request::is('transaksi/belanja') ? 'active' : '' }}">
-                                        <i class="fas fa-cart-arrow-down nav-icon"></i>
-                                        <p>Belanja</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('transaksi/#') }}"
-                                        class="nav-link {{ Request::is('transaksi/#') ? 'active' : '' }}">
-                                        <i class="fas fa-shopping-bag nav-icon"></i>
-                                        <p>Simpanan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('transaksi/frm_pinjaman') }}"
-                                        class="nav-link {{ Request::is('transaksi/frm_pinjaman') ? 'active' : '' }}">
-                                        <i class="fas fa-shopping-bag nav-icon"></i>
-                                        <p>Pinjaman</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('transaksi/frm_pembayaran') }}"
-                                        class="nav-link {{ Request::is('transaksi/frm_pembayaran') ? 'active' : '' }}">
-                                        <i class="far fa-credit-card nav-icon"></i>
-                                        <p>Pembayaran</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item has-treeview {{ Request::is('laporan/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('laporan/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-folder-open"></i>
-                                <p>
-                                    Laporan
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                    <a href="{{ url('/laporan/stock_barang') }}"
-                                        class="nav-link {{ Request::is('laporan/stock_barang') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
-                                        <p>Stock Barang</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('') }}"
-                                        class="nav-link {{ Request::is('') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
-                                        <p>Transaksi</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/laporan/#') }}"
-                                        class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
-                                        <p>SHU</p>
-                                    </a>
-
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/laporan/#') }}"
-                                        class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
-                                        <p>Simpanan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/laporan/#') }}"
-                                        class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
-                                        <p>Pinjaman</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                        <li class="nav-item has-treeview {{ Request::is('grafik/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('grafik/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>
-                                    Grafik
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ url('/undermaintenance') }}"
-                                        class="nav-link {{ Request::is('') ? 'active' : '' }}">
-                                        <i class="fas fas fa-handshake nav-icon"></i>
-                                        <p>Simpanan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/grafik/#') }}"
-                                        class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
-                                        <i class="fas fa-hand-holding-usd nav-icon"></i>
-                                        <p>Pinjaman</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/grafik/#') }}"
-                                        class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
-                                        <i class="fab fa-bitcoin nav-icon"></i>
-                                        <p>SHU</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                        <li class="nav-item has-treeview {{ Request::is('master/*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ Request::is('master/*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-file-code"></i>
-                                <p>
-                                    Master Data
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                    <a href="{{ url('/master/frm_barang') }}"
-                                        class="nav-link {{ Request::is('master/frm_barang') ? 'active' : '' }}">
-                                        <i class="fab fa-codepen nav-icon"></i>
-                                        <p>Barang</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/master/frm_anggota') }}"
-                                        class="nav-link {{ Request::is('master/frm_anggota') ? 'active' : '' }}">
-                                        <i class="fas fa-users nav-icon"></i>
-                                        <p>Anggota</p>
-                                    </a>
-                                </li>
-                                @if (Auth::user()->role == 'Administrator')
-                                    <li class="nav-item">
-                                        <a href="{{ url('/master/frm_pengguna') }}"
-                                            class="nav-link {{ Request::is('master/pengguna') ? 'active' : '' }}">
-                                            <i class="fas fa-user-lock nav-icon"></i>
-                                            <p>Pengguna</p>
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </li>
-
-                        @if (Session('nik') == '000000')
-                        @elseif(Session::get('level') == 'Admin')
-                            <li class="nav-item has-treeview {{ Request::is('admin/*') ? 'menu-open' : '' }}">
-                                <a href="#" class="nav-link {{ Request::is('admin/*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-user"></i>
+                                <a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-th"></i>
                                     <p>
-                                        Admin
+                                        DASHBOARD
+
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item has-treeview {{ Request::is('transaksi/*') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ Request::is('transaksi/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-cart-plus"></i>
+                                    <p>
+                                        Transaksi
                                         <i class="fas fa-angle-left right"></i>
+                                        <!-- <span class="badge badge-info right">6</span> -->
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('/admin/register') }}"
-                                            class="nav-link {{ Request::is('admin/register') ? 'active' : '' }}">
-                                            <i class="fas fa-user-plus nav-icon"></i>
-                                            <p>Register</p>
+                                        <a href="{{ url('transaksi/belanja') }}"
+                                            class="nav-link {{ Request::is('transaksi/belanja') ? 'active' : '' }}">
+                                            <i class="fas fa-cart-arrow-down nav-icon"></i>
+                                            <p>Belanja</p>
                                         </a>
                                     </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('/admin/list-user') }}"
-                                            class="nav-link {{ Request::is('admin/list-user') ? 'active' : '' }}">
-                                            <i class="fas fa-portrait nav-icon"></i>
-                                            <p>List User</p>
+                                        <a href="{{ url('transaksi/frm_simpanan') }}"
+                                            class="nav-link {{ Request::is('transaksi/frm_simpanan') ? 'active' : '' }}">
+                                            <i class="fas fa-shopping-bag nav-icon"></i>
+                                            <p>Simpanan</p>
                                         </a>
                                     </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('/admin/tools') }}"
-                                            class="nav-link {{ Request::is('admin/tools') ? 'active' : '' }}">
-                                            <i class="fas fa-tools nav-icon"></i>
-                                            <p>Tools</p>
+                                        <a href="{{ url('transaksi/frm_pinjaman') }}"
+                                            class="nav-link {{ Request::is('transaksi/frm_pinjaman') ? 'active' : '' }}">
+                                            <i class="fas fa-shopping-bag nav-icon"></i>
+                                            <p>Pinjaman</p>
                                         </a>
                                     </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('/admin/log') }}"
-                                            class="nav-link {{ Request::is('admin/log') ? 'active' : '' }}">
-                                            <i class="fas fa-clipboard-list nav-icon"></i>
-                                            <p>Log</p>
+                                        <a href="{{ url('transaksi/frm_pembayaran') }}"
+                                            class="nav-link {{ Request::is('transaksi/frm_pembayaran') ? 'active' : '' }}">
+                                            <i class="far fa-credit-card nav-icon"></i>
+                                            <p>Pembayaran</p>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                        @endif
+
+                            <li class="nav-item has-treeview {{ Request::is('laporan/*') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ Request::is('laporan/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-folder-open"></i>
+                                    <p>
+                                        Laporan
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('/laporan/stock_barang') }}"
+                                            class="nav-link {{ Request::is('laporan/stock_barang') ? 'active' : '' }}">
+                                            <i class="fas fa-file-alt nav-icon"></i>
+                                            <p>Stock Barang</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('') }}"
+                                            class="nav-link {{ Request::is('') ? 'active' : '' }}">
+                                            <i class="fas fa-file-alt nav-icon"></i>
+                                            <p>Transaksi</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/laporan/#') }}"
+                                            class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
+                                            <i class="fas fa-file-alt nav-icon"></i>
+                                            <p>SHU</p>
+                                        </a>
+
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/laporan/#') }}"
+                                            class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
+                                            <i class="fas fa-file-alt nav-icon"></i>
+                                            <p>Simpanan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/laporan/#') }}"
+                                            class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
+                                            <i class="fas fa-file-alt nav-icon"></i>
+                                            <p>Pinjaman</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
 
-                        <li class="nav-item">
-                            <a href="{{ url('/calendar') }}"
-                                class="nav-link {{ Request::is('calendar') ? 'active' : '' }}">
-                                <i class="nav-icon far fa-calendar-alt"></i>
-                                <p>
-                                    Calendar
-                                </p>
-                            </a>
-                        </li>
+                            <li class="nav-item has-treeview {{ Request::is('grafik/*') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ Request::is('grafik/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-chart-line"></i>
+                                    <p>
+                                        Grafik
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('/undermaintenance') }}"
+                                            class="nav-link {{ Request::is('') ? 'active' : '' }}">
+                                            <i class="fas fas fa-handshake nav-icon"></i>
+                                            <p>Simpanan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/grafik/#') }}"
+                                            class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
+                                            <i class="fas fa-hand-holding-usd nav-icon"></i>
+                                            <p>Pinjaman</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/grafik/#') }}"
+                                            class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
+                                            <i class="fab fa-bitcoin nav-icon"></i>
+                                            <p>SHU</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url('/petunjuk') }}"
-                                class="nav-link {{ Request::is('petunjuk') ? 'active' : '' }}">
-                                <i class="nav-icon far fa-question-circle"></i>
-                                <p>
-                                    HELP
-                                </p>
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('logoutaksi') }}" class="nav-link" id="logout">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    LOGOUT
-                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                            <li class="nav-item has-treeview {{ Request::is('master/*') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ Request::is('master/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-file-code"></i>
+                                    <p>
+                                        Master Data
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('/master/frm_barang') }}"
+                                            class="nav-link {{ Request::is('master/frm_barang') ? 'active' : '' }}">
+                                            <i class="fab fa-codepen nav-icon"></i>
+                                            <p>Barang</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/master/frm_anggota') }}"
+                                            class="nav-link {{ Request::is('master/frm_anggota') ? 'active' : '' }}">
+                                            <i class="fas fa-users nav-icon"></i>
+                                            <p>Anggota</p>
+                                        </a>
+                                    </li>
+                                    @if (Auth::user()->role == 'Administrator')
+                                        <li class="nav-item">
+                                            <a href="{{ url('/master/frm_pengguna') }}"
+                                                class="nav-link {{ Request::is('master/pengguna') ? 'active' : '' }}">
+                                                <i class="fas fa-user-lock nav-icon"></i>
+                                                <p>Pengguna</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
 
-                                </p>
-                            </a>
-                        </li>
+                            @if (Session('nik') == '000000')
+                            @elseif(Session::get('level') == 'Admin')
+                                <li class="nav-item has-treeview {{ Request::is('admin/*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ Request::is('admin/*') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-user"></i>
+                                        <p>
+                                            Admin
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ url('/admin/register') }}"
+                                                class="nav-link {{ Request::is('admin/register') ? 'active' : '' }}">
+                                                <i class="fas fa-user-plus nav-icon"></i>
+                                                <p>Register</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ url('/admin/list-user') }}"
+                                                class="nav-link {{ Request::is('admin/list-user') ? 'active' : '' }}">
+                                                <i class="fas fa-portrait nav-icon"></i>
+                                                <p>List User</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ url('/admin/tools') }}"
+                                                class="nav-link {{ Request::is('admin/tools') ? 'active' : '' }}">
+                                                <i class="fas fa-tools nav-icon"></i>
+                                                <p>Tools</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ url('/admin/log') }}"
+                                                class="nav-link {{ Request::is('admin/log') ? 'active' : '' }}">
+                                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                                <p>Log</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+
+
+                            <li class="nav-item">
+                                <a href="{{ url('/calendar') }}"
+                                    class="nav-link {{ Request::is('calendar') ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-calendar-alt"></i>
+                                    <p>
+                                        Calendar
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('/petunjuk') }}"
+                                    class="nav-link {{ Request::is('petunjuk') ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-question-circle"></i>
+                                    <p>
+                                        HELP
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('logoutaksi') }}" class="nav-link" id="logout">
+                                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                                    <p>
+                                        LOGOUT
+                                        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                                    </p>
+                                </a>
+                            </li>
                         @endif
                         <!-- /.sidebar-menu -->
                     </ul>

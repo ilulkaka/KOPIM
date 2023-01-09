@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
         'PembayaranController@frm_pembayaran'
     );
 
+    Route::get('transaksi/frm_simpanan', 'SimpananController@frm_simpanan');
+
     Route::get('laporan/stock_barang', 'StockController@stock_barang');
     Route::get('laporan/barang_masuk', 'StockController@barang_masuk');
     Route::get('laporan/barang_keluar', 'StockController@barang_keluar');
