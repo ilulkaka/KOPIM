@@ -54,6 +54,9 @@ Route::post('transaksi/pembayaran/list_ang', 'PembayaranController@list_ang');
 Route::post('transaksi/detail_trx', 'TransaksiController@detail_trx');
 Route::post('transaksi/download', 'TransaksiController@download');
 
+Route::post('transaksi/simpanan/simpan_sim', 'SimpananController@simpan_sim');
+Route::post('transaksi/simpanan/list_sim', 'SimpananController@list_sim');
+
 Route::post('laporan/list_stock_barang', 'StockController@list_stock_barang');
 Route::post('laporan/tambah_stock', 'StockController@tambah_stock');
 Route::post('laporan/kurang_stock', 'StockController@kurang_stock');

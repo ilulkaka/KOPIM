@@ -33,10 +33,10 @@
                     <b style="color:green">Simpanan</b> <a style="color:green" class="float-right"></a>
                 </li>
                 <li class="list-group-item">
-                    <i> - Pokok</i> <a class="float-right">500,000</a>
+                    <i> - Pokok</i> <a class="float-right">{{ number_format($simpok, 0) }}</a>
                 </li>
                 <li class="list-group-item">
-                    <i> - Wajib</i> <a class="float-right">50,000</a>
+                    <i> - Wajib</i> <a class="float-right">{{ number_format($simwa, 0) }}</a>
                 </li>
                 <li class="list-group-item">
                     <b>SHU Tahun {{ $thn }}</b> <a class="float-right" style="font-size:14px; color:red;"><i>

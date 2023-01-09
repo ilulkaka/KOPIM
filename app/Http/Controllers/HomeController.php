@@ -54,10 +54,6 @@ class HomeController extends Controller
             );
         }
 
-        /*$nopin = PinjamanModel::select('no_pinjaman')
-            ->where('nik', '=', $nik)
-            ->where('status_pinjaman', '=', 'Open')
-            ->get();*/
         $nopin = DB::select(
             "select no_pinjaman from tb_pinjaman where no_anggota = '$nobarcode1' and status_pinjaman = 'Open'"
         );
@@ -86,12 +82,22 @@ class HomeController extends Controller
             $angke = $ang[0]->angsuran_ke;
         }
 
+        $simpok = DB::select(
+            "select sum(jml_simpanan)as simpok from tb_simpanan where no_anggota = '$nobarcode1' and jenis_simpanan = 'Pokok'"
+        );
+
+        $simwa = DB::select(
+            "select sum(jml_simpanan)as simwa from tb_simpanan where no_anggota = '$nobarcode1' and jenis_simpanan = 'Wajib'"
+        );
+
         return view('home', [
             'thn' => $thn,
             'aktif' => $aktif,
             'angsuran' => $jml_ang,
             'angke' => $angke,
             'no_barcode' => $nobarcode1,
+            'simpok' => $simpok[0]->simpok,
+            'simwa' => $simwa[0]->simwa,
         ]);
         //return view('/dashboard/javascript');
     }
