@@ -5,7 +5,7 @@
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
             <div class="text-center">
-                <img class="profile-user-img img-fluid img-circle" src="{{ asset('/assets/img/chg_pass.jpg') }}"
+                <img class="profile-user-img img-fluid img-circle" src="{{ asset('/assets/img/chg_pass.png') }}"
                     alt="User profile picture">
             </div>
             <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
@@ -52,10 +52,43 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <label for="" id="notiferror" name="notiferror">Password Konfirmasi salah .</label>
+                    <label for="" id="notiferror" name="notiferror">Password harus terisi semua .</label>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="modal_detail_1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5>Konfirmasi Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Password Konfirmasi salah .</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="modal_detail_berhasil" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5>Konfirmasi Password</h5>
+                    <button type="button" id="btn_c" name="btn_c" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Password Berhasil dirubah .</label>
+                </div>
+            </div>
+        </div>
+    </div>
     @endsection
 
     @section('script')
@@ -73,12 +106,10 @@
                     var konf_pass = $("#konf_pass").val();
                     var id_user = $("#id_user").val();
 
-                     if (p_baru == ''){
-                        alert("Masukkan Password Baru .");
-                    } else if (konf_pass == ''){
-                        alert("Konfirmasi Password Belum terisi .");
-                    } else if(p_baru != konf_pass){
+                     if (p_baru == '' || konf_pass == ''){
                         $("#modal_detail").modal('show');
+                    } else if(p_baru != konf_pass){
+                        $("#modal_detail_1").modal('show');
                     }else if (p_baru == konf_pass){
                         $.ajax({
                         type: "POST",
@@ -93,9 +124,12 @@
                     })
                     .done(function(resp) {
                         if (resp.success) {
-                            alert(resp.message);
-                            location.reload();
-                            window.location.href = APP_URL + "/home";
+                            $("#modal_detail_berhasil").modal('show');
+                            if($("#btn_c").click(function(){
+                                location.reload();
+                                window.location.href = APP_URL + "/home";
+                            })
+                            );
                         } else {
                             alert(resp.message);
                         }
