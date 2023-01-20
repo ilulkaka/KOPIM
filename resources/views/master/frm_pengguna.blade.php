@@ -141,6 +141,7 @@
                                     <option value="Administrator">Administrator</option>
                                     <option value="Staff">Staff </option>
                                     <option value="Kasir">Kasir</option>
+                                    <option value="Anggota">Anggota</option>
                                 </select>
                             </div>
                         </div>

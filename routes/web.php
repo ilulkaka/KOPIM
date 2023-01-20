@@ -15,6 +15,7 @@ Route::get('master/frm_anggota', 'MasterController@frm_anggota');
 */
 Route::middleware('auth')->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
+    Route::get('userProfil', 'HomeController@userProfil');
     Route::get('logoutaksi', 'LoginController@logoutaksi')->name('logoutaksi');
 
     Route::get('master/frm_anggota', 'MasterController@frm_anggota');

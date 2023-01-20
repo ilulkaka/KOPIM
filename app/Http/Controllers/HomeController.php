@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\BelanjaModel;
 use App\Models\PinjamanModel;
 use App\Models\PembayaranModel;
 use Carbon\Carbon;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -187,5 +189,25 @@ class HomeController extends Controller
                 'data' => $Datas,
             ];
         }*/
+    }
+
+    public function userProfil(Request $request)
+    {
+        return view('userProfil');
+    }
+
+    public function chg_userProfil(Request $request)
+    {
+        //dd($request->all());
+        $findid = User::find($request->id_user);
+
+        $findid->password = Hash::make($request->p_baru);
+
+        $findid->save();
+
+        return [
+            'message' => 'Berhasil ganti password .',
+            'success' => true,
+        ];
     }
 }

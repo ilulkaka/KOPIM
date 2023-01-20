@@ -65,3 +65,4 @@ Route::post('laporan/detail_bk', 'StockController@detail_bk');
 Route::post('laporan/stock_excel', 'StockController@stock_excel');
 
 Route::post('home/detail_tag', 'HomeController@detail_tag');
+Route::post('chg_userProfil', 'HomeController@chg_userProfil');

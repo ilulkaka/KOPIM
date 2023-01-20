@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong><i class="fas fa-qrcode"> No Barcode</i></strong>
-                                <input type="text" id="trx_nobarcode" name="trx_nobarcode" class="form-control rounded-0"
+                                <input type="number" id="trx_nobarcode" name="trx_nobarcode" class="form-control rounded-0"
                                     placeholder="Masukkan No Barcode ." required>
                                 <input type="hidden" id="trx_nobarcode1" name="trx_nobarcode1"
                                     class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
