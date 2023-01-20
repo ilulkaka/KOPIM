@@ -203,7 +203,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('/laporan/#') }}"
+                                        <a href="{{ url('') }}"
                                             class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
                                             <i class="fas fa-file-alt nav-icon"></i>
                                             <p>SHU</p>
@@ -211,14 +211,14 @@
 
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('/laporan/#') }}"
+                                        <a href="{{ url('') }}"
                                             class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
                                             <i class="fas fa-file-alt nav-icon"></i>
                                             <p>Simpanan</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('/laporan/#') }}"
+                                        <a href="{{ url('') }}"
                                             class="nav-link {{ Request::is('laporan/#') ? 'active' : '' }}">
                                             <i class="fas fa-file-alt nav-icon"></i>
                                             <p>Pinjaman</p>
@@ -238,21 +238,21 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('/undermaintenance') }}"
+                                        <a href="{{ url('') }}"
                                             class="nav-link {{ Request::is('') ? 'active' : '' }}">
                                             <i class="fas fas fa-handshake nav-icon"></i>
                                             <p>Simpanan</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('/grafik/#') }}"
+                                        <a href="{{ url('') }}"
                                             class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
                                             <i class="fas fa-hand-holding-usd nav-icon"></i>
                                             <p>Pinjaman</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('/grafik/#') }}"
+                                        <a href="{{ url('') }}"
                                             class="nav-link {{ Request::is('grafik/#') ? 'active' : '' }}">
                                             <i class="fab fa-bitcoin nav-icon"></i>
                                             <p>SHU</p>
@@ -342,7 +342,7 @@
 
 
                             <li class="nav-item">
-                                <a href="{{ url('/calendar') }}"
+                                <a href="{{ url('') }}"
                                     class="nav-link {{ Request::is('calendar') ? 'active' : '' }}">
                                     <i class="nav-icon far fa-calendar-alt"></i>
                                     <p>
@@ -352,7 +352,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ url('/petunjuk') }}"
+                                <a href="{{ url('') }}"
                                     class="nav-link {{ Request::is('petunjuk') ? 'active' : '' }}">
                                     <i class="nav-icon far fa-question-circle"></i>
                                     <p>
