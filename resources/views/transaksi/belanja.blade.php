@@ -1,7 +1,91 @@
 @extends('layout.main')
 @section('content')
+    <style>
+        @import url(https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+        @import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+
+        fieldset,
+        label {
+            margin: 0;
+            padding: 0;
+        }
+
+        /****** Style Star Rating Widget *****/
+
+        .rating {
+            border: 1px;
+            margin-right: 50px;
+        }
+
+        .myratings {
+
+            font-size: 30px;
+            color: green;
+        }
+
+        .rating>[id^="star"] {
+            display: none;
+        }
+
+        .rating>label:before {
+            margin: 5px;
+            font-size: 5em;
+            font-family: FontAwesome;
+            display: inline-block;
+            content: "\f005";
+        }
+
+        .rating>.half:before {
+            content: "\f089";
+            position: center;
+        }
+
+        .rating>label {
+            color: #ddd;
+            float: right;
+        }
+
+        /***** CSS Magic to Highlight Stars on Hover *****/
+
+        .rating>[id^="star"]:checked~label,
+        /* show gold star when clicked */
+        .rating:not(:checked)>label:hover,
+        /* hover current star */
+        .rating:not(:checked)>label:hover~label {
+            color: orange;
+        }
+
+        /* hover previous stars in list */
+
+        .rating>[id^="star"]:checked+label:hover,
+        /* hover current star when changing rating */
+        .rating>[id^="star"]:checked~label:hover,
+        .rating>label:hover~[id^="star"]:checked~label,
+        /* lighten current selection */
+        .rating>[id^="star"]:checked~label:hover~label {
+            color: rebeccapurple;
+        }
+
+        .btn:hover {
+            color: darkred;
+            background-color: white !important
+        }
+
+        .reset-option {
+            display: none;
+            font-family: FontAwesome;
+        }
+
+        .reset-button {
+            margin: 6px 12px;
+            background-color: rgb(255, 255, 255);
+            text-transform: uppercase;
+        }
+    </style>
+
     <div class="row">
-        <div class="col col-md-7">
+        <div class="col-md-7">
             <div class="card card-info">
                 <div class="card-header">
                     <h4><b><i class="fas fa-cart-plus"> Transaksi</i></b>
@@ -12,16 +96,37 @@
                         @csrf
                         <div class="row">
                             <input type="hidden" id="role" name="role" value="{{ Auth::user()->name }}">
-                            <div class="col col-md-6">
-                                <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                    <option value="">Kategori ...</option>
-                                    <option value="Anggota">Anggota</option>
-                                    <option value="Umum">Umum</option>
-                                </select>
+                            <input type="hidden" id="role1" name="role1" value="{{ Auth::user()->role }}">
+
+                            @if (Auth::user()->role == 'Administrator')
+                                <div class="col col-md-6">
+                                    <strong><i class="fas fa-caret-square-down"> Tgl Transaksi</i></strong>
+                                    <input type="date" id="tgl_trx" name="tgl_trx" class="form-control rounded-0">
+                                </div>
+                            @endif
+                            <!--<div class="col col-md-6">
+                                                                                                                <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                    <option value="">Kategori ...</option>
+                                                                                                                    <option value="Anggota">Anggota</option>
+                                                                                                                    <option value="Umum">Umum</option>
+                                                                                                                </select>
+                                                                                                            </div>-->
+                        </div>
+                        <!-- radio -->
+                        <br>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <b>
+                                    <input class="form-check-input" type="radio" name="r1" id="r_ang" checked>
+                                    <label class="form-check-label col col-md-4">Anggota</label>
+                                    <input class="form-check-input" type="radio" name="r1" id="r_non">
+                                    <label class="form-check-label" style="padding-left: 1%">Non Anggota</label>
+                                    <input type="hidden" name="fil" id="fil" value="">
+                                </b>
                             </div>
                         </div>
-                        <p></p>
+                        <input type="hidden" name="trx_kategori" id="trx_kategori">
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong><i class="fas fa-qrcode"> No Barcode</i></strong>
@@ -70,7 +175,7 @@
             </div>
         </div>
 
-        <div class="col col-md-5">
+        <div class="col-md-5">
             <div class="info-box mb-3">
                 <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
@@ -115,8 +220,25 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col col-md-5">
+                            <strong> From</strong>
+                            <input type="date" class="form-control rounded-0" id="tgl_awal"
+                                value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col col-md-5">
+                            <strong> End</strong>
+                            <input type="date" class="form-control rounded-0" id="tgl_akhir"
+                                value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col col-md-2">
+                            <strong> Refs</strong>
+                            <button class="btn btn-primary btn-flat col-md-12 " id="btn_reload"><i
+                                    class="fa fa-sync"></i></button>
+                        </div>
+                    </div>
+                    <br>
                     <div class="card-body table-responsive p-0">
-
                         <table class="table table-hover text-nowrap" width="100%" id="tb_detail_trx">
                             <thead>
                                 <tr>
@@ -203,7 +325,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#trx_kategori").focus();
+            get_load();
 
             const Toast = Swal.mixin({
                 toast: true,
@@ -221,7 +343,7 @@
                 })
             });
 
-            $("#trx_kategori").change(function(event) {
+            /*$("#trx_kategori").change(function(event) {
                 var no_barcode = $("#trx_nobarcode").val('');
                 if ($("#trx_kategori").val() == 'Anggota') {
                     $("#trx_nobarcode").removeAttr("disabled");
@@ -243,7 +365,30 @@
                 } else {
                     alert('Masukkan Type .');
                 }
-            });
+            });*/
+
+            $("#r_ang, #r_non").change(function() {
+                if ($("#r_ang").is(":checked")) {
+                    $("#trx_nobarcode").removeAttr("disabled");
+                    $("#trx_nama").val('');
+                    $("#trx_nama1").val('');
+                    $("#trx_nik").val('');
+                    $("#trx_nobarcode").val('');
+                    $("#trx_nobarcode1").val('');
+                    $("#trx_kategori").val('Anggota');
+                    $("#trx_nobarcode").focus();
+                } else {
+                    $("#trx_nobarcode").val('999999');
+                    $("#trx_nobarcode1").val('999999');
+                    $("#trx_nama").val('Client Umum');
+                    $("#trx_nama1").val('Client Umum');
+                    $("#trx_nik").val('CU00');
+                    $("#trx_nominal").val('');
+                    $("#trx_kategori").val('Umum');
+                    $("#trx_nominal").focus();
+                    $("#trx_nobarcode").attr("disabled", "disabled");
+                }
+            })
 
             $("#trx_kategori").keypress(function(event) {
                 if (event.keyCode === 13) {
@@ -363,8 +508,9 @@
                             if (resp.success) {
                                 alert(resp.message);
                                 location.reload();
+                                /*$("#trx_kategori").focus();*/
                                 $("#btn_simpan_trx").prop('disabled', false);
-                                $("#trx_kategori").focus();
+                                get_load();
                             } else {
                                 alert(resp.message);
                             }
@@ -393,6 +539,10 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         dataType: "json",
+                        data: function(d) {
+                            d.tgl_awal = $("#tgl_awal").val();
+                            d.tgl_akhir = $("#tgl_akhir").val();
+                        },
                     },
 
                     columnDefs: [{
@@ -462,6 +612,10 @@
                 });
             }
 
+            $("#btn_reload").click(function() {
+                get_detail_trx();
+            });
+
             $("#btn_download_trx").click(function() {
                 $("#modal_download_trx").modal('show');
             });
@@ -503,6 +657,19 @@
                 }
 
             });
+
+            function get_load() {
+                $("#r_ang").is(":checked");
+                $("#trx_nobarcode").removeAttr("disabled");
+                $("#trx_nama").val('');
+                $("#trx_nama1").val('');
+                $("#trx_nik").val('');
+                $("#trx_nobarcode").val('');
+                $("#trx_nobarcode1").val('');
+                $("#trx_kategori").val('Anggota');
+                $("#trx_nominal").val('');
+                $("#trx_nobarcode").focus();
+            }
 
 
 

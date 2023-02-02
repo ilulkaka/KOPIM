@@ -66,10 +66,17 @@ class TransaksiController extends Controller
         } else {
             $no_barcode = '999999';
         }
+
+        if ($request->role1 == 'Administrator') {
+            $date_trx = $request->tgl_trx;
+        } else {
+            $date_trx = date('Y-m-d');
+        }
+
         $idTrx = Str::uuid();
         $insert_trx = BelanjaModel::create([
             'id_trx_belanja' => $idTrx,
-            'tgl_trx' => date('Y-m-d'),
+            'tgl_trx' => $date_trx,
             'nama' => $request->trx_nama,
             'nominal' => $request->trx_nominal,
             'no_barcode' => $no_barcode,
@@ -93,13 +100,16 @@ class TransaksiController extends Controller
 
     public function detail_trx(Request $request)
     {
+        //dd($request->all());
         $draw = $request->input('draw');
         $search = $request->input('search')['value'];
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
-        $tgl_sekarang = date('Y-m-d');
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
         $Datas = DB::table('tb_trx_belanja')
-            ->where('tgl_trx', '=', $tgl_sekarang)
+            ->where('tgl_trx', '>=', $tgl_awal)
+            ->where('tgl_trx', '<=', $tgl_akhir)
             ->where(function ($q) use ($search) {
                 $q
                     ->where('no_barcode', 'like', '%' . $search . '%')
@@ -111,7 +121,8 @@ class TransaksiController extends Controller
             ->get();
 
         $count = DB::table('tb_trx_belanja')
-            ->where('tgl_trx', '=', $tgl_sekarang)
+            ->where('tgl_trx', '>=', $tgl_awal)
+            ->where('tgl_trx', '<=', $tgl_akhir)
             ->where(function ($q) use ($search) {
                 $q
                     ->where('no_barcode', 'like', '%' . $search . '%')
