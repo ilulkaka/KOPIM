@@ -105,13 +105,13 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                    <option value="">Kategori ...</option>
-                                                                                                                    <option value="Anggota">Anggota</option>
-                                                                                                                    <option value="Umum">Umum</option>
-                                                                                                                </select>
-                                                                                                            </div>-->
+                                                                                                                            <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                            <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                <option value="">Kategori ...</option>
+                                                                                                                                <option value="Anggota">Anggota</option>
+                                                                                                                                <option value="Umum">Umum</option>
+                                                                                                                            </select>
+                                                                                                                        </div>-->
                         </div>
                         <!-- radio -->
                         <br>
@@ -295,13 +295,13 @@
                     <div class="row">
                         <div class="col col-md-6">
                             <strong><i class="fas fa-date"> Beginning</i></strong>
-                            <input type="date" id="tgl_awal" name="tgl_awal" class="form-control rounded-0"
+                            <input type="date" id="tgl_awal1" name="tgl_awal1" class="form-control rounded-0"
                                 required>
                         </div>
 
                         <div class="col col-md-6">
                             <strong><i class="fas fa-date"> Ending</i></strong>
-                            <input type="date" id="tgl_akhir" name="tgl_akhir" class="form-control rounded-0"
+                            <input type="date" id="tgl_akhir1" name="tgl_akhir1" class="form-control rounded-0"
                                 required>
                         </div>
                     </div>
@@ -622,8 +622,8 @@
 
             $("#btn_download").click(function() {
                 var format = $("#dot_format").val();
-                var tgl_awal = $("#tgl_awal").val();
-                var tgl_akhir = $("#tgl_akhir").val();
+                var tgl_awal = $("#tgl_awal1").val();
+                var tgl_akhir = $("#tgl_akhir1").val();
 
                 if (format == '' || tgl_awal == '' || tgl_akhir == '') {
                     alert('Kolom Harus terisi semua .');
@@ -649,6 +649,7 @@
                             if (response.file) {
                                 var fpath = response.file;
                                 window.open(fpath, '_blank');
+                                location.reload();
                             } else {
                                 alert(response.message);
                             }
