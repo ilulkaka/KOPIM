@@ -24,23 +24,23 @@ class StockController extends Controller
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
 
-        $Datas = DB::select(
-            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
-            (SELECT * FROM tb_barang)a 
-            LEFT JOIN
-            (SELECT kode, sum(qty_in)as qty_in FROM tb_in GROUP BY kode)b on b.kode=a.kode
-            LEFT JOIN
-            (SELECT kode, sum(qty_out)as qty_out FROM tb_out GROUP BY kode)c on c.kode=a.kode
-            where (a.kode like '%$search%' or a.nama like '%$search%')
-            LIMIT  $length OFFSET $start  "
-        );
+        // $Datas = DB::select(
+        //     "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
+        //     (SELECT * FROM tb_barang)a
+        //     LEFT JOIN
+        //     (SELECT kode, sum(qty_in)as qty_in FROM tb_in GROUP BY kode)b on b.kode=a.kode
+        //     LEFT JOIN
+        //     (SELECT kode, sum(qty_out)as qty_out FROM tb_out GROUP BY kode)c on c.kode=a.kode
+        //     where (a.kode like '%$search%' or a.nama like '%$search%')
+        //     LIMIT  $length OFFSET $start  "
+        // );
 
-        /*$Datas = DB::table('tb_barang as a')
+        $Datas = DB::table('tb_barang as a')
             ->leftJoin('tb_in as b', 'b.kode', '=', 'a.kode')
             ->leftJoin('tb_out as c', 'c.kode', '=', 'a.kode')
             ->select(
                 DB::raw(
-                    'a.kode, a.nama, a.spesifikasi, a.supplier, sum(coalesce(b.qty_in,0))as qty_in, sum(coalesce(c.qty_out,0))as qty_out, coalesce((sum(b.qty_in)) - (sum(c.qty_out)),0) as stock '
+                    'a.kode, a.nama, a.spesifikasi, a.supplier, sum(coalesce(b.qty_in,0))as qty_in, sum(coalesce(c.qty_out,0))as qty_out, (sum(coalesce(b.qty_in,0)) - sum(coalesce(c.qty_out,0))) as stock '
                 )
             )
             ->where(function ($q) use ($search) {
@@ -58,20 +58,26 @@ class StockController extends Controller
                 'b.kode',
                 'c.kode'
             )
-            ->get();*/
+            ->skip($start)
+            ->take($length)
+            ->get();
 
-        $co = DB::select(
-            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - (c.qty_out),0) as stock FROM
-                (SELECT * FROM tb_barang)a 
-                LEFT JOIN
-                (SELECT kode, sum(qty_in)as qty_in FROM tb_in GROUP BY kode)b on b.kode=a.kode
-                LEFT JOIN
-                (SELECT kode, sum(qty_out)as qty_out FROM tb_out GROUP BY kode)c on c.kode=a.kode
-                where (a.kode like '%$search%' or a.nama like '%$search%')
-                LIMIT  $length OFFSET $start  "
-        );
-
-        $count = count($co);
+        $count = DB::table('tb_barang as a')
+            ->leftJoin('tb_in as b', 'b.kode', '=', 'a.kode')
+            ->leftJoin('tb_out as c', 'c.kode', '=', 'a.kode')
+            ->select(
+                DB::raw(
+                    'a.kode, a.nama, a.spesifikasi, a.supplier, sum(coalesce(b.qty_in,0))as qty_in, sum(coalesce(c.qty_out,0))as qty_out, (sum(coalesce(b.qty_in,0)) - sum(coalesce(c.qty_out,0))) as stock '
+                )
+            )
+            ->where(function ($q) use ($search) {
+                $q
+                    ->where('a.kode', 'like', '%' . $search . '%')
+                    ->orwhere('a.nama', 'like', '%' . $search . '%')
+                    ->orwhere('a.spesifikasi', 'like', '%' . $search . '%')
+                    ->orwhere('a.supplier', 'like', '%' . $search . '%');
+            })
+            ->count();
 
         return [
             'draw' => $draw,
@@ -162,10 +168,8 @@ class StockController extends Controller
             (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
             LEFT JOIN
             (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
-                where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
-                LIMIT  $length OFFSET $start  "
+            where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%') "
         );
-
         $count = count($co);
 
         return [
@@ -205,8 +209,7 @@ class StockController extends Controller
             (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
             LEFT JOIN
             (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
-                where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
-                LIMIT  $length OFFSET $start  "
+                where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')  "
         );
 
         $count = count($co);
