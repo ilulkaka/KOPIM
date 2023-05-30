@@ -74,9 +74,9 @@ class MasterController extends Controller
         //dd($cek[0]->terakhir);
 
         if ($leng[0]->panjang == 0) {
-            $no_barcode = $tahun . '0001';
+            $no_barcode = $tahun . '1001';
         } elseif ($cek[0]->terakhir == 9999) {
-            $no_barcode = $tahun . '0001';
+            $no_barcode = $tahun . '1001';
         } else {
             $no_barcode = $tahun . $cek[0]->terakhir + 1;
         }

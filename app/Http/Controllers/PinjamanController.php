@@ -32,12 +32,14 @@ class PinjamanController extends Controller
         //dd($cek[0]->terakhir);
 
         if (empty($leng)) {
-            $no_pinjaman = 'P' . $tahun . '0001';
+            $no_pinjaman = 'P' . $tahun . '1001';
         } elseif ($cek[0]->terakhir == 9999) {
-            $no_pinjaman = 'P' . $tahun;
+            $no_pinjaman = 'P' . $tahun . '1001';
         } else {
             $no_pinjaman = 'P' . ($tahun . $cek[0]->terakhir + 1);
         }
+
+        //dd($cek[0]->terakhir + 1);
 
         $nik = AnggotaModel::select('nik')
             ->where('no_barcode', $request->pin_nobarcode)

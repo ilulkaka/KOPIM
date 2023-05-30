@@ -142,7 +142,7 @@ class TransaksiController extends Controller
     {
         //dd($request->all());
         $Datas = DB::select(
-            "select no_barcode, nik, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nik, nama, kategori "
+            "select no_barcode, nik, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nik, nama, kategori order by nik "
         );
 
         if (count($Datas) > 0) {
@@ -169,7 +169,7 @@ class TransaksiController extends Controller
             }
 
             $writer = new Xlsx($spreadsheet);
-            $filename = 'Transaksi_' . date('Ymd His') . '.xlsx';
+            $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
             //dd('/home/berkahma/public_html/storage/excel/' . $filename);
 
             $writer->save(
