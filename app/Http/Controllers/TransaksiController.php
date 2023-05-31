@@ -181,4 +181,46 @@ class TransaksiController extends Controller
             return ['message' => 'No Data .', 'success' => false];
         }
     }
+
+    public function edit_trx(Request $request)
+    {
+        // dd($request->all());
+        $findid = BelanjaModel::find($request->et_id);
+
+        if ($request->role == 'Administrator') {
+            $findid->nominal = $request->et_nominal;
+
+            $findid->save();
+
+            return [
+                'message' => 'Edit data Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Edit gagal, Access Denied .',
+                'success' => false,
+            ];
+        }
+    }
+
+    public function del_trx(Request $request)
+    {
+        // dd($request->all());
+        $findid = BelanjaModel::find($request->id_trx);
+
+        if ($request->role == 'Administrator') {
+            $findid->delete();
+
+            return [
+                'message' => 'Hapus data Trx Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Hapus gagal, Access Denied .',
+                'success' => false,
+            ];
+        }
+    }
 }
