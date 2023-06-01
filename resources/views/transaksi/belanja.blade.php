@@ -105,13 +105,13 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                                                                                                                                                                                            <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                                                                                                                                                                                            <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                                                                                                                                                                                                <option value="">Kategori ...</option>
-                                                                                                                                                                                                                                                                                                <option value="Anggota">Anggota</option>
-                                                                                                                                                                                                                                                                                                <option value="Umum">Umum</option>
-                                                                                                                                                                                                                                                                                            </select>
-                                                                                                                                                                                                                                                                                        </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                    <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                    <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="">Kategori ...</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Anggota">Anggota</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Umum">Umum</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                    </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
                         </div>
                         <!-- radio -->
                         <br>
@@ -150,8 +150,11 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-dollar-sign"> Nominal</i></strong>
-                                <input type="number" name="trx_nominal" id="trx_nominal"
-                                    class="form-control form-control-lg rounded-0" required>
+                                <input type="text" name="result_input" id="result_input"
+                                    class="number-separator form-control form-control-lg rounded-0"
+                                    placeholder="Masukkan Nominal..."
+                                    style="font-size: 30px; color:blue; font-weight: bold " required>
+                                <input type="hidden" id="trx_nominal" name="trx_nominal">
                             </div>
                             <div class="col col-md-6">
                                 <br>
@@ -204,6 +207,7 @@
                 </div>
                 <!-- /.info-box-content -->
             </div>
+
         </div>
     </div>
 
@@ -374,10 +378,18 @@
     <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
+    <script src="{{ asset('/assets/plugins/easy-number-separator/js/easy-number-separator.js') }}"></script>
 
 
     <script type="text/javascript">
+        easyNumberSeparator({
+            selector: '.number-separator',
+            separator: ',',
+            resultInput: '#trx_nominal',
+        })
         $(document).ready(function() {
+
+
             get_load();
 
             const Toast = Swal.mixin({
@@ -437,8 +449,9 @@
                     $("#trx_nama1").val('Client Umum');
                     $("#trx_nik").val('CU00');
                     $("#trx_nominal").val('');
+                    $("#result_input").val('');
                     $("#trx_kategori").val('Umum');
-                    $("#trx_nominal").focus();
+                    $("#result_input").focus();
                     $("#trx_nobarcode").attr("disabled", "disabled");
                 }
             })
@@ -473,8 +486,9 @@
                                     $("#trx_nama").val(resp.nama);
                                     $("#trx_nama1").val(resp.nama);
                                     $("#trx_nik").val(resp.nik);
+                                    $("#result_input").val('');
                                     $("#trx_nominal").val('');
-                                    $("#trx_nominal").focus();
+                                    $("#result_input").focus();
                                 } else {
                                     alert(resp.message);
                                     $("#trx_nama").val('');
@@ -514,8 +528,9 @@
                                     $("#trx_nama").val(resp.nama);
                                     $("#trx_nama1").val(resp.nama);
                                     $("#trx_nik").val(resp.nik);
+                                    $("#result_input").val('');
                                     $("#trx_nominal").val('');
-                                    $("#trx_nominal").focus();
+                                    $("#result_input").focus();
                                 } else {
                                     alert(resp.message);
                                     $("#trx_nama").val('');
@@ -528,7 +543,7 @@
                 }
             });
 
-            $("#trx_nominal").keypress(function(event) {
+            $("#result_input").keypress(function(event) {
                 if (event.keyCode === 13) {
                     $("#btn_simpan_trx").focus();
                 }
@@ -542,7 +557,8 @@
                 var kategori = $("#trx_kategori").val();
                 var nobarcode = $("#trx_nobarcode").val();
                 var nominal = $("#trx_nominal").val();
-                if (kategori == '' || nobarcode == '' || nominal == '') {
+                var result = $("#result_input").val();
+                if (kategori == '' || nobarcode == '' || result == '') {
                     alert('Inputan harus terisi semua');
                 } else {
                     $("#btn_simpan_trx").prop('disabled', true);
@@ -798,6 +814,7 @@
                 $("#trx_nobarcode1").val('');
                 $("#trx_kategori").val('Anggota');
                 $("#trx_nominal").val('');
+                $("#result_input").val('');
                 $("#trx_nobarcode").focus();
             }
 

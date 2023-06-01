@@ -59,7 +59,7 @@ class TransaksiController extends Controller
 
     public function trx_simpan(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $kategori = $request->input('trx_kategori');
         if ($kategori == 'Anggota') {
             $no_barcode = $request->trx_nobarcode;
