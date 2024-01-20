@@ -130,12 +130,15 @@
                         </div>
                         <p></p>
                         <div class="row">
-                            <div class="col col-md-6">
+                            <div class="col col-md-12">
                                 <strong><i class="fas fa-low-vision"> Password</i></strong>
                                 <input type="password" id="ep_password" name="ep_password"
                                     class="form-control rounded-0" required>
                             </div>
-                            <div class="col col-md-6">
+                        </div>
+                        <p></p>
+                        <div class="row">
+                        <div class="col col-md-6">
                                 <strong><i class="fas fa-adjust"> Level</i></strong>
                                 <select name="ep_level" id="ep_level" class="form-control rounded-0" required>
                                     <option value="Administrator">Administrator</option>
@@ -143,6 +146,15 @@
                                     <option value="Kasir">Kasir</option>
                                     <option value="Anggota">Anggota</option>
                                 </select>
+                            </div>
+                            <div class="col col-md-6">
+                                    <strong><i class="fas fa-caret-square-down"> Status</i></strong>
+                                    <select id="ep_status" name="ep_status" class="form-control rounded-0"
+                                         required>
+                                        <option value="">Pilih Status ...</option>
+                                        <option value="Aktif">Aktif</option>
+                                        <option value="Non Aktif">Non Aktif</option>
+                                    </select>
                             </div>
                         </div>
                         <p></p>
@@ -322,6 +334,7 @@
                 $("#ep_email").val(data.email);
                 $("#ep_password").val(data.password);
                 $("#ep_level").val(data.role);
+                $("#ep_status").val(data.status);
                 $("#modal_edit_pengguna").modal('show');
             });
 

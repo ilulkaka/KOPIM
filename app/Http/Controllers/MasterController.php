@@ -158,6 +158,7 @@ class MasterController extends Controller
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
         $Datas = DB::table('users')
+            ->where('name', '!=', 'Admin')
             ->where(function ($q) use ($search) {
                 $q
                     ->where('name', 'like', '%' . $search . '%')
@@ -170,6 +171,7 @@ class MasterController extends Controller
             ->get();
 
         $count = DB::table('users')
+            ->where('name', '!=', 'Admin')
             ->where(function ($q) use ($search) {
                 $q
                     ->where('name', 'like', '%' . $search . '%')
@@ -239,7 +241,7 @@ class MasterController extends Controller
         if ($request->role == 'Administrator') {
             $findid->password = Hash::make($request->ep_password);
             $findid->role = $request->ep_level;
-
+            $findid->status = $request->ep_status;
             $findid->save();
 
             return [
