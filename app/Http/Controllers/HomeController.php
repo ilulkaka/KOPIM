@@ -36,6 +36,7 @@ class HomeController extends Controller
         $tmb_bulan = $current->addMonth();
         $krg_bulan = Carbon::now()->subMonths(1);
         $thn = date('Y');
+        $bulan = date('Y-m');
 
         $tgl_awal = date('Y-m') . '-01';
         $tgl_akhir = date('Y-m') . '-25';
@@ -92,6 +93,17 @@ class HomeController extends Controller
             "select sum(jml_simpanan)as simwa from tb_simpanan where no_anggota = '$nobarcode1' and jenis_simpanan = 'Wajib'"
         );
 
+        $iuran_wajib = DB::select(
+            " select jml_simpanan from tb_simpanan where no_anggota = '$nobarcode1' and jenis_simpanan = 'Wajib' and date_format(tgl_simpan, '%Y-%m') = '$bulan' "
+        );
+
+        if (empty($iuran_wajib)) {
+            $iuran = '0';
+        } else {
+            $iuran = $iuran_wajib[0]->jml_simpanan;
+        }
+        //dd($iuran_wajib[0]->jml_simpanan);
+
         return view('home', [
             'thn' => $thn,
             'aktif' => $aktif,
@@ -100,6 +112,7 @@ class HomeController extends Controller
             'no_barcode' => $nobarcode1,
             'simpok' => $simpok[0]->simpok,
             'simwa' => $simwa[0]->simwa,
+            'iuran' => $iuran,
         ]);
         //return view('/dashboard/javascript');
     }

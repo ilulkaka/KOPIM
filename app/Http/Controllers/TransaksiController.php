@@ -59,7 +59,7 @@ class TransaksiController extends Controller
 
     public function trx_simpan(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $kategori = $request->input('trx_kategori');
         if ($kategori == 'Anggota') {
             $no_barcode = $request->trx_nobarcode;
@@ -142,7 +142,7 @@ class TransaksiController extends Controller
     {
         //dd($request->all());
         $Datas = DB::select(
-            "select no_barcode, nik, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nik, nama, kategori "
+            "select no_barcode, nik, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nik, nama, kategori order by nik "
         );
 
         if (count($Datas) > 0) {
@@ -168,17 +168,65 @@ class TransaksiController extends Controller
                 $line++;
             }
 
+            // ========= Online ========================================
+            // $writer = new Xlsx($spreadsheet);
+            // $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
+            // //dd('/home/berkahma/public_html/storage/excel/' . $filename);
+
+            // $writer->save(
+            //     '/home/berkahma/public_html/storage/excel/' . $filename
+            // );
+            // return ['file' => url('/') . '/storage/excel/' . $filename];
+
+            // ========= Offline ========================================
             $writer = new Xlsx($spreadsheet);
-            $filename = 'Transaksi_' . date('Ymd His') . '.xlsx';
-            //dd('/home/berkahma/public_html/storage/excel/' . $filename);
-
-            $writer->save(
-                '/home/berkahma/public_html/storage/excel/' . $filename
-            );
-
+            $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
+            $writer->save(public_path('storage/excel/' . $filename));
             return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {
             return ['message' => 'No Data .', 'success' => false];
+        }
+    }
+
+    public function edit_trx(Request $request)
+    {
+        // dd($request->all());
+        $findid = BelanjaModel::find($request->et_id);
+
+        if ($request->role == 'Administrator') {
+            $findid->nominal = $request->et_nominal;
+
+            $findid->save();
+
+            return [
+                'message' => 'Edit data Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Edit gagal, Access Denied .',
+                'success' => false,
+            ];
+        }
+    }
+
+    public function del_trx(Request $request)
+    {
+        // dd($request->all());
+        $findid = BelanjaModel::find($request->id_trx);
+
+        if ($request->role == 'Administrator') {
+            $findid->delete();
+
+            return [
+                'message' => 'Hapus data Trx Berhasil .',
+                'success' => true,
+            ];
+        } else {
+            return [
+                'message' => 'Hapus gagal, Access Denied .',
+                'success' => false,
+            ];
         }
     }
 }

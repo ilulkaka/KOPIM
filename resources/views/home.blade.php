@@ -19,7 +19,7 @@
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
                     <b style="color:red">Tagihan Bulan ini</b> <a style="color:red"
-                        class="float-right">{{ number_format($aktif[0]->nominal + $angsuran, 0) }}</a>
+                        class="float-right">{{ number_format($aktif[0]->nominal + $angsuran + $iuran, 0) }}</a>
                 </li>
                 <li class="list-group-item">
                     <i> - Barcode</i> <a class="float-right">{{ number_format($aktif[0]->nominal, 0) }}</a>
@@ -27,6 +27,9 @@
                 <li class="list-group-item">
                     <i> - Pinjaman, Angsuran Ke-{{ $angke }}</i> <a
                         class="float-right">{{ number_format($angsuran, 0) }}</a>
+                </li>
+                <li class="list-group-item">
+                    <i> - Iuran KOPIM</i> <a class="float-right">{{ number_format($iuran, 0) }}</a>
                 </li>
 
                 <li class="list-group-item">

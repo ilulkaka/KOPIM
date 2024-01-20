@@ -105,13 +105,13 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                            <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                            <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                                <option value="">Kategori ...</option>
-                                                                                                                                <option value="Anggota">Anggota</option>
-                                                                                                                                <option value="Umum">Umum</option>
-                                                                                                                            </select>
-                                                                                                                        </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                    <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                    <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="">Kategori ...</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Anggota">Anggota</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Umum">Umum</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                    </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
                         </div>
                         <!-- radio -->
                         <br>
@@ -150,8 +150,11 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-dollar-sign"> Nominal</i></strong>
-                                <input type="number" name="trx_nominal" id="trx_nominal"
-                                    class="form-control form-control-lg rounded-0" required>
+                                <input type="text" name="result_input" id="result_input"
+                                    class="number-separator form-control form-control-lg rounded-0"
+                                    placeholder="Masukkan Nominal..."
+                                    style="font-size: 30px; color:blue; font-weight: bold " required>
+                                <input type="hidden" id="trx_nominal" name="trx_nominal">
                             </div>
                             <div class="col col-md-6">
                                 <br>
@@ -204,6 +207,7 @@
                 </div>
                 <!-- /.info-box-content -->
             </div>
+
         </div>
     </div>
 
@@ -238,8 +242,9 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap" width="100%" id="tb_detail_trx">
+
+                    <div class="table-responsive">
+                        <table id="tb_detail_trx" class="table table-hover text-nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>id</th>
@@ -247,6 +252,7 @@
                                     <th>No Barcode</th>
                                     <th>Nama</th>
                                     <th>Nominal</th>
+                                    <th>Act</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -256,6 +262,7 @@
                                 <tr>
                                     <th colspan="1" style="text-align:center; ">TOTAL</th>
                                     <th style="text-align:center; font-size: large;">TOTAL</th>
+                                    <th style="text-align:center; font-size: large;"></th>
                                     <th style="text-align:center; font-size: large;"></th>
                                     <th style="text-align:center; font-size: large;"></th>
                                     <th style="text-align:center; font-size: large;"></th>
@@ -315,16 +322,74 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit Transaksi (ET) -->
+    <div class="modal fade" id="modal_edit_trx" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h4 class="modal-title" id="exampleModalLongTitle"><b>Edit Transaksi</b> </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_et">
+                        @csrf
+                        <div class="row">
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-file-prescription"> Tgl Transaksi</i></strong>
+                                <input type="hidden" name="et_id" id="et_id">
+                                <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
+                                <input type="text" id="et_tgl" name="et_tgl" class="form-control rounded-0"
+                                    disabled>
+                                <p>
+                                </p>
+                                <strong padding-top="20%"><i class="fas fa-file-signature"> No Barcode</i>
+                                </strong>
+                                <input type="text" id="et_no" name="et_no"
+                                    class="form-control rounded-0 col-md-12" disabled>
+                            </div>
+                            <div class="col col-md-6">
+                                <strong><i class="fas fa-location-arrow"> Nama</i></strong>
+                                <input type="text" id="et_nama" name="et_nama" class="form-control rounded-0"
+                                    disabled>
+                                <p></p>
+                                <strong padding-top="20%"><i class="fas fa-file-signature"> Nominal</i>
+                                </strong>
+                                <input type="number" id="et_nominal" name="et_nominal"
+                                    class="form-control rounded-0 col-md-12"
+                                    style="font-size: 24px; color:red; font-weight:bold">
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-flat" id="btn_save_et">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
+    <script src="{{ asset('/assets/plugins/easy-number-separator/js/easy-number-separator.js') }}"></script>
 
 
     <script type="text/javascript">
+        easyNumberSeparator({
+            selector: '.number-separator',
+            separator: ',',
+            resultInput: '#trx_nominal',
+        })
         $(document).ready(function() {
+
+
             get_load();
 
             const Toast = Swal.mixin({
@@ -384,8 +449,9 @@
                     $("#trx_nama1").val('Client Umum');
                     $("#trx_nik").val('CU00');
                     $("#trx_nominal").val('');
+                    $("#result_input").val('');
                     $("#trx_kategori").val('Umum');
-                    $("#trx_nominal").focus();
+                    $("#result_input").focus();
                     $("#trx_nobarcode").attr("disabled", "disabled");
                 }
             })
@@ -420,8 +486,9 @@
                                     $("#trx_nama").val(resp.nama);
                                     $("#trx_nama1").val(resp.nama);
                                     $("#trx_nik").val(resp.nik);
+                                    $("#result_input").val('');
                                     $("#trx_nominal").val('');
-                                    $("#trx_nominal").focus();
+                                    $("#result_input").focus();
                                 } else {
                                     alert(resp.message);
                                     $("#trx_nama").val('');
@@ -461,8 +528,9 @@
                                     $("#trx_nama").val(resp.nama);
                                     $("#trx_nama1").val(resp.nama);
                                     $("#trx_nik").val(resp.nik);
+                                    $("#result_input").val('');
                                     $("#trx_nominal").val('');
-                                    $("#trx_nominal").focus();
+                                    $("#result_input").focus();
                                 } else {
                                     alert(resp.message);
                                     $("#trx_nama").val('');
@@ -475,7 +543,7 @@
                 }
             });
 
-            $("#trx_nominal").keypress(function(event) {
+            $("#result_input").keypress(function(event) {
                 if (event.keyCode === 13) {
                     $("#btn_simpan_trx").focus();
                 }
@@ -489,7 +557,8 @@
                 var kategori = $("#trx_kategori").val();
                 var nobarcode = $("#trx_nobarcode").val();
                 var nominal = $("#trx_nominal").val();
-                if (kategori == '' || nobarcode == '' || nominal == '') {
+                var result = $("#result_input").val();
+                if (kategori == '' || nobarcode == '' || result == '') {
                     alert('Inputan harus terisi semua');
                 } else {
                     $("#btn_simpan_trx").prop('disabled', true);
@@ -520,100 +589,151 @@
             });
 
             $("#btn_detail_trx").click(function() {
-                get_detail_trx();
+                // get_detail_trx();
                 $("#modal_detail_trx").modal('show');
             });
 
-            function get_detail_trx() {
-                var list_detail_trx = $('#tb_detail_trx').DataTable({
-                    destroy: true,
-                    processing: true,
-                    serverSide: true,
-                    searching: true,
-                    lengthChange: false,
+            var list_detail_trx = $('#tb_detail_trx').DataTable({
+                destroy: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                lengthChange: false,
 
-                    ajax: {
-                        url: APP_URL + '/api/transaksi/detail_trx',
-                        type: "POST",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        dataType: "json",
-                        data: function(d) {
-                            d.tgl_awal = $("#tgl_awal").val();
-                            d.tgl_akhir = $("#tgl_akhir").val();
-                        },
+                ajax: {
+                    url: APP_URL + '/api/transaksi/detail_trx',
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
+                    dataType: "json",
+                    data: function(d) {
+                        d.tgl_awal = $("#tgl_awal").val();
+                        d.tgl_akhir = $("#tgl_akhir").val();
+                    },
+                },
 
-                    columnDefs: [{
+                columnDefs: [{
                         targets: [0],
                         visible: false,
                         searchable: false
-                    }, ],
+                    },
+                    {
+                        targets: [5],
+                        data: null,
+                        // width: '10%',
+                        render: function(data, type, row, meta) {
+                            return "<a href = '#' style='font-size:14px' class = 'editTrx'> Edit </a> || <a href = '#' style='font-size:14px' class ='delTrx' > Deleted </a>";
+                        }
+                    },
+                ],
 
-                    columns: [{
-                            data: 'id_trx_belanja',
-                            name: 'id_trx_belanja'
-                        },
-                        {
-                            data: 'created_at',
-                            name: 'created_at'
-                        },
-                        {
-                            data: 'no_barcode',
-                            name: 'no_barcode'
-                        },
-                        {
-                            data: 'nama',
-                            name: 'nama',
-                            width: '40%'
-                        },
-                        {
-                            data: 'nominal',
-                            name: 'nominal',
-                            render: $.fn.dataTable.render.number(',', '.', 0, '')
-                        },
-                    ],
-                    "footerCallback": function(row, data, start, end, display) {
-                        var api = this.api(),
-                            data;
+                columns: [{
+                        data: 'id_trx_belanja',
+                        name: 'id_trx_belanja'
+                    },
+                    {
+                        data: 'tgl_trx',
+                        name: 'tgl_trx'
+                    },
+                    {
+                        data: 'no_barcode',
+                        name: 'no_barcode'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama',
+                        width: '40%'
+                    },
+                    {
+                        data: 'nominal',
+                        name: 'nominal',
+                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                    },
+                ],
+                "footerCallback": function(row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
 
-                        // Remove the formatting to get integer data for summation
-                        var intVal = function(i) {
-                            return typeof i === 'string' ?
-                                i.replace(/[\$,]/g, '') * 1 :
-                                typeof i === 'number' ?
-                                i : 0;
-                        };
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
 
-                        // Total over all pages
-                        total = api
-                            .column(1)
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
+                    // Total over all pages
+                    total = api
+                        .column(1)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
 
-                        // Total over this page
-                        TotalNominal = api
-                            .column(4, {
-                                page: 'current'
-                            })
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
+                    // Total over this page
+                    TotalNominal = api
+                        .column(4, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
 
-                        $(api.column(4).footer()).html(
-                            TotalNominal.toLocaleString("en-US")
-                        );
+                    $(api.column(4).footer()).html(
+                        TotalNominal.toLocaleString("en-US")
+                    );
 
-                    }
-                });
-            }
+                }
+            });
+
+            $('#tb_detail_trx').on('click', '.editTrx', function() {
+                var datas = list_detail_trx.row($(this).parents('tr')).data();
+                $("#et_id").val(datas.id_trx_belanja);
+                $("#et_tgl").val(datas.tgl_trx);
+                $("#et_no").val(datas.no_barcode);
+                $("#et_nama").val(datas.nama);
+                $("#et_nominal").val(datas.nominal);
+
+                $('#modal_edit_trx').modal('show');
+            });
+
+            $('#tb_detail_trx').on('click', '.delTrx', function() {
+                var datas = list_detail_trx.row($(this).parents('tr')).data();
+                var id_trx = datas.id_trx_belanja;
+                var role = $("#role1").val();
+
+                var conf = confirm("Apakah data dengan " + "\n" + "Nama      : " + datas.nama + "\n" +
+                    "Nominal  : " + datas.nominal + "\n" + "\n" + "akan dihapus?");
+
+                if (conf) {
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + "/api/transaksi/del_trx",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                    'content'),
+                            },
+                            data: {
+                                'id_trx': id_trx,
+                                'role': role
+                            },
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                list_detail_trx.ajax.reload(null, false);
+                            } else {
+                                alert(resp.message);
+                            }
+                        })
+                }
+            });
 
             $("#btn_reload").click(function() {
-                get_detail_trx();
+                // get_detail_trx();
+                list_detail_trx.ajax.reload();
             });
 
             $("#btn_download_trx").click(function() {
@@ -659,6 +779,31 @@
 
             });
 
+            $("#form_et").submit(function(e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+                //alert(data);
+                $.ajax({
+                        type: "POST",
+                        url: APP_URL + "/api/transaksi/edit_trx",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content'),
+                        },
+                        data: data,
+                    })
+                    .done(function(resp) {
+                        if (resp.success) {
+                            alert(resp.message);
+                            $('#modal_edit_trx').modal('toggle');
+                            list_detail_trx.ajax.reload(null, false);
+                        } else {
+                            alert(resp.message);
+                        }
+                    })
+            });
+
+
             function get_load() {
                 $("#r_ang").is(":checked");
                 $("#trx_nobarcode").removeAttr("disabled");
@@ -669,6 +814,7 @@
                 $("#trx_nobarcode1").val('');
                 $("#trx_kategori").val('Anggota');
                 $("#trx_nominal").val('');
+                $("#result_input").val('');
                 $("#trx_nobarcode").focus();
             }
 
