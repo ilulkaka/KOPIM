@@ -37,7 +37,7 @@
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Spesifikasi</th>
-                                <th>Supplier</th>
+                                <!-- <th>Supplier</th> -->
                                 <th>In</th>
                             </tr>
                         </thead>
@@ -102,10 +102,10 @@
                         data: 'spesifikasi',
                         name: 'spesifikasi'
                     },
-                    {
-                        data: 'supplier',
-                        name: 'supplier'
-                    },
+                    // {
+                    //     data: 'supplier',
+                    //     name: 'supplier'
+                    // },
                     {
                         data: 'qty_in',
                         name: 'qty_in', width:'15px'

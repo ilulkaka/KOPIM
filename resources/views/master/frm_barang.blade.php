@@ -25,7 +25,7 @@
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Spesifikasi</th>
-                                <th>Supplier</th>
+                                <!-- <th>Supplier</th> -->
                                 <th>Harga</th>
                                 <th>Action</th>
                             </tr>
@@ -198,7 +198,7 @@
                         searchable: false
                     },
                     {
-                        targets: [6],
+                        targets: [5],
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
@@ -223,10 +223,10 @@
                         data: 'spesifikasi',
                         name: 'spesifikasi'
                     },
-                    {
-                        data: 'supplier',
-                        name: 'supplier'
-                    },
+                    // {
+                    //     data: 'supplier',
+                    //     name: 'supplier'
+                    // },
                     {
                         data: 'harga',
                         name: 'harga'
