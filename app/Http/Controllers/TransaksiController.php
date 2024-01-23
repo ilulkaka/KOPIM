@@ -169,20 +169,20 @@ class TransaksiController extends Controller
             }
 
             // ========= Online ========================================
-            // $writer = new Xlsx($spreadsheet);
-            // $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
-            // //dd('/home/berkahma/public_html/storage/excel/' . $filename);
-
-            // $writer->save(
-            //     '/home/berkahma/public_html/storage/excel/' . $filename
-            // );
-            // return ['file' => url('/') . '/storage/excel/' . $filename];
-
-            // ========= Offline ========================================
             $writer = new Xlsx($spreadsheet);
             $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
-            $writer->save(public_path('storage/excel/' . $filename));
+            //dd('/home/berkahma/public_html/storage/excel/' . $filename);
+
+            $writer->save(
+                '/home/berkahma/public_html/storage/excel/' . $filename
+            );
             return ['file' => url('/') . '/storage/excel/' . $filename];
+
+            // ========= Offline ========================================
+            // $writer = new Xlsx($spreadsheet);
+            // $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
+            // $writer->save(public_path('storage/excel/' . $filename));
+            // return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {
             return ['message' => 'No Data .', 'success' => false];
         }
