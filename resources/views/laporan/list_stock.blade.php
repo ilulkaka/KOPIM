@@ -19,7 +19,7 @@
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Spesifikasi</th>
-                                <th>Supplier</th>
+                                <!-- <th>Supplier</th> -->
                                 <th>In</th>
                                 <th>Out</th>
                                 <th>Stock Qty</th>
@@ -172,7 +172,7 @@
                         searchable: true
                     },
                     {
-                        targets: [7],
+                        targets: [6],
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
@@ -198,10 +198,10 @@
                         data: 'spesifikasi',
                         name: 'spesifikasi'
                     },
-                    {
-                        data: 'supplier',
-                        name: 'supplier'
-                    },
+                    // {
+                    //     data: 'supplier',
+                    //     name: 'supplier'
+                    // },
                     {
                         data: 'qty_in',
                         name: 'qty_in',
