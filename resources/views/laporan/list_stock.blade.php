@@ -30,9 +30,11 @@
                 </div>
             </div>
             <!-- /.card-body -->
-            <button id="btn_bm" name="btn_bm">Detail Barang Masuk</button>
-            <button id="btn_bk" name="btn_bk">Detail Barang Keluar</button>
-            <button id="btn_excel" name="btn_excel">Excel</button>
+            <div class="row">
+                <button id="btn_bm" name="btn_bm" class="form-control rounded-pill col-md-2">Detail Barang Masuk</button>
+                <button id="btn_bk" name="btn_bk" class="form-control rounded-pill col-md-2">Detail Barang Keluar</button>
+                <button id="btn_excel" name="btn_excel" class="form-control btn-success rounded-pill col-md-1">Excel</button>
+            </div>
         </div>
         <!-- /.card -->
     </div>

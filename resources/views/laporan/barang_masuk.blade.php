@@ -43,6 +43,8 @@
                         </thead>
                     </table>
                 </div>
+                <br>
+                <button id="btn_excel" name="btn_excel" class="form-control btn-success rounded-pill col-md-2"><i class="fas fa-file-excel"> Excel</i></button>
             </div>
             <!-- /.card-body -->
         </div>
@@ -115,6 +117,30 @@
 
             $("#btn_reload").click(function () {
             list_barang_masuk.ajax.reload();
+            });
+
+            $("#btn_excel").click(function() {
+                var tgl_awal = $("#tgl_awal").val();
+                   var tgl_akhir = $("#tgl_akhir").val();
+
+                $.ajax({
+                    url: APP_URL + '/api/laporan/e_masuk',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    data : {'tgl_awal': tgl_awal, 'tgl_akhir':tgl_akhir},
+
+                    success: function(response) {
+                        if (response.file) {
+                            var fpath = response.file;
+                            window.open(fpath, '_blank');
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                })
             });
 
 

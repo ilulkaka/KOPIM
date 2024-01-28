@@ -65,6 +65,8 @@ Route::post('laporan/kurang_stock', 'StockController@kurang_stock');
 Route::post('laporan/detail_bm', 'StockController@detail_bm');
 Route::post('laporan/detail_bk', 'StockController@detail_bk');
 Route::post('laporan/stock_excel', 'StockController@stock_excel');
+Route::post('laporan/e_keluar', 'StockController@e_keluar');
+Route::post('laporan/e_masuk', 'StockController@e_masuk');
 
 Route::post('home/detail_tag', 'HomeController@detail_tag');
 Route::post('chg_userProfil', 'HomeController@chg_userProfil');

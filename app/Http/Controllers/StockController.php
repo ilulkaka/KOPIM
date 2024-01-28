@@ -240,8 +240,7 @@ class StockController extends Controller
             $sheet->setCellValue('B1', 'KODE');
             $sheet->setCellValue('C1', 'NAMA');
             $sheet->setCellValue('D1', 'Spesifikasi');
-            $sheet->setCellValue('E1', 'Supplier');
-            $sheet->setCellValue('F1', 'Stock');
+            $sheet->setCellValue('E1', 'Stock');
 
             $line = 2;
             $no = 1;
@@ -250,14 +249,103 @@ class StockController extends Controller
                 $sheet->setCellValue('B' . $line, $data->kode);
                 $sheet->setCellValue('C' . $line, $data->nama);
                 $sheet->setCellValue('D' . $line, $data->spesifikasi);
-                $sheet->setCellValue('E' . $line, $data->supplier);
-                $sheet->setCellValue('F' . $line, $data->stock);
+                $sheet->setCellValue('E' . $line, $data->stock);
 
                 $line++;
             }
 
             $writer = new Xlsx($spreadsheet);
             $filename = 'List_Stock_' . date('Ymd His') . '.xlsx';
+            $writer->save(public_path('storage/excel/' . $filename));
+            return ['file' => url('/') . '/storage/excel/' . $filename];
+        } else {
+            return ['message' => 'No Data .', 'success' => false];
+        }
+    }
+
+    public function e_keluar(Request $request)
+    {
+        // dd($request->all());
+        $tgl_awal = $request->input('tgl_awal');
+        $tgl_akhir = $request->input('tgl_akhir');
+
+        $Datas = DB::select(
+            "SELECT a.tgl_out, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_out,0)as qty_out FROM
+            (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
+            LEFT JOIN
+            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode"
+        );
+
+        if (count($Datas) > 0) {
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'No');
+            $sheet->setCellValue('B1', 'KODE');
+            $sheet->setCellValue('C1', 'NAMA');
+            $sheet->setCellValue('D1', 'Spesifikasi');
+            $sheet->setCellValue('E1', 'Qty Out');
+            $sheet->setCellValue('F1', 'Tgl Out');
+
+            $line = 2;
+            $no = 1;
+            foreach ($Datas as $data) {
+                $sheet->setCellValue('A' . $line, $no++);
+                $sheet->setCellValue('B' . $line, $data->kode);
+                $sheet->setCellValue('C' . $line, $data->nama);
+                $sheet->setCellValue('D' . $line, $data->spesifikasi);
+                $sheet->setCellValue('E' . $line, $data->qty_out);
+                $sheet->setCellValue('F' . $line, $data->tgl_out);
+
+                $line++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'List_Out_' . date('Ymd His') . '.xlsx';
+            $writer->save(public_path('storage/excel/' . $filename));
+            return ['file' => url('/') . '/storage/excel/' . $filename];
+        } else {
+            return ['message' => 'No Data .', 'success' => false];
+        }
+    }
+
+    public function e_masuk(Request $request)
+    {
+        // dd($request->all());
+        $tgl_awal = $request->input('tgl_awal');
+        $tgl_akhir = $request->input('tgl_akhir');
+
+        $Datas = DB::select(
+            "SELECT a.tgl_in, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
+            (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
+            LEFT JOIN
+            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode"
+        );
+
+        if (count($Datas) > 0) {
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'No');
+            $sheet->setCellValue('B1', 'KODE');
+            $sheet->setCellValue('C1', 'NAMA');
+            $sheet->setCellValue('D1', 'Spesifikasi');
+            $sheet->setCellValue('E1', 'Qty In');
+            $sheet->setCellValue('F1', 'Tgl In');
+
+            $line = 2;
+            $no = 1;
+            foreach ($Datas as $data) {
+                $sheet->setCellValue('A' . $line, $no++);
+                $sheet->setCellValue('B' . $line, $data->kode);
+                $sheet->setCellValue('C' . $line, $data->nama);
+                $sheet->setCellValue('D' . $line, $data->spesifikasi);
+                $sheet->setCellValue('E' . $line, $data->qty_in);
+                $sheet->setCellValue('F' . $line, $data->tgl_in);
+
+                $line++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'List_masuk_' . date('Ymd His') . '.xlsx';
             $writer->save(public_path('storage/excel/' . $filename));
             return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {
