@@ -255,7 +255,7 @@ class StockController extends Controller
             }
 
             $writer = new Xlsx($spreadsheet);
-            $filename = 'List_Stock_' . date('Ymd His') . '.xlsx';
+            $filename = 'List_Stock.xlsx';
             $writer->save(public_path('storage/excel/' . $filename));
             return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {
@@ -300,7 +300,7 @@ class StockController extends Controller
             }
 
             $writer = new Xlsx($spreadsheet);
-            $filename = 'List_Out_' . date('Ymd His') . '.xlsx';
+            $filename = 'List_Out.xlsx';
             $writer->save(public_path('storage/excel/' . $filename));
             return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {
@@ -345,7 +345,7 @@ class StockController extends Controller
             }
 
             $writer = new Xlsx($spreadsheet);
-            $filename = 'List_masuk_' . date('Ymd His') . '.xlsx';
+            $filename = 'List_masuk.xlsx';
             $writer->save(public_path('storage/excel/' . $filename));
             return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {

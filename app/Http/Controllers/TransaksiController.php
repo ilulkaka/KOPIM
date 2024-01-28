@@ -180,7 +180,7 @@ class TransaksiController extends Controller
 
             // ========= Offline ========================================
             $writer = new Xlsx($spreadsheet);
-            $filename = 'Transaksi_' . date('YmdHis') . '.xlsx';
+            $filename = 'Transaksi.xlsx';
             $writer->save(public_path('storage/excel/' . $filename));
             return ['file' => url('/') . '/storage/excel/' . $filename];
         } else {
