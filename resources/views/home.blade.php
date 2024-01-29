@@ -48,7 +48,7 @@
                 </li>
 
             </ul>
-            <button type="button" id="btn_detail" class="btn btn-primary btn-block btn-flat"><b>Detail
+            <button type="button" id="btn_detail" class="btn btn-primary btn-block rounded-pill"><b>Detail
                     Tagihan Barcode</b></button>
         </div>
     </div>
@@ -79,13 +79,13 @@
                         </div>
                         <div class="col col-md-2">
                             <strong> Refs</strong>
-                            <button class="btn btn-primary btn-flat col-md-12 " id="btn_reload"><i
+                            <button class="btn btn-primary rounded-pill col-md-12 " id="btn_reload"><i
                                     class="fa fa-sync"></i></button>
                         </div>
                     </div>
 
-
-                    <div class="row">
+<br>
+                    <div class="row" style="margin-top:-1%">
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap" width="100%" id="tb_detail">
                                 <thead>

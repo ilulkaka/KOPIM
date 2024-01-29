@@ -158,7 +158,7 @@
                             </div>
                             <div class="col col-md-6">
                                 <br>
-                                <button type="button" class="btn btn-success btn-flat btn-lg float-right"
+                                <button type="button" class="btn btn-success rounded-pill btn-lg float-right"
                                     id="btn_simpan_trx">Simpan</button>
 
                             </div>
@@ -237,7 +237,7 @@
                         </div>
                         <div class="col col-md-2">
                             <strong> Refs</strong>
-                            <button class="btn btn-primary btn-flat col-md-12 " id="btn_reload"><i
+                            <button class="btn btn-primary rounded-pill col-md-12 " id="btn_reload"><i
                                     class="fa fa-sync"></i></button>
                         </div>
                     </div>
@@ -313,10 +313,13 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row float-right">
-                        <button type="button" id="btn_preview" name="btn_preview">Preview</button>
-                        <button type="button" id="btn_download" name="btn_download"> Download </button>
-                        <button type="button" data-dismiss="modal"> Close </button>
+                    <div class="col-md-12">
+                    <div class="row">
+
+                            <button type="button" id="btn_preview" name="btn_preview" class="form-control col-md-4 rounded-pill">Preview</button>
+                            <button type="button" id="btn_download" name="btn_download" class="form-control col-md-4 rounded-pill"> Download </button>
+                            <button type="button" data-dismiss="modal" class="form-control col-md-4 rounded-pill"> Close </button>
+                        </div>
                     </div>
                 </div>
             </div>
