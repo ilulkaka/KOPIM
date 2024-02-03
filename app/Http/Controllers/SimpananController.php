@@ -95,4 +95,176 @@ class SimpananController extends Controller
             'data' => $Datas,
         ];
     }
+
+    public function selectRow(Request $request)
+    {
+        // dd($request->all());
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+
+        $simPeriodeAwal = $request->simPeriode . '-01';
+        $simPeriodeAkhirBulan = Carbon::parse($simPeriodeAwal)
+            ->endOfMonth()
+            ->toDateString();
+        $simNull = $request->simNull;
+        $simJenis = $request->simJenis;
+        // dd($simPeriodeAkhirBulan);
+
+        $Datas = DB::table('tb_anggota as a')
+            ->select(
+                'a.no_barcode',
+                'a.nama',
+                'b.jenis_simpanan',
+                'b.jml_simpanan'
+            )
+            ->leftJoin('tb_simpanan as b', function ($join) use (
+                $simPeriodeAwal,
+                $simPeriodeAkhirBulan,
+                $simJenis
+            ) {
+                $join
+                    ->on('a.no_barcode', '=', 'b.no_anggota')
+                    ->where('jenis_simpanan', $simJenis)
+                    ->whereBetween('b.tgl_simpan', [
+                        $simPeriodeAwal,
+                        $simPeriodeAkhirBulan,
+                    ]);
+            })
+            ->where('a.status', '=', 'Aktif')
+            ->when(
+                $simNull == 0,
+                function ($query) {
+                    // Jika nullable == 0, tampilkan data yang tidak ada pada tb_cuti_hak
+                    return $query->whereNull('b.no_anggota');
+                },
+                function ($query) use ($search) {
+                    // Jika nullable == 1, tampilkan data yang sudah ada pada tb_cuti_hak
+                    return $query->where(function ($q) use ($search) {
+                        $q
+                            ->orWhereNotNull('b.no_anggota')
+                            ->orWhere(
+                                'b.no_anggota',
+                                'like',
+                                '%' . $search . '%'
+                            );
+                    });
+                }
+            )
+            ->skip($start)
+            ->take($length)
+            ->get();
+        // dd($Datas);
+
+        $count = DB::table('tb_anggota as a')
+            ->select(
+                'a.no_barcode',
+                'a.nama',
+                'b.jenis_simpanan',
+                'b.jml_simpanan'
+            )
+            ->leftJoin('tb_simpanan as b', function ($join) use (
+                $simPeriodeAwal,
+                $simPeriodeAkhirBulan,
+                $simJenis
+            ) {
+                $join
+                    ->on('a.no_barcode', '=', 'b.no_anggota')
+                    ->where('jenis_simpanan', $simJenis)
+                    ->whereBetween('b.tgl_simpan', [
+                        $simPeriodeAwal,
+                        $simPeriodeAkhirBulan,
+                    ]);
+            })
+            ->where('a.status', '=', 'Aktif')
+            ->when(
+                $simNull == 0,
+                function ($query) {
+                    // Jika nullable == 0, tampilkan data yang tidak ada pada tb_cuti_hak
+                    return $query->whereNull('b.no_anggota');
+                },
+                function ($query) use ($search) {
+                    // Jika nullable == 1, tampilkan data yang sudah ada pada tb_cuti_hak
+                    return $query->where(function ($q) use ($search) {
+                        $q
+                            ->orWhereNotNull('b.no_anggota')
+                            ->orWhere(
+                                'b.no_anggota',
+                                'like',
+                                '%' . $search . '%'
+                            );
+                    });
+                }
+            )
+            ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
+    }
+
+    public function sendSelected(Request $request)
+    {
+        // dd($request->all());
+        $simPeriode = $request->simPeriode . '-01';
+        $simJml = $request->simJml;
+        $simJenis = $request->simJenis;
+        $countNoAnggota = $request->selectedNoAnggota;
+
+        if ($request->role == 'Administrator') {
+            if (!empty($countNoAnggota)) {
+                $coun = count($countNoAnggota);
+                foreach ($countNoAnggota as $noAnggota) {
+                    // Memeriksa apakah data sudah ada di tabel
+                    $existingData = SimpananModel::where(
+                        'no_anggota',
+                        $noAnggota
+                    )
+                        ->where('tgl_simpan', $simPeriode)
+                        ->where('jenis_simpanan', $simJenis)
+                        ->first();
+
+                    if (!$existingData) {
+                        for ($i = 0; $i < $coun; $i++) {
+                            $namaAnggota = DB::table('tb_anggota')
+                                ->select('nama')
+                                ->where(
+                                    'no_barcode',
+                                    $request->selectedNoAnggota[$i]
+                                )
+                                ->first();
+
+                            $ins_sim = SimpananModel::create([
+                                'id_simpanan' => str::uuid(),
+                                'no_anggota' => $request->selectedNoAnggota[$i],
+                                'nama' => $namaAnggota->nama,
+                                'jml_simpanan' => $simJml,
+                                'tgl_simpan' => $simPeriode,
+                                'jenis_simpanan' => $simJenis,
+                                'status_simpanan' => 'Open',
+                            ]);
+                        }
+                        return [
+                            'message' => 'Input Simpanan Berhasil .',
+                            'success' => true,
+                        ];
+                    } else {
+                        return [
+                            'message' => 'Input Simpanan Gagal .',
+                            'success' => false,
+                        ];
+                    }
+                }
+            }
+        } else {
+            return [
+                'message' => 'Akses ditolak .',
+                'success' => false,
+            ];
+        }
+    }
 }

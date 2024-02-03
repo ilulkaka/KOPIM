@@ -1,6 +1,89 @@
 @extends('layout.main')
 @section('content')
-    <div class="row">
+
+<div class="card">
+        <div class="card-header bg-secondary">
+            <i class="fas fa-cog float-left"> </i>
+            <h3 class="card-title" style="font-weight: bold; margin-left:1%"> Entry Simpanan Anggota
+            </h3>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-md-7">
+                    <form id="frm_selected">
+                        @csrf
+                    <div class="modal-body">
+                    <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
+                        <div class="row">
+                            <label style="margin-left: 1%">Periode : </label>
+                            <input type="month" name="simPeriode" id="simPeriode" value="{{date('Y-m')}}" class="form-control col-md-4 rounded-0">
+                            <select name="simNull" id="simNull" class="form-control rounded-0 col-md-3 ml-2"
+                                style="border: 1px solid #ced4da">
+                                <option value="0">Not Sett</option>
+                                <option value="1">Sett</option>
+                            </select>
+                            <select name="simJenis" id="simJenis" class="form-control rounded-0 col-md-3 ml-2"
+                                                            style="border: 1px solid #ced4da" required>
+                                                            <option value="Pokok">Pokok</option>
+                                                            <option value="Wajib">Wajib</option>
+                                                        </select>
+</div>
+<br>
+<div class="row" style="margin-top:-3%">
+                            <div class="col-md-5 d-flex ml-auto">
+                                <input type="number" name="simJml" id="simJml" class="form-control rounded-0"
+                                    placeholder="Jumlah Simpanan" required>
+                                <button id="sendSelected" class="form-control btn-success rounded-0 col-md-4 ml-2">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                    <div class="modal-body" style="margin-top: -1%">
+                        <div class="table-responsive">
+                            {{-- <button id="checkAll">Check All</button>
+                            <button id="uncheckAll">Uncheck All</button> --}}
+                            <table id="tb_selectRow" class="table table-hover text-nowrap" style="width: 100%">
+                                <thead>
+                                    <th style="width: min-content;"><input type="checkbox" id="selectAll"></th>
+                                    <th style="width: min-content;">No Barcode</th>
+                                    <th style="width: max-content;">Nama</th>
+                                    <th style="width: max-content;">Jumlah</th>
+                                    <th style="width: max-content;">Jenis</th>
+                                    <th style="width: 10%;">Action</th>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+    
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-5">
+                <div class="modal-body">
+                    <!-- <button id="btn_addRp" class="form-control rounded-pill col-md-5 ml-auto">Add Range Period</button> -->
+                <label for="">List Total Simpanan</label>
+                </div>
+                <div class="modal-body" style="margin-top: 9%;">
+                <table class="table table-hover text-nowrap" id="tb_simpanan">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Simpanan</th>
+                                        <th>Jenis</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- <div class="row">
         <div class="col col-md-6">
             <div class="card card-info">
                 <div class="card-header">
@@ -45,8 +128,7 @@
                                     class="form-control rounded-0" required>
                             </div>
                         </div>
-                        <p></p>
-                        <!--<div class="modal-footer">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div>-->
+                        <p></p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
                     </form>
                 </div>
                 <div class="card-footer text-muted">
@@ -54,38 +136,7 @@
                 </div>
             </div>
         </div>
-        <div class="col col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-
-                        <div class="col-12">
-                            <h3 class="card-title"><u>Data Simpanan</u></h3>
-                        </div>
-                    </div>
-
-                    <div class="modal-body">
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-
-                            <table class="table table-hover text-nowrap" id="tb_simpanan">
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Simpanan</th>
-                                        <th>Jenis</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-        </div>
-
-    </div>
+    </div> -->
 @endsection
 
 @section('script')
@@ -151,6 +202,87 @@
                 }
             });
 
+            var selectRow = $('#tb_selectRow').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+
+                ajax: {
+                    url: APP_URL + '/api/transaksi/simpanan/selectRow',
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: "json",
+                    data: function(d) {
+                        d.simPeriode = $("#simPeriode").val();
+                        d.simNull = $("#simNull").val();
+                        d.simJenis = $("#simJenis").val();
+                    }
+                },
+                columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0 // Kolom yang ingin dijadikan multiple select
+                    },
+                ],
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child' // Seleksi berdasarkan kolom pertama
+                },
+                order: [
+                    [1, 'asc']
+                ], // Kolom untuk mengurutkan hasil seleksi
+
+                columns: [
+                    {
+                        data: null,
+                        defaultContent: ''
+                    },
+                    {
+                        data: 'no_barcode',
+                        name: 'no_barcode'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'jml_simpanan',
+                        name: 'jml_simpanan',
+                        render: $.fn.dataTable.render.number(',', '.')
+                    },
+                    {
+                        data: 'jenis_simpanan',
+                        name: 'jenis_simpanan'
+                    },
+                ]
+            });
+
+            $("#simPeriode").change(function() {
+                selectRow.ajax.reload();
+            });
+
+            $("#simNull").change(function() {
+                selectRow.ajax.reload();
+            });
+
+            $("#simJenis").change(function() {
+                selectRow.ajax.reload();
+            });
+
+                 // Event listener untuk checkbox di header
+                 $('#selectAll').change(function() {
+                var checked = this.checked;
+
+                // Perbarui status seleksi untuk semua baris
+                $('.row-select-checkbox').prop('checked', checked);
+
+                // Perbarui seleksi di DataTables
+                selectRow.rows().select(checked);
+            });
+
             var list_simpanan = $('#tb_simpanan').DataTable({
                 processing: true,
                 serverSide: true,
@@ -180,6 +312,63 @@
                         name: 'jenis_simpanan'
                     },
                 ]
+            });
+
+            $("#frm_selected").submit(function(e){
+                e.preventDefault();
+                // var data = $(this).serialize();
+                var role = $("#role").val();
+               var simJml = $("#simJml").val();
+               var simPeriode = $("#simPeriode").val();
+               var simJenis = $("#simJenis").val();
+
+                var selectedRows = selectRow.rows({
+                    selected: true
+                }).data().toArray();
+
+                // Ambil nilai NIK dari baris yang dipilih
+                var selectedNoAnggota = selectedRows.map(function(row) {
+                    return row.no_barcode;
+                });
+
+                if (simJml === '') {
+                    alert("Jumlah hak Cuti harus diisi.");
+                    return;
+                }
+
+                // Periksa apakah array selectedNIKs kosong
+                if (selectedNoAnggota.length === 0) {
+                    alert("No Anggota tidak ada yang dipilih.");
+                    return; // Keluar dari fungsi jika tidak ada yang dipilih
+                }
+
+                $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/transaksi/simpanan/sendSelected',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+    
+                            data: {'simPeriode': simPeriode, 
+                                'simJml':simJml, 
+                                'selectedNoAnggota': selectedNoAnggota,
+                            'simJenis': simJenis,
+                        'role':role},
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                selectRow.ajax.reload(null, false);
+                                list_simpanan.ajax.reload(null, false);
+                                $("#frm_selected").trigger('reset');
+                            } else {
+                                alert(resp.message);
+                            }
+
+                        });
             });
 
         });

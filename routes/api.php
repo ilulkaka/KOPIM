@@ -58,6 +58,11 @@ Route::post('transaksi/del_trx', 'TransaksiController@del_trx');
 
 Route::post('transaksi/simpanan/simpan_sim', 'SimpananController@simpan_sim');
 Route::post('transaksi/simpanan/list_sim', 'SimpananController@list_sim');
+Route::post('transaksi/simpanan/selectRow', 'SimpananController@selectRow');
+Route::post(
+    'transaksi/simpanan/sendSelected',
+    'SimpananController@sendSelected'
+);
 
 Route::post('laporan/list_stock_barang', 'StockController@list_stock_barang');
 Route::post('laporan/tambah_stock', 'StockController@tambah_stock');
