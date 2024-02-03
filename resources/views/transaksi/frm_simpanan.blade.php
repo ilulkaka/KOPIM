@@ -3,7 +3,7 @@
 
 <!-- <div class="card"> -->
         <div class="card-header bg-secondary">
-            <i class="fas fa-cog float-left"> </i>
+            <i class="fas fa-cart-plus float-left"> </i>
             <h3 class="card-title" style="font-weight: bold; margin-left:1%"> Entry Simpanan Anggota
             </h3>
         </div>
