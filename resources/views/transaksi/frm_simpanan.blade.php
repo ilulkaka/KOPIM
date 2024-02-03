@@ -27,8 +27,8 @@
                             </select>
                             <select name="simJenis" id="simJenis" class="form-control rounded-0 col-md-3 ml-2"
                                                             style="border: 1px solid #ced4da" required>
-                                                            <option value="Pokok">Pokok</option>
                                                             <option value="Wajib">Wajib</option>
+                                                            <option value="Pokok">Pokok</option>
                                                         </select>
                         </div>
                         <br>
