@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('content')
 
-<div class="card">
+<!-- <div class="card"> -->
         <div class="card-header bg-secondary">
             <i class="fas fa-cog float-left"> </i>
             <h3 class="card-title" style="font-weight: bold; margin-left:1%"> Entry Simpanan Anggota
@@ -11,13 +11,15 @@
         <div class="row">
             
             <div class="col-md-7">
+                <div class="card">
+
                     <form id="frm_selected">
                         @csrf
                     <div class="modal-body">
                     <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                         <div class="row">
                             <label style="margin-left: 1%">Periode : </label>
-                            <input type="month" name="simPeriode" id="simPeriode" value="{{date('Y-m')}}" class="form-control col-md-4 rounded-0">
+                            <input type="month" name="simPeriode" id="simPeriode" value="{{date('Y-m')}}" class="form-control col-md-4 rounded-0 ml-2">
                             <select name="simNull" id="simNull" class="form-control rounded-0 col-md-3 ml-2"
                                 style="border: 1px solid #ced4da">
                                 <option value="0">Not Sett</option>
@@ -28,13 +30,13 @@
                                                             <option value="Pokok">Pokok</option>
                                                             <option value="Wajib">Wajib</option>
                                                         </select>
-</div>
-<br>
-<div class="row" style="margin-top:-3%">
-                            <div class="col-md-5 d-flex ml-auto">
-                                <input type="number" name="simJml" id="simJml" class="form-control rounded-0"
+                        </div>
+                        <br>
+                        <div class="row" style="margin-top:-3%">
+                            <div class="col-md-8 d-flex ml-auto">
+                                <input type="number" name="simJml" id="simJml" class="form-control col-md-8 rounded-0 "
                                     placeholder="Jumlah Simpanan" required>
-                                <button id="sendSelected" class="form-control btn-success rounded-0 col-md-4 ml-2">Update</button>
+                                <button id="sendSelected" class="form-control btn-success rounded-0 col-md-4 ">Update</button>
                             </div>
                         </div>
                     </div>
@@ -59,29 +61,33 @@
                         </div>
                     </div>
                 </div>
+                </div>
 
             <div class="col-md-5">
-                <div class="modal-body">
-                    <!-- <button id="btn_addRp" class="form-control rounded-pill col-md-5 ml-auto">Add Range Period</button> -->
-                <label for="">List Total Simpanan</label>
-                </div>
-                <div class="modal-body" style="margin-top: 9%;">
-                <table class="table table-hover text-nowrap" id="tb_simpanan">
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Simpanan</th>
-                                        <th>Jenis</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                    <div class="modal-footer">
+                <div class="card">
 
+                    <div class="modal-body">
+                        <!-- <button id="btn_addRp" class="form-control rounded-pill col-md-5 ml-auto">Add Range Period</button> -->
+                    <label for="">List Total Simpanan</label>
+                    </div>
+                    <div class="modal-body" style="margin-top: 10%;">
+                    <table class="table table-hover text-nowrap" id="tb_simpanan">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Simpanan</th>
+                                            <th>Jenis</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                        <div class="modal-footer">
+    
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
     
     <!-- <div class="row">
         <div class="col col-md-6">
@@ -128,7 +134,7 @@
                                     class="form-control rounded-0" required>
                             </div>
                         </div>
-                        <p></p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
+                        <p></p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                     </form>
                 </div>
                 <div class="card-footer text-muted">
