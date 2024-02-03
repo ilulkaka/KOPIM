@@ -24,60 +24,29 @@ class StockController extends Controller
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
 
+        $endDate = $request->endDate;
+
         $Datas = DB::select(
             "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
              (SELECT * FROM tb_barang)a
              LEFT JOIN
-             (SELECT kode, sum(qty_in)as qty_in FROM tb_in GROUP BY kode)b on b.kode=a.kode
+             (SELECT kode, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY kode)b on b.kode=a.kode
              LEFT JOIN
-             (SELECT kode, sum(qty_out)as qty_out FROM tb_out GROUP BY kode)c on c.kode=a.kode
+             (SELECT kode, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY kode)c on c.kode=a.kode
              where (a.kode like '%$search%' or a.nama like '%$search%')
              LIMIT  $length OFFSET $start  "
         );
 
-        /*$Datas = DB::table('tb_barang as a')
-            ->leftJoin('tb_in as b', 'b.kode', '=', 'a.kode')
-            ->leftJoin('tb_out as c', 'c.kode', '=', 'a.kode')
-            ->select(
-                DB::raw(
-                    'a.kode, a.nama, a.spesifikasi, a.supplier, sum(coalesce(b.qty_in,0))as qty_in, sum(coalesce(c.qty_out,0))as qty_out, (sum(coalesce(b.qty_in,0)) - sum(coalesce(c.qty_out,0))) as stock '
-                )
-            )
-            ->where(function ($q) use ($search) {
-                $q
-                    ->where('a.kode', 'like', '%' . $search . '%')
-                    ->orwhere('a.nama', 'like', '%' . $search . '%')
-                    ->orwhere('a.spesifikasi', 'like', '%' . $search . '%')
-                    ->orwhere('a.supplier', 'like', '%' . $search . '%');
-            })
-            ->groupBy(
-                'a.kode',
-                'a.nama',
-                'a.spesifikasi',
-                'a.supplier',
-                'b.kode',
-                'c.kode'
-            )
-            ->skip($start)
-            ->take($length)
-            ->get();*/
-
-        $count = DB::table('tb_barang as a')
-            ->leftJoin('tb_in as b', 'b.kode', '=', 'a.kode')
-            ->leftJoin('tb_out as c', 'c.kode', '=', 'a.kode')
-            ->select(
-                DB::raw(
-                    'a.kode, a.nama, a.spesifikasi, a.supplier, sum(coalesce(b.qty_in,0))as qty_in, sum(coalesce(c.qty_out,0))as qty_out, (sum(coalesce(b.qty_in,0)) - sum(coalesce(c.qty_out,0))) as stock '
-                )
-            )
-            ->where(function ($q) use ($search) {
-                $q
-                    ->where('a.kode', 'like', '%' . $search . '%')
-                    ->orwhere('a.nama', 'like', '%' . $search . '%')
-                    ->orwhere('a.spesifikasi', 'like', '%' . $search . '%')
-                    ->orwhere('a.supplier', 'like', '%' . $search . '%');
-            })
-            ->count();
+        $co = DB::select(
+            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
+            (SELECT * FROM tb_barang)a
+            LEFT JOIN
+            (SELECT kode, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY kode)b on b.kode=a.kode
+            LEFT JOIN
+            (SELECT kode, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY kode)c on c.kode=a.kode
+            where (a.kode like '%$search%' or a.nama like '%$search%') "
+        );
+        $count = count($co);
 
         return [
             'draw' => $draw,
@@ -224,13 +193,15 @@ class StockController extends Controller
 
     public function stock_excel(Request $request)
     {
+        // dd($request->all());
+        $endDate = $request->endDate;
         $Datas = DB::select(
             "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
             (SELECT * FROM tb_barang)a 
             LEFT JOIN
-            (SELECT kode, sum(qty_in)as qty_in FROM tb_in GROUP BY kode)b on b.kode=a.kode
+            (SELECT kode, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY kode)b on b.kode=a.kode
             LEFT JOIN
-            (SELECT kode, sum(qty_out)as qty_out FROM tb_out GROUP BY kode)c on c.kode=a.kode"
+            (SELECT kode, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY kode)c on c.kode=a.kode"
         );
 
         if (count($Datas) > 0) {

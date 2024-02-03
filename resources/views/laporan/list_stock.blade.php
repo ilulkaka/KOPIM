@@ -1,16 +1,21 @@
 @extends('layout.main')
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
 
-                <div class="col-12">
-                    <h3 class="card-title"><u>Stock Barang</u></h3>
-                </div>
-            </div>
+<div class="card">
+<div class="card-header bg-secondary">
+            <i class="fas fa-cog float-left"> </i>
+            <h3 class="card-title" style="font-weight: bold; margin-left:1%"> List Stock Barang
+            </h3>
+        </div>
+
 
             <div class="modal-body">
-                <!-- /.card-header -->
+                        <div class="row">
+                            <label style="margin-left: 1%">End Stock : </label>
+                            <input type="date" name="endDate" id="endDate" value="{{date('Y-m-d')}}" class="form-control col-md-2 rounded-0 ml-2">
+                        </div>
+        <br>
+     
                 <div class="card-body table-responsive p-0">
 
                     <table class="table table-hover text-nowrap" id="tb_stock">
@@ -28,14 +33,15 @@
                         </thead>
                     </table>
                 </div>
+                <br>
+                <div class="row">
+                    <button id="btn_bm" name="btn_bm" class="form-control rounded-pill col-md-2">Detail Barang Masuk</button>
+                    <button id="btn_bk" name="btn_bk" class="form-control rounded-pill col-md-2">Detail Barang Keluar</button>
+                    <button id="btn_excel" name="btn_excel" class="form-control btn-success rounded-pill col-md-1">Excel</button>
+                </div>
             </div>
             <!-- /.card-body -->
-            <div class="row">
-                <button id="btn_bm" name="btn_bm" class="form-control rounded-pill col-md-2">Detail Barang Masuk</button>
-                <button id="btn_bk" name="btn_bk" class="form-control rounded-pill col-md-2">Detail Barang Keluar</button>
-                <button id="btn_excel" name="btn_excel" class="form-control btn-success rounded-pill col-md-1">Excel</button>
-            </div>
-        </div>
+
         <!-- /.card -->
     </div>
 
@@ -166,6 +172,9 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     dataType: "json",
+                    data: function(d) {
+                        d.endDate = $("#endDate").val();
+                    }
                 },
 
                 columnDefs: [{
@@ -224,6 +233,10 @@
                         name: 'stock'
                     },
                 ]
+            });
+
+            $("#endDate").change(function() {
+                list_stock.ajax.reload();
             });
 
             $('#tb_stock').on('click', '.ts_tambah', function() {
@@ -339,6 +352,7 @@
             });
 
             $("#btn_excel").click(function() {
+               var endDate = $("#endDate").val();
                 $.ajax({
                     url: APP_URL + '/api/laporan/stock_excel',
                     headers: {
@@ -346,6 +360,9 @@
                     },
                     type: 'POST',
                     dataType: 'json',
+                    data:  {
+                        'endDate': endDate
+                    },
 
                     success: function(response) {
                         if (response.file) {
