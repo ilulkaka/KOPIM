@@ -62,8 +62,15 @@ class LoginController extends Controller
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
+        // $userToken = auth()->user();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        auth()
+            ->user()
+            ->tokens()
+            ->delete();
+
+            $token = $user->createToken($user->name)->plainTextToken;
+
         return redirect('home');
         /*return response()->json([
             'message' => 'Hi ' . $user->name . ', welcome to home',
