@@ -75,3 +75,5 @@ Route::post('laporan/e_masuk', 'StockController@e_masuk');
 
 Route::post('home/detail_tag', 'HomeController@detail_tag');
 Route::post('chg_userProfil', 'HomeController@chg_userProfil');
+
+Route::post('upd_id', 'HomeController@upd_id');

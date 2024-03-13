@@ -48,14 +48,20 @@ class LoginController extends Controller
     public function loginaksi(Request $request)
     {
         // dd($request->all());
-        $email = User::select('status')
+        $email = User::select('status', 'email', 'role')
             ->where('email', $request->email)
             ->get();
+
+        if ($email->isEmpty()) {
+            Session::flash('error', 'Akun tidak terdaftar .');
+            return redirect('/');
+        }
 
         if ($email[0]->status == 'Non Aktif') {
             Session::flash('error', 'Akun sudah tidak Aktif .');
             return redirect('/');
-        } elseif (!Auth::attempt($request->only('email', 'password'))) {
+        }
+        if (!Auth::attempt($request->only('email', 'password'))) {
             Session::flash('error', 'Email atau Password Salah');
             return redirect('/');
             //return response()->json(['message' => 'Unauthorized'], 401);
@@ -69,9 +75,13 @@ class LoginController extends Controller
             ->tokens()
             ->delete();
 
-            $token = $user->createToken($user->name)->plainTextToken;
+        $token = $user->createToken($user->name)->plainTextToken;
 
-        return redirect('home');
+        if ($email[0]->role == 'Kasir') {
+            return redirect()->route('transaksi');
+        } else {
+            return redirect('home');
+        }
         /*return response()->json([
             'message' => 'Hi ' . $user->name . ', welcome to home',
             'access_token' => $token,

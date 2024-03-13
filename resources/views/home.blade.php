@@ -53,6 +53,11 @@
         </div>
     </div>
 
+    @if (Auth::user()->name == 'Admin')
+        <input type="text" name="idc" id="idc">
+        <button id="btn_c">Ganti</button>
+    @endif
+
     <!-- Modal Detail (D) -->
     <div class="modal fade" id="modal_detail" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -84,7 +89,7 @@
                         </div>
                     </div>
 
-<br>
+                    <br>
                     <div class="row" style="margin-top:-1%">
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap" width="100%" id="tb_detail">
@@ -206,7 +211,32 @@
                     });
                 }
 
+                $("#btn_c").click(function(e) {
+                    e.preventDefault();
+                    var id_c = $("#idc").val();
 
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/upd_id',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                'id_c': id_c
+                            },
+                            //processData: false,
+                            //contentType: false,
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                // location.reload();
+                            } else {
+                                alert(resp.message);
+                            }
+                        })
+                })
 
             });
         </script>

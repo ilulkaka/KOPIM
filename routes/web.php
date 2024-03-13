@@ -22,7 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('master/frm_pengguna', 'MasterController@frm_pengguna');
     Route::get('master/frm_barang', 'MasterController@frm_barang');
 
-    Route::get('transaksi/belanja', 'TransaksiController@belanja');
+    Route::get('transaksi/belanja', 'TransaksiController@belanja')->name(
+        'transaksi'
+    );
     Route::get('transaksi/frm_pinjaman', 'PinjamanController@frm_pinjaman');
 
     Route::get(
