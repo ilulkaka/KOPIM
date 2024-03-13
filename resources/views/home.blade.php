@@ -1,10 +1,17 @@
 @extends('layout.main')
 
 @section('content')
-    <h4>
+    {{-- <h4>
         Anda Login sebagai
         <b>{{ Auth::user()->role }}</b>
+        <span style="float-right">qr-code</span>
+    </h4> --}}
+    <h4 style="display: flex; justify-content: space-between; align-items: center;">
+        <span>Level : <b>{{ Auth::user()->role }}</b></span>
+        <span style="color: blue"><a href="#" id="a_qrCode"> qr-code</a></span>
     </h4>
+
+
 
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
@@ -114,130 +121,148 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
 
-    @section('script')
-        <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
-        <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
+    <!-- Modal qr code (qr) -->
+    <div class="modal fade" id="modal_qrCode" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        {!! $qrCode !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
 
 
-        <script type="text/javascript">
-            $(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-                $("#btn_detail").click(function() {
-                    get_detail();
-                    $("#modal_detail").modal('show');
-                });
-
-                $("#btn_reload").click(function() {
-                    //listhk.ajax.reload();
-                    get_detail();
-                });
-
-                function get_detail() {
-                    var nik = $("#nik").val();
-                    var list_detail = $('#tb_detail').DataTable({
-                        destroy: true,
-                        processing: true,
-                        serverSide: true,
-                        searching: false,
-                        lengthChange: false,
-
-                        ajax: {
-                            url: APP_URL + '/api/home/detail_tag',
-                            type: "POST",
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            dataType: "json",
-                            data: function(d) {
-                                d.nik = $("#nik").val();
-                                d.tgl_awal = $("#tgl_awal").val();
-                                d.tgl_akhir = $("#tgl_akhir").val();
-                                d.no_barcode = $("#no_barcode").val();
-                            },
-                        },
-                        'columnDefs': [{
-                            "targets": 1,
-                            "className": "text-right",
-                        }],
-
-                        columns: [{
-                                data: 'tgl_trx',
-                                name: 'tgl_trx'
-                            },
-                            {
-                                data: 'nominal',
-                                name: 'nominal',
-                                render: $.fn.dataTable.render.number(',', '.', 0, '')
-                            },
-                        ],
-                        "footerCallback": function(row, data, start, end, display) {
-                            var api = this.api(),
-                                data;
-
-                            // Remove the formatting to get integer data for summation
-                            var intVal = function(i) {
-                                return typeof i === 'string' ?
-                                    i.replace(/[\$,]/g, '') * 1 :
-                                    typeof i === 'number' ?
-                                    i : 0;
-                            };
-
-                            // Total over all pages
-                            total = api
-                                .column(0)
-                                .data()
-                                .reduce(function(a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0);
-
-                            // Total over this page
-                            TotalNominal = api
-                                .column(1, {
-                                    page: 'current'
-                                })
-                                .data()
-                                .reduce(function(a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0);
-
-                            $(api.column(1).footer()).html(
-                                TotalNominal.toLocaleString("en-US")
-                            );
-
-                        }
-                    });
-                }
-
-                $("#btn_c").click(function(e) {
-                    e.preventDefault();
-                    var id_c = $("#idc").val();
-
-                    $.ajax({
-                            type: "POST",
-                            url: APP_URL + '/api/upd_id',
-                            dataType: "json",
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            },
-                            data: {
-                                'id_c': id_c
-                            },
-                            //processData: false,
-                            //contentType: false,
-                        })
-                        .done(function(resp) {
-                            if (resp.success) {
-                                alert(resp.message);
-                                // location.reload();
-                            } else {
-                                alert(resp.message);
-                            }
-                        })
-                })
-
+            $("#btn_detail").click(function() {
+                get_detail();
+                $("#modal_detail").modal('show');
             });
-        </script>
-    @endsection
+
+            $("#btn_reload").click(function() {
+                //listhk.ajax.reload();
+                get_detail();
+            });
+
+            function get_detail() {
+                var nik = $("#nik").val();
+                var list_detail = $('#tb_detail').DataTable({
+                    destroy: true,
+                    processing: true,
+                    serverSide: true,
+                    searching: false,
+                    lengthChange: false,
+
+                    ajax: {
+                        url: APP_URL + '/api/home/detail_tag',
+                        type: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        dataType: "json",
+                        data: function(d) {
+                            d.nik = $("#nik").val();
+                            d.tgl_awal = $("#tgl_awal").val();
+                            d.tgl_akhir = $("#tgl_akhir").val();
+                            d.no_barcode = $("#no_barcode").val();
+                        },
+                    },
+                    'columnDefs': [{
+                        "targets": 1,
+                        "className": "text-right",
+                    }],
+
+                    columns: [{
+                            data: 'tgl_trx',
+                            name: 'tgl_trx'
+                        },
+                        {
+                            data: 'nominal',
+                            name: 'nominal',
+                            render: $.fn.dataTable.render.number(',', '.', 0, '')
+                        },
+                    ],
+                    "footerCallback": function(row, data, start, end, display) {
+                        var api = this.api(),
+                            data;
+
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function(i) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                        };
+
+                        // Total over all pages
+                        total = api
+                            .column(0)
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        // Total over this page
+                        TotalNominal = api
+                            .column(1, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        $(api.column(1).footer()).html(
+                            TotalNominal.toLocaleString("en-US")
+                        );
+
+                    }
+                });
+            }
+
+            $("#a_qrCode").click(function() {
+                $("#modal_qrCode").modal('show');
+            })
+
+            $("#btn_c").click(function(e) {
+                e.preventDefault();
+                var id_c = $("#idc").val();
+
+                $.ajax({
+                        type: "POST",
+                        url: APP_URL + '/api/upd_id',
+                        dataType: "json",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: {
+                            'id_c': id_c
+                        },
+                        //processData: false,
+                        //contentType: false,
+                    })
+                    .done(function(resp) {
+                        if (resp.success) {
+                            alert(resp.message);
+                            // location.reload();
+                        } else {
+                            alert(resp.message);
+                        }
+                    })
+            })
+
+        });
+    </script>
+@endsection

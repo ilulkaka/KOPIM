@@ -12,6 +12,7 @@ use App\Models\PinjamanModel;
 use App\Models\PembayaranModel;
 use Carbon\Carbon;
 use App\Models\User;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class HomeController extends Controller
 {
@@ -22,6 +23,10 @@ class HomeController extends Controller
 
         $nobarcode = DB::select(
             "select no_barcode from tb_anggota where nik='$nik' and status='Aktif'"
+        );
+
+        $idAnggota = DB::select(
+            "select id_anggota from tb_anggota where nik='$nik' and status='Aktif'"
         );
 
         if (empty($nobarcode)) {
@@ -104,6 +109,8 @@ class HomeController extends Controller
         }
         //dd($iuran_wajib[0]->jml_simpanan);
 
+        $qrCode = QrCode::size(500)->generate($idAnggota[0]->id_anggota);
+
         return view('home', [
             'thn' => $thn,
             'aktif' => $aktif,
@@ -113,6 +120,7 @@ class HomeController extends Controller
             'simpok' => $simpok[0]->simpok,
             'simwa' => $simwa[0]->simwa,
             'iuran' => $iuran,
+            'qrCode' => $qrCode,
         ]);
         //return view('/dashboard/javascript');
     }
