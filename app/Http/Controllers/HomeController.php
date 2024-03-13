@@ -224,21 +224,21 @@ class HomeController extends Controller
         ];
     }
 
-    public function upd_id(Request $request)
-    {
-        // dd($request->all());
-        $upd = DB::table('tb_anggota')
-            ->whereRaw('LENGTH(id_anggota) < 3')
-            ->get();
+    // public function upd_id(Request $request)
+    // {
+    //     // dd($request->all());
+    //     $upd = DB::table('tb_anggota')
+    //         ->whereRaw('LENGTH(id_anggota) < 3')
+    //         ->get();
 
-        foreach ($upd as $row) {
-            $newUuid = \Illuminate\Support\Str::uuid()->toString();
+    //     foreach ($upd as $row) {
+    //         $newUuid = \Illuminate\Support\Str::uuid()->toString();
 
-            DB::table('tb_anggota')
-                ->where('id_anggota', $row->id_anggota)
-                ->update([
-                    'id_anggota' => $newUuid,
-                ]);
-        }
-    }
+    //         DB::table('tb_anggota')
+    //             ->where('id_anggota', $row->id_anggota)
+    //             ->update([
+    //                 'id_anggota' => $newUuid,
+    //             ]);
+    //     }
+    // }
 }

@@ -53,10 +53,10 @@
         </div>
     </div>
 
-    @if (Auth::user()->name == 'Admin')
+    {{-- @if (Auth::user()->name == 'Admin')
         <input type="text" name="idc" id="idc">
         <button id="btn_c">Ganti</button>
-    @endif
+    @endif --}}
 
     <!-- Modal Detail (D) -->
     <div class="modal fade" id="modal_detail" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
