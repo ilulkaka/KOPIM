@@ -128,8 +128,12 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row justify-content-center" style="margin-top: -3%;">
                         {!! $qrCode !!}
+                        <h5>{{ Auth::user()->name }}</h5>
+                    </div>
+                    <div class="row justify-content-center">
+                        <label style="text-align: center;">{{ $no_barcode }}</label>
                     </div>
                 </div>
             </div>
