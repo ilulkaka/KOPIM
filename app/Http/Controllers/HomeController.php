@@ -107,7 +107,7 @@ class HomeController extends Controller
         }
         //dd($iuran_wajib[0]->jml_simpanan);
 
-        $qrCode = QrCode::size(400)->generate($idAnggota);
+        $qrCode = QrCode::size(350)->generate($idAnggota);
 
         return view('home', [
             'thn' => $thn,
