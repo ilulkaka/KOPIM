@@ -128,7 +128,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="row" style="margin-top: -3%;">
+                    <div class="row" style="margin-top: -1%;">
                         {!! $qrCode !!}
                     </div>
 

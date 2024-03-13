@@ -22,17 +22,15 @@ class HomeController extends Controller
         $nik = Auth::user()->nik;
 
         $nobarcode = DB::select(
-            "select no_barcode from tb_anggota where nik='$nik' and status='Aktif'"
-        );
-
-        $idAnggota = DB::select(
-            "select id_anggota from tb_anggota where nik='$nik' and status='Aktif'"
+            "select id_anggota, no_barcode from tb_anggota where nik='$nik' and status='Aktif'"
         );
 
         if (empty($nobarcode)) {
             $nobarcode1 = 0;
+            $idAnggota = 0;
         } else {
             $nobarcode1 = $nobarcode[0]->no_barcode;
+            $idAnggota = $nobarcode[0]->id_anggota;
         }
         //dd($nobarcode1);
 
@@ -109,7 +107,7 @@ class HomeController extends Controller
         }
         //dd($iuran_wajib[0]->jml_simpanan);
 
-        $qrCode = QrCode::size(500)->generate($idAnggota[0]->id_anggota);
+        $qrCode = QrCode::size(450)->generate($idAnggota);
 
         return view('home', [
             'thn' => $thn,
