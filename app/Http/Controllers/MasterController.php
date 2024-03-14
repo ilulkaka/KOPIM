@@ -11,12 +11,55 @@ use App\Models\AnggotaModel;
 use App\Models\BarangModel;
 use Carbon\Carbon;
 use App\Models\User;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use PDF;
 
 class MasterController extends Controller
 {
     public function frm_anggota()
     {
-        return view('master/frm_anggota');
+        $anggota = DB::table('tb_anggota')
+            ->select('id_anggota', 'no_barcode', 'nik', 'nama')
+            ->get();
+
+        return view('master/frm_anggota', ['anggota' => $anggota]);
+    }
+
+    public function frm_printQR(Request $request)
+    {
+        // dd($request->all());
+        $pq_anggota = $request->input('pq_anggota');
+        $anggota = DB::table('tb_anggota')
+            ->select('id_anggota', 'nama', 'no_barcode')
+            ->whereIn('id_anggota', $pq_anggota)
+            ->get();
+
+        $id_anggota = [];
+
+        foreach ($anggota as $ang) {
+            array_push($id_anggota, $ang->id_anggota);
+        }
+        // dd($id_anggota);
+        // $qrCode = QrCode::size(75)->generate($id_anggota);
+        $qrCodes = []; // Inisialisasi array kosong untuk menyimpan QR codes
+
+        foreach ($id_anggota as $id) {
+            $qrCode = QrCode::size(75)->generate('kopim.kopbm.com/' . $id);
+            $qrCodes[] = $qrCode;
+        }
+
+        // dd($qrCodes);
+
+        return view('master/print_qr', [
+            'anggota' => $anggota,
+            'qrCodes' => $qrCodes,
+        ]);
+
+        // $pdf = PDF::loadview('master/print_qr', [
+        //     'anggota' => $anggota,
+        //     'qrCodes' => $qrCodes,
+        // ])->setPaper('A4', 'potrait');
+        // return $pdf->stream('Lembar Laporan Pelaksanaan OJT.pdf');
     }
 
     public function list_anggota(Request $request)

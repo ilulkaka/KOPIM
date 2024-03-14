@@ -1,15 +1,16 @@
 @extends('layout.main')
 @section('content')
     <div>
-        <a href="#" id="btn_tambah" name="btn_tambah" style="size: 18px"><i class="fas fa-user-plus"> Tambah
+        <a href="#" id="btn_tambah" name="btn_tambah" style="size: 18px" class="col-md-5"><i class="fas fa-user-plus">
+                Tambah
                 Anggota</i></a>
+        <a href="#" id="btn_print" name="btn_print" style="size: 18px"><i class="fa fa-qrcode"> Print QR</i></a>
         <br>
     </div>
     <div class="card">
         <div class="card-header">
             <div class="row">
-
-                <div class="col-12">
+                <div class="col-6">
                     <h3 class="card-title"><u>List Anggota</u></h3>
                 </div>
             </div>
@@ -35,13 +36,13 @@
                     </table>
                 </div>
                 <!--<div class="card-footer">
-                        <button class="btn btn-secondary btn-flat" id="btn-print">Print</button>
-                        <button type="submit" class="btn btn-success btn-flat" id="btn-excel">Download Excel</button>
-                        <button type="button" class="btn btn-primary btn-flat" id="btn-report"><a
-                                href="{{ url('hse/hhkyrekap') }}" style="color: white;">
-                                Rekap
-                            </a></button>
-                    </div>-->
+                                                                                                                                                        <button class="btn btn-secondary btn-flat" id="btn-print">Print</button>
+                                                                                                                                                        <button type="submit" class="btn btn-success btn-flat" id="btn-excel">Download Excel</button>
+                                                                                                                                                        <button type="button" class="btn btn-primary btn-flat" id="btn-report"><a
+                                                                                                                                                                href="{{ url('hse/hhkyrekap') }}" style="color: white;">
+                                                                                                                                                                Rekap
+                                                                                                                                                            </a></button>
+                                                                                                                                                    </div>-->
 
             </div>
             <!-- /.card-body -->
@@ -112,8 +113,8 @@
     </div>
 
     <!-- Modal Edit Anggota (EA) -->
-    <div class="modal fade" id="modal_edit_anggota" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="modal_edit_anggota" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -252,19 +253,19 @@
                     <form id="form_tp">
                         @csrf
                         <div class="row">
-                        <div class="col col-md-4">
+                            <div class="col col-md-4">
                                 <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                                 <strong><i class="fas fa-quote-left"> NIK</i></strong>
                                 <input type="hidden" id="tp_nik" name="tp_nik" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
-                                    <input type="text" id="tp_nik1" name="tp_nik1" class="form-control rounded-0"
+                                <input type="text" id="tp_nik1" name="tp_nik1" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
                             </div>
                             <div class="col col-md-8">
                                 <strong><i class="fas fa-quote-left"> Nama</i></strong>
                                 <input type="hidden" id="tp_nama" name="tp_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
-                                    <input type="text" id="tp_nama1" name="tp_nama1" class="form-control rounded-0"
+                                <input type="text" id="tp_nama1" name="tp_nama1" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
                             </div>
                         </div>
@@ -279,8 +280,8 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-low-vision"> Password</i></strong>
-                                <input type="password" id="tp_password" name="tp_password" class="form-control rounded-0"
-                                    placeholder="Masukkan Nama Pengguna ." required>
+                                <input type="password" id="tp_password" name="tp_password"
+                                    class="form-control rounded-0" placeholder="Masukkan Nama Pengguna ." required>
                             </div>
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-caret-square-down"> Level</i></strong>
@@ -304,6 +305,50 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Print QR (PQ) -->
+    <div class="modal fade" id="modal_print_qr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fa fa-qrcode"> Source</i></b> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_pq" method="post" action="{{ url('master/frm_printQR') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <div class="col col-md-12">
+                                    <h10>Select multiple Member</h10>
+                                </div>
+                                <div class="form-group">
+                                    <div class="select2-purple">
+                                        <select class="select2 select2-hidden-accessible" multiple=""
+                                            data-placeholder="Select a Member" data-dropdown-css-class="select2-purple"
+                                            style="width: 100%;" data-select2-id="15" tabindex="-1" aria-hidden="true"
+                                            name="pq_anggota[]" id="pq_anggota[]" required>
+                                            @foreach ($anggota as $agg)
+                                                <option value="{{ $agg->id_anggota }}">{{ $agg->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-flat" id="btn_save_tp">Print</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -314,6 +359,13 @@
 
 
     <script type="text/javascript">
+        $(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4',
+                tags: true,
+            })
+        });
+
         $(document).ready(function() {
             /*$.ajaxSetup({
                 headers: {
@@ -523,6 +575,10 @@
                         }
                     })
             });
+
+            $("#btn_print").click(function() {
+                $("#modal_print_qr").modal('show');
+            })
 
 
 

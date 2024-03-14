@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('master/frm_anggota', 'MasterController@frm_anggota');
     Route::get('master/frm_pengguna', 'MasterController@frm_pengguna');
     Route::get('master/frm_barang', 'MasterController@frm_barang');
+    Route::post('master/frm_printQR', 'MasterController@frm_printQR');
 
     Route::get('transaksi/belanja', 'TransaksiController@belanja')->name(
         'transaksi'
