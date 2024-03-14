@@ -29,10 +29,20 @@ class MasterController extends Controller
     {
         // dd($request->all());
         $pq_anggota = $request->input('pq_anggota');
-        $anggota = DB::table('tb_anggota')
-            ->select('id_anggota', 'nama', 'no_barcode')
-            ->whereIn('id_anggota', $pq_anggota)
-            ->get();
+        // dd($pq_anggota[0]);
+        if ($pq_anggota[0] == 'All') {
+            $anggota = DB::table('tb_anggota')
+                ->select('id_anggota', 'no_barcode')
+                ->where('status', '=', 'Aktif')
+                ->get();
+        } else {
+            $anggota = DB::table('tb_anggota')
+                ->select('id_anggota', 'nama', 'no_barcode')
+                ->whereIn('id_anggota', $pq_anggota)
+                ->where('status', '=', 'Aktif')
+                ->get();
+        }
+        // dd($test);
 
         $id_anggota = [];
 
@@ -54,12 +64,6 @@ class MasterController extends Controller
             'anggota' => $anggota,
             'qrCodes' => $qrCodes,
         ]);
-
-        // $pdf = PDF::loadview('master/print_qr', [
-        //     'anggota' => $anggota,
-        //     'qrCodes' => $qrCodes,
-        // ])->setPaper('A4', 'potrait');
-        // return $pdf->stream('Lembar Laporan Pelaksanaan OJT.pdf');
     }
 
     public function list_anggota(Request $request)

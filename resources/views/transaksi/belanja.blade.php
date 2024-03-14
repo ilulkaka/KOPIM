@@ -105,13 +105,13 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                                                                                                                                                                                                                                                                                                                    <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="">Kategori ...</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Anggota">Anggota</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Umum">Umum</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </select>
-                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="">Kategori ...</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="Anggota">Anggota</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="Umum">Umum</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>-->
                         </div>
                         <!-- radio -->
                         <br>
@@ -130,8 +130,8 @@
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong><i class="fas fa-qrcode"> No Barcode</i></strong>
-                                <input type="number" id="trx_nobarcode" name="trx_nobarcode" class="form-control rounded-0"
-                                    placeholder="Masukkan No Barcode ." required>
+                                <input type="password" id="trx_nobarcode" name="trx_nobarcode"
+                                    class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
                                 <input type="hidden" id="trx_nobarcode1" name="trx_nobarcode1"
                                     class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
                             </div>
@@ -139,7 +139,8 @@
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong disabled><i class="fas fa-quote-left"> Nama</i></strong>
-                                <input type="text" id="trx_nama1" name="trx_nama1" class="form-control rounded-0"
+                                <input type="text" id="trx_nama1" name="trx_nama1"
+                                    style="font-size: 24px; font-weight:bold" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required disabled>
                                 <input type="hidden" id="trx_nama" name="trx_nama" class="form-control rounded-0"
                                     placeholder="Masukkan Nama Pengguna ." required>
@@ -158,9 +159,10 @@
                             </div>
                             <div class="col col-md-6">
                                 <br>
+                                <button type="button" class="btn btn-danger rounded-pill btn-lg float-right"
+                                    id="btn_cancel_trx">Cancel</button>
                                 <button type="button" class="btn btn-success rounded-pill btn-lg float-right"
                                     id="btn_simpan_trx">Simpan</button>
-
                             </div>
                         </div>
                         <p></p>
@@ -314,11 +316,14 @@
                     </div>
                     <hr>
                     <div class="col-md-12">
-                    <div class="row">
+                        <div class="row">
 
-                            <button type="button" id="btn_preview" name="btn_preview" class="form-control col-md-4 rounded-pill">Preview</button>
-                            <button type="button" id="btn_download" name="btn_download" class="form-control col-md-4 rounded-pill"> Download </button>
-                            <button type="button" data-dismiss="modal" class="form-control col-md-4 rounded-pill"> Close </button>
+                            <button type="button" id="btn_preview" name="btn_preview"
+                                class="form-control col-md-4 rounded-pill">Preview</button>
+                            <button type="button" id="btn_download" name="btn_download"
+                                class="form-control col-md-4 rounded-pill"> Download </button>
+                            <button type="button" data-dismiss="modal" class="form-control col-md-4 rounded-pill"> Close
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -492,6 +497,7 @@
                                     $("#result_input").val('');
                                     $("#trx_nominal").val('');
                                     $("#result_input").focus();
+                                    $("#trx_nobarcode").prop("disabled", true);
                                 } else {
                                     alert(resp.message);
                                     $("#trx_nama").val('');
@@ -534,6 +540,7 @@
                                     $("#result_input").val('');
                                     $("#trx_nominal").val('');
                                     $("#result_input").focus();
+                                    $("#trx_nobarcode").prop("disabled", true);
                                 } else {
                                     alert(resp.message);
                                     $("#trx_nama").val('');
@@ -741,6 +748,10 @@
 
             $("#btn_download_trx").click(function() {
                 $("#modal_download_trx").modal('show');
+            });
+
+            $("#btn_cancel_trx").click(function() {
+                get_load();
             });
 
             $("#btn_download").click(function() {

@@ -35,11 +35,22 @@ class TransaksiController extends Controller
 
     public function get_barcode(Request $request)
     {
-        //dd($request->all());
-        $no_barcode = $request->input('no_barcode');
+        // dd($request->all());
+        $no_barcode1 = $request->input('no_barcode');
+        if (strlen($no_barcode1) < 16) {
+            return [
+                'message' => 'Record salah .',
+                'success' => false,
+            ];
+        } else {
+            $no_barcode = substr($no_barcode1, 16); // mengambil data id_anggota
+        }
+
         $cek_anggota = DB::table('tb_anggota')
-            ->select('nik', 'nama')
-            ->where('no_barcode', $no_barcode)
+            ->select('id_anggota', 'no_barcode', 'nik', 'nama')
+            // ->where('no_barcode', $no_barcode)
+            ->where('id_anggota', $no_barcode)
+            ->where('status', '=', 'Aktif')
             ->get();
 
         if (count($cek_anggota) == 0) {
@@ -60,9 +71,16 @@ class TransaksiController extends Controller
     public function trx_simpan(Request $request)
     {
         // dd($request->all());
+        $id_anggota = substr($request->trx_nobarcode, 16);
+        $datas = DB::table('tb_anggota')
+            ->select('id_anggota', 'no_barcode', 'nik', 'nama')
+            ->where('id_anggota', $id_anggota)
+            ->where('status', '=', 'Aktif')
+            ->get();
+
         $kategori = $request->input('trx_kategori');
         if ($kategori == 'Anggota') {
-            $no_barcode = $request->trx_nobarcode;
+            $no_barcode = $datas[0]->no_barcode;
         } else {
             $no_barcode = '999999';
         }
@@ -77,10 +95,10 @@ class TransaksiController extends Controller
         $insert_trx = BelanjaModel::create([
             'id_trx_belanja' => $idTrx,
             'tgl_trx' => $date_trx,
-            'nama' => $request->trx_nama,
+            'nama' => $datas[0]->nama,
             'nominal' => $request->trx_nominal,
             'no_barcode' => $no_barcode,
-            'nik' => $request->trx_nik,
+            'nik' => $datas[0]->nik,
             'kategori' => $kategori,
             'inputor' => $request->role,
         ]);
