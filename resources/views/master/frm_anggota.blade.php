@@ -36,13 +36,13 @@
                     </table>
                 </div>
                 <!--<div class="card-footer">
-                                                                                                                                                        <button class="btn btn-secondary btn-flat" id="btn-print">Print</button>
-                                                                                                                                                        <button type="submit" class="btn btn-success btn-flat" id="btn-excel">Download Excel</button>
-                                                                                                                                                        <button type="button" class="btn btn-primary btn-flat" id="btn-report"><a
-                                                                                                                                                                href="{{ url('hse/hhkyrekap') }}" style="color: white;">
-                                                                                                                                                                Rekap
-                                                                                                                                                            </a></button>
-                                                                                                                                                    </div>-->
+                                                                                                                                                                    <button class="btn btn-secondary btn-flat" id="btn-print">Print</button>
+                                                                                                                                                                    <button type="submit" class="btn btn-success btn-flat" id="btn-excel">Download Excel</button>
+                                                                                                                                                                    <button type="button" class="btn btn-primary btn-flat" id="btn-report"><a
+                                                                                                                                                                            href="{{ url('hse/hhkyrekap') }}" style="color: white;">
+                                                                                                                                                                            Rekap
+                                                                                                                                                                        </a></button>
+                                                                                                                                                                </div>-->
 
             </div>
             <!-- /.card-body -->
@@ -318,7 +318,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_pq" method="post" action="{{ url('master/frm_printQR') }}">
+                    <form id="form_pq" method="post" action="{{ url('master/frm_printQR') }}" target="_blank">
                         @csrf
                         <div class="row">
                             <div class="col-12 col-sm-12">
@@ -579,8 +579,6 @@
             $("#btn_print").click(function() {
                 $("#modal_print_qr").modal('show');
             })
-
-
 
         });
     </script>
