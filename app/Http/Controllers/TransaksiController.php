@@ -12,6 +12,7 @@ use App\Models\AnggotaModel;
 use App\Models\BelanjaModel;
 use Carbon\Carbon;
 use App\Models\User;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class TransaksiController extends Controller
 {
@@ -39,7 +40,7 @@ class TransaksiController extends Controller
         $no_barcode1 = $request->input('no_barcode');
         if (strlen($no_barcode1) < 16) {
             return [
-                'message' => 'Record salah .',
+                'message' => 'Barcode salah .',
                 'success' => false,
             ];
         } else {
@@ -158,7 +159,10 @@ class TransaksiController extends Controller
 
     public function download(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
+        $tgl_awal = Carbon::createFromFormat('Y-m-d', $request->tgl_awal)->format('d-m-Y');
+        $tgl_akhir = Carbon::createFromFormat('Y-m-d', $request->tgl_akhir)->format('d-m-Y');
+        
         $Datas = DB::select(
             "select no_barcode, nik, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nik, nama, kategori order by nik "
         );
@@ -166,14 +170,16 @@ class TransaksiController extends Controller
         if (count($Datas) > 0) {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
-            $sheet->setCellValue('A1', 'No');
-            $sheet->setCellValue('B1', 'No Barcode');
-            $sheet->setCellValue('C1', 'NIK');
-            $sheet->setCellValue('D1', 'NAMA');
-            $sheet->setCellValue('E1', 'Nominal');
-            $sheet->setCellValue('F1', 'Kategori');
+            $sheet->mergeCells('A1:F1');
+            $sheet->setCellValue('A1', 'Transaksi dari Tanggal ' . $tgl_awal . ' Sampai ' . $tgl_akhir);
+            $sheet->setCellValue('A2', 'No');
+            $sheet->setCellValue('B2', 'No Barcode');
+            $sheet->setCellValue('C2', 'NIK');
+            $sheet->setCellValue('D2', 'NAMA');
+            $sheet->setCellValue('E2', 'Nominal');
+            $sheet->setCellValue('F2', 'Kategori');
 
-            $line = 2;
+            $line = 3;
             $no = 1;
             foreach ($Datas as $data) {
                 $sheet->setCellValue('A' . $line, $no++);
@@ -204,6 +210,75 @@ class TransaksiController extends Controller
         } else {
             return ['message' => 'No Data .', 'success' => false];
         }
+    }
+
+    public function send_mail (Request $request){
+// dd($request->all());
+
+require base_path('vendor/autoload.php');
+        $mail = new PHPMailer(true); // Passing `true` enables exceptions
+
+        $m_tgl_awal = Carbon::createFromFormat('Y-m-d', $request->m_tgl_awal)->format('d-m-Y');
+        $m_tgl_akhir = Carbon::createFromFormat('Y-m-d', $request->m_tgl_akhir)->format('d-m-Y');
+
+        $user_mail = 'cs.kopim@kopbm.com';
+        $user_pass = 'Cskopim12%';
+
+        $mailSendTo = $request->sm_to;
+        $mailSendToCC = $request->sm_cc;
+        // data pengaju cuti
+        // $datasCuti = CutiModel::where('id_cuti', $idCuti)->get();
+        // $filename =
+        //     $datasCuti[0]->nomer_report . '_' . $datasCuti[0]->nama . '.pdf';
+
+        try {
+            // Konfigurasi SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.hostinger.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = $user_mail;
+            $mail->Password = $user_pass;
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+    
+            // Set pengirim dan penerima
+            $mail->setFrom($user_mail, 'CS KOPIM');
+            $mail->addAddress($mailSendTo, $mailSendTo);
+
+                 $mail->addCC($mailSendToCC);
+                //$mail->addBCC($request->emailBcc);
+                $mail->AddAttachment(
+                    public_path('storage/excel/Transaksi.xlsx')
+                );
+    
+            // Konten email
+            $mail->isHTML(true);
+            $mail->Subject = 'Rekap Transaksi Kopim';
+            $mail->Body = 
+            'Untuk bagian pemotongan .
+            <br>
+            <br>
+            Terlampir adalah rekap transaksi untuk periode <br><b>'
+            .$m_tgl_awal. '</b> Sampai <b>'.$m_tgl_akhir.'</b> 
+            <br>
+            <br>
+            Terima Kasih <br>
+            KOPIM';
+    
+            // Kirim email
+            $mail->send();
+    
+            return [
+                'message' => "Email berhasil dikirim.",
+            'success' => true];
+            
+        } catch (Exception $e) {
+            return "Email gagal dikirim: {$mail->ErrorInfo}";
+            return [
+                'message' => "Email gagal dikirim: {$mail->ErrorInfo}",
+            'success' => false];
+        }
+
     }
 
     public function edit_trx(Request $request)

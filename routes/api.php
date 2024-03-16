@@ -55,6 +55,7 @@ Route::post('transaksi/detail_trx', 'TransaksiController@detail_trx');
 Route::post('transaksi/download', 'TransaksiController@download');
 Route::post('transaksi/edit_trx', 'TransaksiController@edit_trx');
 Route::post('transaksi/del_trx', 'TransaksiController@del_trx');
+Route::post('transaksi/send_mail', 'TransaksiController@send_mail');
 
 Route::post('transaksi/simpanan/simpan_sim', 'SimpananController@simpan_sim');
 Route::post('transaksi/simpanan/list_sim', 'SimpananController@list_sim');

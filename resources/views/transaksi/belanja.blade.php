@@ -105,13 +105,13 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="">Kategori ...</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="Anggota">Anggota</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <option value="Umum">Umum</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </select>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="">Kategori ...</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="Anggota">Anggota</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="Umum">Umum</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>-->
                         </div>
                         <!-- radio -->
                         <br>
@@ -377,6 +377,55 @@
                     <button type="submit" class="btn btn-primary btn-flat" id="btn_save_et">Save</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sending Mail (SM) -->
+    <div class="modal fade" id="modal_sending_mail" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><b><i class="fa fa-qrcode"> Sending Mail</i></b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_sm">
+                        @csrf
+                        <input type="hidden" id="m_tgl_awal" name="m_tgl_awal" class="form-control rounded-0">
+                        <input type="hidden" id="m_tgl_akhir" name="m_tgl_akhir" class="form-control rounded-0">
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <div class="col col-md-12">
+                                    <h10>Send To :</h10>
+                                </div>
+                                <div class="form-group">
+                                    <input type="mail" id="sm_to" name="sm_to" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <div class="col col-md-12">
+                                    <h10>CC :</h10>
+                                </div>
+                                <div class="form-group">
+                                    <input type="mail" id="sm_cc" name="sm_cc" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-flat" id="btn_send">Send</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -783,7 +832,12 @@
                             if (response.file) {
                                 var fpath = response.file;
                                 window.open(fpath, '_blank');
-                                location.reload();
+                                $("#modal_download_trx").modal('hide');
+
+                                $("#modal_sending_mail").modal('show');
+                                var m_tgl_awal = $("#m_tgl_awal").val(tgl_awal);
+                                var m_tgl_akhir = $("#m_tgl_akhir").val(tgl_akhir);
+                                //location.reload();
                             } else {
                                 alert(response.message);
                             }
@@ -811,6 +865,31 @@
                             alert(resp.message);
                             $('#modal_edit_trx').modal('toggle');
                             list_detail_trx.ajax.reload(null, false);
+                        } else {
+                            alert(resp.message);
+                        }
+                    })
+            });
+
+            $("#form_sm").submit(function(e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+
+                $.ajax({
+                        type: "POST",
+                        url: APP_URL + "/api/transaksi/send_mail",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content'),
+                        },
+                        data: data,
+                    })
+                    .done(function(resp) {
+                        if (resp.success) {
+                            alert(resp.message);
+                            location.reload();
+                            //$('#modal_sending_mail').modal('toggle');
+                            // list_detail_trx.ajax.reload(null, false);
                         } else {
                             alert(resp.message);
                         }
