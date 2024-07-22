@@ -160,9 +160,15 @@ class TransaksiController extends Controller
     public function download(Request $request)
     {
         // dd($request->all());
-        $tgl_awal = Carbon::createFromFormat('Y-m-d', $request->tgl_awal)->format('d-m-Y');
-        $tgl_akhir = Carbon::createFromFormat('Y-m-d', $request->tgl_akhir)->format('d-m-Y');
-        
+        $tgl_awal = Carbon::createFromFormat(
+            'Y-m-d',
+            $request->tgl_awal
+        )->format('d-m-Y');
+        $tgl_akhir = Carbon::createFromFormat(
+            'Y-m-d',
+            $request->tgl_akhir
+        )->format('d-m-Y');
+
         $Datas = DB::select(
             "select no_barcode, nik, nama, sum(nominal)as nominal, kategori from tb_trx_belanja where tgl_trx >= '$request->tgl_awal' and tgl_trx <='$request->tgl_akhir' group by no_barcode, nik, nama, kategori order by nik "
         );
@@ -171,7 +177,10 @@ class TransaksiController extends Controller
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->mergeCells('A1:F1');
-            $sheet->setCellValue('A1', 'Transaksi dari Tanggal ' . $tgl_awal . ' Sampai ' . $tgl_akhir);
+            $sheet->setCellValue(
+                'A1',
+                'Transaksi dari Tanggal ' . $tgl_awal . ' Sampai ' . $tgl_akhir
+            );
             $sheet->setCellValue('A2', 'No');
             $sheet->setCellValue('B2', 'No Barcode');
             $sheet->setCellValue('C2', 'NIK');
@@ -212,14 +221,21 @@ class TransaksiController extends Controller
         }
     }
 
-    public function send_mail (Request $request){
-// dd($request->all());
+    public function send_mail(Request $request)
+    {
+        // dd($request->all());
 
-require base_path('vendor/autoload.php');
+        require base_path('vendor/autoload.php');
         $mail = new PHPMailer(true); // Passing `true` enables exceptions
 
-        $m_tgl_awal = Carbon::createFromFormat('Y-m-d', $request->m_tgl_awal)->format('d-m-Y');
-        $m_tgl_akhir = Carbon::createFromFormat('Y-m-d', $request->m_tgl_akhir)->format('d-m-Y');
+        $m_tgl_awal = Carbon::createFromFormat(
+            'Y-m-d',
+            $request->m_tgl_awal
+        )->format('d-m-Y');
+        $m_tgl_akhir = Carbon::createFromFormat(
+            'Y-m-d',
+            $request->m_tgl_akhir
+        )->format('d-m-Y');
 
         $user_mail = 'cs.kopim@kopbm.com';
         $user_pass = 'Cskopim12%';
@@ -240,45 +256,46 @@ require base_path('vendor/autoload.php');
             $mail->Password = $user_pass;
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
-    
+
             // Set pengirim dan penerima
             $mail->setFrom($user_mail, 'CS KOPIM');
             $mail->addAddress($mailSendTo, $mailSendTo);
 
-                 $mail->addCC($mailSendToCC);
-                //$mail->addBCC($request->emailBcc);
-                $mail->AddAttachment(
-                    public_path('storage/excel/Transaksi.xlsx')
-                );
-    
+            $mail->addCC($mailSendToCC);
+            //$mail->addBCC($request->emailBcc);
+            $mail->AddAttachment(public_path('storage/excel/Transaksi.xlsx'));
+
             // Konten email
             $mail->isHTML(true);
             $mail->Subject = 'Rekap Transaksi Kopim';
-            $mail->Body = 
-            'Untuk bagian pemotongan .
+            $mail->Body =
+                'Untuk bagian pemotongan .
             <br>
             <br>
-            Terlampir adalah rekap transaksi untuk periode <br><b>'
-            .$m_tgl_awal. '</b> Sampai <b>'.$m_tgl_akhir.'</b> 
+            Terlampir adalah rekap transaksi untuk periode <br><b>' .
+                $m_tgl_awal .
+                '</b> Sampai <b>' .
+                $m_tgl_akhir .
+                '</b> 
             <br>
             <br>
             Terima Kasih <br>
             KOPIM';
-    
+
             // Kirim email
             $mail->send();
-    
+
             return [
-                'message' => "Email berhasil dikirim.",
-            'success' => true];
-            
+                'message' => 'Email berhasil dikirim.',
+                'success' => true,
+            ];
         } catch (Exception $e) {
             return "Email gagal dikirim: {$mail->ErrorInfo}";
             return [
                 'message' => "Email gagal dikirim: {$mail->ErrorInfo}",
-            'success' => false];
+                'success' => false,
+            ];
         }
-
     }
 
     public function edit_trx(Request $request)
