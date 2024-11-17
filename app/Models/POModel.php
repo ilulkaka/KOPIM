@@ -20,6 +20,7 @@ class POModel extends Model
         'qty',
         'satuan',
         'harga_po',
+        'nouki',
         'status_po',
     ];
 }
