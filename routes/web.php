@@ -38,4 +38,6 @@ Route::middleware('auth')->group(function () {
     Route::get('laporan/stock_barang', 'StockController@stock_barang');
     Route::get('laporan/barang_masuk', 'StockController@barang_masuk');
     Route::get('laporan/barang_keluar', 'StockController@barang_keluar');
+
+    Route::get('sub/frm_po', 'SubController@frm_po');
 });

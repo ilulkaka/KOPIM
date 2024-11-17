@@ -179,6 +179,26 @@
                                 </ul>
                             </li>
 
+                            <li class="nav-item has-treeview {{ Request::is('sub/*') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ Request::is('sub/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-cash-register"></i>
+                                    <p>
+                                        SUB
+                                        <i class="fas fa-angle-left right"></i>
+                                        <!-- <span class="badge badge-info right">6</span> -->
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('sub/po') }}"
+                                            class="nav-link {{ Request::is('sub/po') ? 'active' : '' }}">
+                                            <i class="fas fa-directions nav-icon"></i>
+                                            <p>PO</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
                             <li class="nav-item has-treeview {{ Request::is('laporan/*') ? 'menu-open' : '' }}">
                                 <a href="#" class="nav-link {{ Request::is('laporan/*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-folder-open"></i>
