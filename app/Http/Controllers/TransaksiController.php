@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -71,10 +72,85 @@ class TransaksiController extends Controller
 
     public function trx_simpan(Request $request)
     {
+        // Ambil ID anggota
+        $id_anggota = substr($request->trx_nobarcode, 16);
+        $datas = DB::table('tb_anggota')
+            ->select('id_anggota', 'no_barcode', 'nik', 'nama', 'no_telp')
+            ->where('id_anggota', $id_anggota)
+            ->where('status', '=', 'Aktif')
+            ->get();
+
+        // Validasi jika data kosong
+        if ($datas->isEmpty()) {
+            return response()->json([
+                'message' => 'Data anggota tidak ditemukan atau status tidak aktif.',
+                'success' => false,
+            ], 404);
+        }
+
+        $kategori = $request->input('trx_kategori');
+        $no_barcode = ($kategori == 'Anggota') ? $datas[0]->no_barcode : '999999';
+        $date_trx = ($request->role1 == 'Administrator') ? $request->tgl_trx : date('Y-m-d');
+        $idTrx = Str::uuid();
+
+        // Insert data transaksi
+        $insert_trx = BelanjaModel::create([
+            'id_trx_belanja' => $idTrx,
+            'tgl_trx' => $date_trx,
+            'nama' => $datas[0]->nama,
+            'nominal' => $request->trx_nominal,
+            'no_barcode' => $no_barcode,
+            'nik' => $datas[0]->nik,
+            'kategori' => $kategori,
+            'inputor' => $request->role,
+        ]);
+
+        if ($insert_trx) {
+            // Validasi nomor telepon
+            if (empty($datas[0]->no_telp)) {
+                return response()->json([
+                    'message' => 'Nomor telepon tidak tersedia untuk anggota ini.',
+                    'success' => false,
+                ], 400);
+            }
+
+            // Kirim WhatsApp
+            $response = Http::withHeaders([
+                'Authorization' => 'LMjyNNhxuSK8pDpa4Z9n',
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $datas[0]->no_telp,
+                'message' => "Halo, *" . $datas[0]->nama . "*!\nTransaksi berhasil dengan nominal: *" . $request->trx_nominal . "*",
+            ]);
+
+            if ($response->failed()) {
+                \Log::error('Fonnte API Error:', $response->json());
+                return response()->json([
+                    'message' => 'Transaksi berhasil, tetapi pengiriman WhatsApp gagal.',
+                    'success' => false,
+                    'error' => $response->json(),
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Transaksi dan pengiriman WhatsApp berhasil!',
+                'success' => true,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Gagal menyimpan transaksi!',
+                'success' => false,
+            ]);
+        }
+    }
+
+
+    /*
+    public function trx_simpan(Request $request)
+    {
         // dd($request->all());
         $id_anggota = substr($request->trx_nobarcode, 16);
         $datas = DB::table('tb_anggota')
-            ->select('id_anggota', 'no_barcode', 'nik', 'nama')
+            ->select('id_anggota', 'no_barcode', 'nik', 'nama', 'no_telp')
             ->where('id_anggota', $id_anggota)
             ->where('status', '=', 'Aktif')
             ->get();
@@ -105,6 +181,15 @@ class TransaksiController extends Controller
         ]);
 
         if ($insert_trx) {
+
+              // Konfigurasi pengiriman WA
+        $response = Http::withHeaders([
+            'Authorization' => 'LMjyNNhxuSK8pDpa4Z9n', // Ganti dengan token Anda
+        ])->post('https://api.fonnte.com/send', [
+            'target' => $datas[0]->no_telp, // Nomor WA tujuan dari input request
+            'message' => 'Halo, ' . $datas[0]->nama . '! Transaksi berhasil dengan nominal: ' . $request->trx_nominal,
+        ]);
+
             return [
                 'message' => 'Update Berhasil !',
                 'success' => true,
@@ -116,7 +201,7 @@ class TransaksiController extends Controller
             ];
         }
     }
-
+*/
     public function detail_trx(Request $request)
     {
         //dd($request->all());

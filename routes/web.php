@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'LoginController@login')->name('login');
@@ -40,4 +41,14 @@ Route::middleware('auth')->group(function () {
     Route::get('laporan/barang_keluar', 'StockController@barang_keluar');
 
     Route::get('sub/frm_po', 'SubController@frm_po');
+
+    // Route::get('send-wa', function(){
+    //     $response = Http::withHeaders([
+    //         'Authorization' => 'LMjyNNhxuSK8pDpa4Z9n',
+    //     ])->post('https://api.fonnte.com/send',[
+    //         'target' => '085746200098',
+    //         'message' => 'Ini pesan laravel',
+    //     ]);
+
+    // });
 });
