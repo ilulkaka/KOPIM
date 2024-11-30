@@ -3,6 +3,14 @@
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
+// Route::post('/webhook', function () {
+//     \Log::info($request->all());
+//     return response()->json(['status' => 'success'], 200);
+// });
+
+Route::get('/getUpdates', 'TransaksiController@getUpdates');
+// Route::get('/send-message', 'TransaksiController@sendMessage');
+
 Route::get('/', 'LoginController@login')->name('login');
 Route::post('loginaksi', 'LoginController@loginaksi')->name('loginaksi');
 /*Route::get('home', 'HomeController@index')

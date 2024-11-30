@@ -17,6 +17,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class TransaksiController extends Controller
 {
+
+    private $botToken;
+
+    public function __construct()
+    {
+        $this->botToken = env('TELEGRAM_BOT_TOKEN'); // Ganti dengan token bot Anda
+    }
+
     public function belanja()
     {
         $tgl_sekarang = date('Y-m-d');
@@ -75,10 +83,12 @@ class TransaksiController extends Controller
         // Ambil ID anggota
         $id_anggota = substr($request->trx_nobarcode, 16);
         $datas = DB::table('tb_anggota')
-            ->select('id_anggota', 'no_barcode', 'nik', 'nama', 'no_telp')
+            ->select('id_anggota', 'no_barcode', 'nik', 'nama', 'no_telp', 'chat_id')
             ->where('id_anggota', $id_anggota)
             ->where('status', '=', 'Aktif')
             ->get();
+
+        $chatId = $datas[0]->chat_id;
 
         // Validasi jika data kosong
         if ($datas->isEmpty()) {
@@ -107,34 +117,26 @@ class TransaksiController extends Controller
 
         if ($insert_trx) {
             // Validasi nomor telepon
-            if (empty($datas[0]->no_telp)) {
+            if (empty($chatId)) {
                 return response()->json([
-                    'message' => 'Nomor telepon tidak tersedia untuk anggota ini.',
-                    'success' => false,
-                ], 400);
+                    'message' => "Transaksi berhasil ! \nChat ID tidak tersedia untuk anggota ini.",
+                    'success' => true,
+                ]);
+            } else {
+                $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
+                $formattedNominal = 'Rp ' . number_format($request->trx_nominal, 0, ',', '.');  // Format nominal menjadi Rupiah
+                Http::post($url, [
+                    'chat_id' => $chatId,
+                    'text' => "Halo, **".$datas[0]->nama."**! \nTransaksi anda sebesar **".$formattedNominal."** \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih.",
+                    'parse_mode' => 'Markdown',  // Menggunakan Markdown untuk format
+                ]);            
+    
+                return response()->json([
+                    'message' => 'Transaksi berhasil!',
+                    'success' => true,
+                ]);
             }
 
-            // Kirim WhatsApp
-            $response = Http::withHeaders([
-                'Authorization' => 'LMjyNNhxuSK8pDpa4Z9n',
-            ])->post('https://api.fonnte.com/send', [
-                'target' => $datas[0]->no_telp,
-                'message' => "Halo, *" . $datas[0]->nama . "*!\nTransaksi berhasil dengan nominal: *" . $request->trx_nominal . "*",
-            ]);
-
-            if ($response->failed()) {
-                \Log::error('Fonnte API Error:', $response->json());
-                return response()->json([
-                    'message' => 'Transaksi berhasil, tetapi pengiriman WhatsApp gagal.',
-                    'success' => false,
-                    'error' => $response->json(),
-                ], 500);
-            }
-
-            return response()->json([
-                'message' => 'Transaksi dan pengiriman WhatsApp berhasil!',
-                'success' => true,
-            ]);
         } else {
             return response()->json([
                 'message' => 'Gagal menyimpan transaksi!',
@@ -424,4 +426,82 @@ class TransaksiController extends Controller
             ];
         }
     }
+
+
+    public function getUpdates()
+    {
+        // URL API Telegram
+        $url = "https://api.telegram.org/bot{$this->botToken}/getUpdates";
+
+        // Kirim permintaan ke API Telegram
+        $response = Http::get($url);
+
+        // Decode hasil JSON
+        $updates = $response->json();
+
+        // Periksa apakah ada pembaruan
+        if ($updates['ok'] && !empty($updates['result'])) {
+            foreach ($updates['result'] as $update) {
+                // Ambil chat_id dan update_id dari update
+                $chatId = $update['message']['chat']['id'] ?? null;
+                $updateId = $update['update_id'] ?? null;
+                $message = $update['message'] ?? null;
+                $text = $message['text'] ?? null;
+
+                if ($chatId && $updateId) {
+                    // Ambil update_id terakhir dari cache untuk chat_id tertentu
+                    $lastUpdateId = \Cache::get('telegram_last_update_id_' . $chatId, 0);
+
+                    // Proses hanya pembaruan baru berdasarkan update_id
+                    if ($updateId > $lastUpdateId) {
+                        if ($message) {
+                            if ($text && preg_match('/^\d{10,15}$/', $text)) { // Validasi nomor telepon
+                                $anggota = \DB::table('tb_anggota')->where('no_telp', $text)->first();
+
+                                if ($anggota) {
+                                    if ($anggota->chat_id) {
+                                        // Jika chat_id sudah ada
+                                        $this->sendMessage($chatId, "Nomor telepon sudah terdaftar.");
+                                    } else {
+                                        // Perbarui chat_id jika belum ada
+                                        \DB::table('tb_anggota')
+                                            ->where('no_telp', $text)
+                                            ->update(['chat_id' => $chatId]);
+
+                                        $this->sendMessage($chatId, "Nomor berhasil terdaftar.");
+                                    }
+                                } else {
+                                    $this->sendMessage($chatId, "Nomor telepon tidak ditemukan di database.");
+                                }
+                            } else {
+                                $this->sendMessage($chatId, "Mohon kirimkan nomor telepon yang valid.");
+                            }
+                        }
+
+                        // Perbarui lastUpdateId dengan update_id terbaru
+                        \Cache::put('telegram_last_update_id_' . $chatId, $updateId);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    private function sendMessage($chatId, $message)
+    {
+        $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
+        Http::post($url, [
+            'chat_id' => $chatId,
+            'text' => $message,
+        ]);
+    }
+
+    private function setOffset($offset)
+    {
+        $url = "https://api.telegram.org/bot{$this->botToken}/getUpdates";
+        Http::get($url, ['offset' => $offset]);
+
+    }
+
 }
