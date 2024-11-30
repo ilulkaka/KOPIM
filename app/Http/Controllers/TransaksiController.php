@@ -430,6 +430,7 @@ class TransaksiController extends Controller
 
     public function getUpdates()
     {
+        // dd(url('/'));
         // URL API Telegram
         $url = "https://api.telegram.org/bot{$this->botToken}/getUpdates";
 
@@ -497,11 +498,39 @@ class TransaksiController extends Controller
         ]);
     }
 
-    private function setOffset($offset)
+    public function handleWebhook(Request $request)
     {
-        $url = "https://api.telegram.org/bot{$this->botToken}/getUpdates";
-        Http::get($url, ['offset' => $offset]);
+        // Ambil payload dari webhook
+        $update = $request->all();
 
+        // Periksa apakah ada data 'message'
+        if (!empty($update['message'])) {
+            $message = $update['message'];
+            $chatId = $message['chat']['id'] ?? null;
+            $text = $message['text'] ?? null;
+
+            if ($chatId && $text) {
+                // Logika penanganan berdasarkan teks
+                if (preg_match('/^\d{10,15}$/', $text)) { // Jika teks berupa nomor telepon
+                    $anggota = DB::table('tb_anggota')->where('no_telp', $text)->first();
+
+                    if ($anggota) {
+                        if ($anggota->chat_id) {
+                            // Jika chat_id sudah ada
+                            $this->sendMessage($chatId, "Nomor telepon sudah terdaftar.");
+                        } else {
+                            // Perbarui chat_id jika belum ada
+                            DB::table('tb_anggota')->where('no_telp', $text)->update(['chat_id' => $chatId]);
+                            $this->sendMessage($chatId, "Nomor berhasil terdaftar.");
+                        }
+                    } else {
+                        $this->sendMessage($chatId, "Nomor telepon tidak ditemukan di database.");
+                    }
+                } else {
+                    $this->sendMessage($chatId, "Mohon kirimkan nomor telepon yang valid.");
+                }
+            }
+        }
     }
 
 }

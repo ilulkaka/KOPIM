@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/getUpdates', 'TransaksiController@getUpdates');
-// Route::get('/send-message', 'TransaksiController@sendMessage');
+Route::post('/webhook', 'TransaksiController@handleWebhook');
 
 Route::get('/', 'LoginController@login')->name('login');
 Route::post('loginaksi', 'LoginController@loginaksi')->name('loginaksi');
