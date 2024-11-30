@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 //     return response()->json(['status' => 'success'], 200);
 // });
 
-Route::get('/getUpdates', 'TransaksiController@getUpdates');
+// Route::get('/getUpdates', 'TransaksiController@getUpdates');
 Route::post('/webhook', 'TransaksiController@handleWebhook');
 
 Route::get('/', 'LoginController@login')->name('login');

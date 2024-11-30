@@ -105,13 +105,13 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="">Kategori ...</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="Anggota">Anggota</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <option value="Umum">Umum</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </select>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="">Kategori ...</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Anggota">Anggota</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Umum">Umum</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
                         </div>
                         <!-- radio -->
                         <br>
@@ -170,8 +170,8 @@
                     </form>
                 </div>
                 <div class="card-footer text-muted">
-                    <button type="button" class="btn btn-outline btn-flat float-left" id="btn_upd_telegram"
-                        style="color: blue"><u> Update Telegram</u></button>
+                    {{-- <button type="button" class="btn btn-outline btn-flat float-left" id="btn_upd_telegram"
+                        style="color: blue"><u> Update Telegram</u></button> --}}
                     <button type="button" class="btn btn-outline btn-flat float-right" id="btn_detail_trx"
                         style="color: blue"><u> Detail
                             Trx</u></button>
@@ -649,7 +649,7 @@
                 }
             });
 
-            $("#btn_upd_telegram").click(function() {
+            /*$("#btn_upd_telegram").click(function() {
                 // Melakukan permintaan GET ke route getUpdates
                 $.ajax({
                     url: '/getUpdates', // URL route yang mengarah ke TransaksiController@getUpdates
@@ -663,7 +663,7 @@
                         alert('Terjadi kesalahan.'); // Beri tahu pengguna jika error
                     }
                 });
-            });
+            });*/
 
 
             $("#btn_detail_trx").click(function() {
