@@ -62,7 +62,7 @@ class PembayaranController extends Controller
 
     public function simpan_pem(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         if ($request->role == 'Administrator') {
             if ($request->pem_angke == $request->pem_tenor) {
                 $st = 'Close';
@@ -79,6 +79,7 @@ class PembayaranController extends Controller
                 'tgl_angsuran' => $request->pem_perang,
                 'angsuran_ke' => $request->pem_angke,
                 'status_angsuran' => $st,
+                'type_angsuran' => $request->f_type,
             ]);
 
             if ($request->pem_angke == $request->pem_tenor) {
@@ -113,15 +114,39 @@ class PembayaranController extends Controller
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
 
-        $Datas = DB::select(
-            "SELECT no_pinjaman, nama, max(jml_angsuran)as jml_angsuran, max(angsuran_ke)as angsuran_ke FROM tb_pembayaran where status_angsuran = 'Open' and (no_pinjaman like '%$search%')group by no_pinjaman, nama
-            LIMIT  $length OFFSET $start  "
-        );
+        $f_status = $request->f_status;
+        
+        $arrStatus = '';
+        if ($f_status == 'All') {
+            $arrStatus = "status_angsuran IN ('Open', 'Close')"; 
+        } else {
+            $arrStatus = "status_angsuran = '$f_status'"; 
+        }
+        
+
+        $Datas = DB::select("
+        WITH RankedData AS (
+        SELECT no_pinjaman, nama, jml_angsuran, angsuran_ke, status_angsuran,
+            ROW_NUMBER() OVER (PARTITION BY no_pinjaman ORDER BY angsuran_ke DESC) AS row_num
+        FROM tb_pembayaran
+        )
+        SELECT no_pinjaman, nama, jml_angsuran, angsuran_ke, status_angsuran
+        FROM RankedData
+        WHERE row_num = 1 and $arrStatus and (no_pinjaman like '%$search%' or nama like '%$search%') LIMIT  $length OFFSET $start");
+        // $Datas = DB::select(
+        //     "SELECT no_pinjaman, nama, max(jml_angsuran)as jml_angsuran, max(angsuran_ke)as angsuran_ke, status_angsuran FROM tb_pembayaran where (no_pinjaman like '%$search%')group by no_pinjaman, nama, status_angsuran
+        //     LIMIT  $length OFFSET $start  "
+        // );
 
         $co = DB::select(
-            "SELECT no_pinjaman, nama, max(jml_angsuran)as jml_angsuran, max(angsuran_ke)as angsuran_ke FROM tb_pembayaran where status_angsuran = 'Open' and (no_pinjaman like '%$search%')group by no_pinjaman, nama
-            LIMIT  $length OFFSET $start  "
-        );
+            "WITH RankedData AS (
+        SELECT no_pinjaman, nama, jml_angsuran, angsuran_ke, status_angsuran,
+            ROW_NUMBER() OVER (PARTITION BY no_pinjaman ORDER BY angsuran_ke DESC) AS row_num
+        FROM tb_pembayaran
+        )
+        SELECT no_pinjaman, nama, jml_angsuran, angsuran_ke, status_angsuran
+        FROM RankedData
+        WHERE row_num = 1 and $arrStatus and (no_pinjaman like '%$search%' or nama like '%$search%') LIMIT  $length OFFSET $start");
         $count = count($co);
 
         return [

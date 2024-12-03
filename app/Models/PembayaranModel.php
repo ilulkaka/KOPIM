@@ -21,5 +21,6 @@ class PembayaranModel extends Model
         'tgl_angsuran',
         'angsuran_ke',
         'status_angsuran',
+        'type_angsuran',
     ];
 }

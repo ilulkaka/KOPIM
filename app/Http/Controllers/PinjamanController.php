@@ -76,23 +76,32 @@ class PinjamanController extends Controller
         $search = $request->input('search')['value'];
         $start = (int) $request->input('start');
         $length = (int) $request->input('length');
+
+        $f_status = $request->f_status;
+        
+        $arrStatus = [];
+        if ($f_status == 'All') {
+            $arrStatus = ['Open', 'Close']; // Langsung tetapkan array
+        } else {
+            $arrStatus[] = $f_status; // Tambahkan elemen ke array
+        }
+
         $Datas = DB::table('tb_pinjaman')
-            ->select('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
-            ->where('status_pinjaman', '=', 'Open')
+            ->select('id_pinjaman', 'no_pinjaman', 'nama', 'jml_pinjaman', 'tenor', 'status_pinjaman')
+            ->whereIn('status_pinjaman', $arrStatus)
             ->where(function ($q) use ($search) {
                 $q
                     ->orwhere('nama', 'like', '%' . $search . '%')
                     ->orWhere('no_pinjaman', 'like', '%' . $search . '%');
             })
-            ->groupBy('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
             ->orderBy('no_pinjaman', 'asc')
             ->skip($start)
             ->take($length)
             ->get();
 
         $count = DB::table('tb_pinjaman')
-            ->select('no_pinjaman', 'nama', 'jml_pinjaman', 'tenor')
-            ->where('status_pinjaman', '=', 'Open')
+        ->select('id_pinjaman', 'no_pinjaman', 'nama', 'jml_pinjaman', 'tenor', 'status_pinjaman')
+            ->whereIn('status_pinjaman', $arrStatus)
             ->where(function ($q) use ($search) {
                 $q
                     ->orwhere('nama', 'like', '%' . $search . '%')

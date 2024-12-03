@@ -58,11 +58,11 @@
                 </div>
                 <div class="card-footer text-muted">
                     <!--<button type="button" class="btn btn-outline btn-flat float-left" id="btn_detail_pin"
-                            style="color: blue"><u> Detail
-                                Trx</u></button>
-                        <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
-                            style="color: blue"><u>Download
-                                Trx</u></button>-->
+                                                            style="color: blue"><u> Detail
+                                                                Trx</u></button>
+                                                        <button type="button" class="btn btn-outline btn-flat float-left" id="btn_download_pin"
+                                                            style="color: blue"><u>Download
+                                                                Trx</u></button>-->
                     <button type="button" class="btn btn-success btn-flat float-right" id="btn_simpan_pin">Simpan</button>
                 </div>
             </div>
@@ -70,14 +70,35 @@
         <div class="col col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <div class="row">
-
-                        <div class="col-12">
-                            <h3 class="card-title"><u>Data Pinjaman</u></h3>
+                    <div class="col-md-12">
+                        {{-- <div class="card card-secondary card-outline"> --}}
+                        <div class="card-header">
+                            <h5 class="d-flex">
+                                <i class="fa fa-address-book"></i>
+                                <b style="margin-left: 1%"><u> Data Pinjaman </u></b>
+                            </h5>
                         </div>
                     </div>
-
-                    <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="row" style=" margin-left:1%">
+                            <div class="form-group col-md-4">
+                                <strong>Status</strong>
+                                <select name="f_status" id="f_status" class="form-control select2">
+                                    <option value="Open">Open</option>
+                                    <option value="Close">Close</option>
+                                    <option value="All">All</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <strong> Reload </strong>
+                                <br>
+                                <button class="btn btn-primary rounded-pill" id="btn_reload"><i
+                                        class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin-top: -5px">
+                    <div class="card-body" style="margin-top:-30px">
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
 
@@ -88,6 +109,7 @@
                                         <th>Nama</th>
                                         <th>Pinjaman</th>
                                         <th>Tenor</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -171,6 +193,7 @@
                 processing: true,
                 serverSide: true,
                 searching: false,
+                ordering: false,
 
                 ajax: {
                     url: APP_URL + '/api/transaksi/pinjaman/list_pin',
@@ -178,7 +201,9 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    dataType: "json",
+                    data: function(d) {
+                        d.f_status = $("#f_status").val();
+                    },
                 },
 
                 columns: [{
@@ -198,7 +223,15 @@
                         data: 'tenor',
                         name: 'tenor'
                     },
+                    {
+                        data: 'status_pinjaman',
+                        name: 'status_pinjaman'
+                    },
                 ]
+            });
+
+            $("#btn_reload").click(function() {
+                list_pinjaman.ajax.reload();
             });
 
         });
