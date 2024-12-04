@@ -22,8 +22,7 @@ class TelegramController extends Controller
         return view ('laporan/lap_transaksi');
     }
 
-    // public function rekapTransaksi (Request $request){
-        public function rekapTransaksi (){
+    public function rekapTransaksi (Request $request){
         // dd($request->all());
         $today = date('Y-m-d');
         $dateSend = date('Y-m') . '-20';
@@ -44,7 +43,7 @@ class TelegramController extends Controller
         // 1877499384
         $datas = DB::select("
         SELECT a.nama, a.no_barcode, a.chat_id, b.total, c.jml_angsuran as pinjaman, d.jml_simpanan as simpanan FROM 
-        (select nama, no_barcode, chat_id from tb_anggota WHERE chat_id in ('834347507'))a 
+        (select nama, no_barcode, chat_id from tb_anggota WHERE chat_id is not null)a 
         LEFT JOIN 
         (select no_barcode, sum(nominal)as total from tb_trx_belanja where tgl_trx between '$per_awal' and '$per_akhir'
         group by no_barcode)b on a.no_barcode = b.no_barcode
@@ -71,6 +70,10 @@ class TelegramController extends Controller
             if ($chatId) {
                 // Format the message
                 $message = "
+                <b> - Pesan ini untuk keperluan developer, 
+                Mohon abaikan.</b>
+
+
                 <b> 📋 Rekap Anggota KOPIM 📋 </b>
 <b>$dateFormatAwal</b> - <b>$dateFormatAkhir</b>  
 ------------------------------------

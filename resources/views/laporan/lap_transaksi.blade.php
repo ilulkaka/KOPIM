@@ -1,7 +1,10 @@
 @extends('layout.main')
 @section('content')
     @if (Auth::user()->role == 'Administrator')
-        <button type="button" id="btn_test" name="btn_test">Test</button>
+        <h5 style="font-family: 'Times New Roman', Times, serif"> * Send ketika tanggal 20</h5>
+        <button type="button" id="btn_sendTelegram" name="btn_sendTelegram" class="form-control btn-flat col-md-2"><i
+                class="fab fa-telegram-plane"> Send
+                Telegram</i></button>
     @endif
 @endsection
 
@@ -15,7 +18,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            $("#btn_test").click(function() {
+            $("#btn_sendTelegram").click(function() {
                 $.ajax({
                         type: "POST",
                         url: APP_URL + '/api/laporan/rekapTransaksi',
