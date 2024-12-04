@@ -59,4 +59,6 @@ Route::middleware('auth')->group(function () {
     //     ]);
 
     // });
+
+    Route::get('laporan/lap_transaksi', 'TelegramController@lap_transaksi');
 });

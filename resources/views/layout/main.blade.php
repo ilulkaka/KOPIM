@@ -216,7 +216,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('') }}"
+                                        <a href="{{ url('laporan/lap_transaksi') }}"
                                             class="nav-link {{ Request::is('') ? 'active' : '' }}">
                                             <i class="fas fa-file-alt nav-icon"></i>
                                             <p>Transaksi</p>
