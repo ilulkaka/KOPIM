@@ -213,13 +213,13 @@ No Anggota  : <b>$noBarcode</b>
                 if ($chatId) {
                     // Format the message
                     $message = "
-<b> 📋 Rekap Anggota KOPIM 📋 </b>
+<b> 📌 Rekap Anggota KOPIM  </b>
 <b>$dateFormatAwal</b> - <b>$dateFormatAkhir</b>  
 ------------------------------------
 Nama            : <b>$nama</b>
 No Anggota  : <b>$noBarcode</b>
     
-<b>⭐️ Kredit </b>
+<b>💸 Kredit </b>
     - Transaksi   : <b>Rp " . number_format($transaksi, 0, ',', '.') . "</b>  
     - Angsuran ke-<b>".$angsuran_ke."</b>   : <b>Rp " . number_format($pinjaman, 0, ',', '.') . "</b>
     <b>* Total  : Rp " . number_format($totalkredit, 0, ',', '.') . "</b>
@@ -228,11 +228,13 @@ No Anggota  : <b>$noBarcode</b>
     - Simpanan Wajib  : <b>Rp " . number_format($simpanan_wajib, 0, ',', '.') . "</b>
     - Simpanan Pokok  : <b>Rp " . number_format($simpanan_pokok, 0, ',', '.') . "</b> 
     - SHU            : <b>Rp " . number_format($shu, 0, ',', '.') . "</b>  
-    <b>* Total  : Rp " . number_format($totaldebit, 0, ',', '.') . "</b>
+    <b>💰 Total  : Rp " . number_format($totaldebit, 0, ',', '.') . "</b>
         
 ------------------------------------
     
     <b> Terima Kasih </b>
+    🙏
+    
     ";
     
     
