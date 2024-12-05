@@ -127,8 +127,8 @@ class TransaksiController extends Controller
                 $formattedNominal = 'Rp ' . number_format($request->trx_nominal, 0, ',', '.');  // Format nominal menjadi Rupiah
                 Http::post($url, [
                     'chat_id' => $chatId,
-                    'text' => "Halo, **".$datas[0]->nama."**! \nTransaksi anda sebesar **".$formattedNominal."** \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih.",
-                    'parse_mode' => 'Markdown',  // Menggunakan Markdown untuk format
+                    'text' => "Halo, <b>".$datas[0]->nama."</b> ! \nTransaksi anda sebesar <b>".$formattedNominal."</b> \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih.",
+                    'parse_mode' => 'HTML' // Gunakan 'HTML' atau 'Markdown'
                 ]);            
     
                 return response()->json([
@@ -495,6 +495,7 @@ class TransaksiController extends Controller
         Http::post($url, [
             'chat_id' => $chatId,
             'text' => $message,
+            'parse_mode' => 'HTML' // Gunakan 'HTML' atau 'Markdown'
         ]);
     }
 

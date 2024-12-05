@@ -80,3 +80,4 @@ Route::post('chg_userProfil', 'HomeController@chg_userProfil');
 Route::post('upd_id', 'HomeController@upd_id');
 
 Route::post('laporan/rekapTransaksi', 'TelegramController@rekapTransaksi');
+Route::post('laporan/manual_sendTelegram', 'TelegramController@manual_sendTelegram');

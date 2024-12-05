@@ -20,5 +20,6 @@ class AnggotaModel extends Model
         'status',
         'no_ktp',
         'no_barcode',
+        'chat_id'
     ];
 }

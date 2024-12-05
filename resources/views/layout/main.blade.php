@@ -244,6 +244,13 @@
                                             <p>Pinjaman</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('laporan/frm_sendTelegram') }}"
+                                            class="nav-link {{ Request::is('laporan/frm_sendTelegram') ? 'active' : '' }}">
+                                            <i class="fab fa-telegram-plane nav-icon"></i>
+                                            <p>Send Telegram</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
 

@@ -1,11 +1,11 @@
 @extends('layout.main')
 @section('content')
-    @if (Auth::user()->role == 'Administrator')
+    {{-- @if (Auth::user()->role == 'Administrator')
         <h5 style="font-family: 'Times New Roman', Times, serif"> * Send ketika tanggal 20</h5>
         <button type="button" id="btn_sendTelegram" name="btn_sendTelegram" class="form-control btn-flat col-md-2"><i
                 class="fab fa-telegram-plane"> Send
                 Telegram</i></button>
-    @endif
+    @endif --}}
 @endsection
 
 @section('script')
