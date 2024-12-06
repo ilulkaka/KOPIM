@@ -203,7 +203,6 @@ No Anggota  : <b>$noBarcode</b>
                         SUM(CASE WHEN jenis_simpanan = 'Wajib' THEN jml_simpanan ELSE 0 END) as jml_simpanan_wajib,
                         SUM(CASE WHEN jenis_simpanan = 'Pokok' THEN jml_simpanan ELSE 0 END) as jml_simpanan_pokok
                     FROM tb_simpanan 
-                    WHERE tgl_simpan = '$tgl1'
                     GROUP BY no_anggota) d 
                 ON a.no_barcode = d.no_anggota
             ");
