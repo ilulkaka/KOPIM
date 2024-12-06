@@ -122,6 +122,11 @@
                 e.preventDefault();
                 var datas = $(this).serialize();
 
+                // Nonaktifkan tombol submit
+                var submitButton = $("#btn_send"); // Cari tombol submit dalam form
+                submitButton.prop('disabled', true).text(
+                    'Mengirim Pesan ke Telegram...'); // Ubah teks jika diperlukan
+
                 $.ajax({
                         type: "POST",
                         url: APP_URL + '/api/laporan/manual_sendTelegram',
@@ -139,8 +144,15 @@
                             location.reload();
                         } else {
                             alert(resp.message);
+                            submitButton.prop('disabled', false).text(
+                                'Kirim'); // Aktifkan kembali tombol jika gagal
                         }
                     })
+                    .fail(function() {
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                        submitButton.prop('disabled', false).text(
+                            'Kirim'); // Aktifkan kembali tombol jika terjadi kesalahan
+                    });
             })
 
         });

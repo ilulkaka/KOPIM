@@ -166,8 +166,10 @@ No Anggota  : <b>$noBarcode</b>
                     a.no_barcode, 
                     a.chat_id, 
                     b.total, 
-                    c.jml_angsuran as pinjaman, 
-                    c.angsuran_ke, 
+                    COALESCE(c.jml_angsuran1, 0) as pinjaman1, 
+                    COALESCE(c.angsuran1, 0) as angsuran1,
+                    COALESCE(c.jml_angsuran2, 0) as pinjaman2, 
+                    COALESCE(c.angsuran2, 0) as angsuran2,
                     COALESCE(d.jml_simpanan_wajib, 0) as simpanan_wajib,
                     COALESCE(d.jml_simpanan_pokok, 0) as simpanan_pokok
                 FROM 
@@ -178,10 +180,22 @@ No Anggota  : <b>$noBarcode</b>
                     WHERE tgl_trx BETWEEN '$per_awal' AND '$per_akhir'
                     GROUP BY no_barcode) b 
                 ON a.no_barcode = b.no_barcode
-                LEFT JOIN 
-                    (SELECT no_anggota, jml_angsuran, angsuran_ke 
-                    FROM tb_pembayaran 
-                    WHERE tgl_angsuran BETWEEN '$tgl1' AND '$tgl2') c 
+                LEFT JOIN
+                    (select no_anggota, 
+                    MAX(CASE WHEN rn = 1 THEN jml_angsuran ELSE NULL END) as jml_angsuran1,
+                    MAX(CASE WHEN rn = 1 THEN angsuran_ke ELSE NULL END) as angsuran1,
+                    MAX(CASE WHEN rn = 2 THEN jml_angsuran ELSE NULL END) as jml_angsuran2,
+                    MAX(CASE WHEN rn = 2 THEN angsuran_ke ELSE NULL END) as angsuran2
+                FROM (
+                        SELECT 
+                            no_anggota, 
+                            jml_angsuran, 
+                            angsuran_ke,
+                            ROW_NUMBER() OVER (PARTITION BY no_anggota ORDER BY tgl_angsuran) as rn
+                        FROM tb_pembayaran
+                        WHERE tgl_angsuran BETWEEN '$tgl1' AND '$tgl2'
+                    ) subquery
+                    GROUP BY no_anggota) c 
                 ON b.no_barcode = c.no_anggota
                 LEFT JOIN 
                     (SELECT 
@@ -201,13 +215,15 @@ No Anggota  : <b>$noBarcode</b>
                 $noBarcode = $data->no_barcode;
                 $chatId = $data->chat_id;
                 $transaksi = $data->total ?? 0; // Jika tidak ada total, anggap 0
-                $pinjaman = $data->pinjaman ?? 0;
-                $angsuran_ke = $data->angsuran_ke ?? 0;
+                $pinjaman1 = $data->pinjaman1 ?? 0;
+                $angsuran1_ke = $data->angsuran1 ?? 0;
+                $pinjaman2 = $data->pinjaman2 ?? 0;
+                $angsuran2_ke = $data->angsuran2 ?? 0;
                 $simpanan_wajib = $data->simpanan_wajib ?? 0;
                 $simpanan_pokok = $data->simpanan_pokok ?? 0;
                 $shu = 0;
     
-                $totalkredit = $transaksi + $pinjaman ;
+                $totalkredit = $transaksi + $pinjaman1 + $pinjaman2 ;
                 $totaldebit = $shu + $simpanan_wajib + $simpanan_pokok;
     
                 if ($chatId) {
@@ -216,19 +232,20 @@ No Anggota  : <b>$noBarcode</b>
 <b> 📌 Rekap Anggota KOPIM  </b>
 <b>$dateFormatAwal</b> - <b>$dateFormatAkhir</b>  
 ------------------------------------
-Nama            : <b>$nama</b>
+Nama             : <b>$nama</b>
 No Anggota  : <b>$noBarcode</b>
     
 <b>💸 Kredit </b>
-    - Transaksi   : <b>Rp " . number_format($transaksi, 0, ',', '.') . "</b>  
-    - Angsuran ke-<b>".$angsuran_ke."</b>   : <b>Rp " . number_format($pinjaman, 0, ',', '.') . "</b>
-    <b>* Total  : Rp " . number_format($totalkredit, 0, ',', '.') . "</b>
+- Transaksi               : <b>Rp " . number_format($transaksi, 0, ',', '.') . "</b>  
+- Angsuran_A ke-<b>".$angsuran1_ke."</b>   : <b>Rp " . number_format($pinjaman1, 0, ',', '.') . "</b>
+- Angsuran_B ke-<b>".$angsuran2_ke."</b>   : <b>Rp " . number_format($pinjaman2, 0, ',', '.') . "</b>
+<b>* Total                  : Rp " . number_format($totalkredit, 0, ',', '.') . "</b>
     
 <b>💳 Debit </b>
     - Simpanan Wajib  : <b>Rp " . number_format($simpanan_wajib, 0, ',', '.') . "</b>
-    - Simpanan Pokok  : <b>Rp " . number_format($simpanan_pokok, 0, ',', '.') . "</b> 
-    - SHU            : <b>Rp " . number_format($shu, 0, ',', '.') . "</b>  
-    <b>💰 Total  : Rp " . number_format($totaldebit, 0, ',', '.') . "</b>
+    - Simpanan Pokok : <b>Rp " . number_format($simpanan_pokok, 0, ',', '.') . "</b> 
+    - SHU                      : <b>Rp " . number_format($shu, 0, ',', '.') . "</b>  
+    <b>💰 Total                : Rp " . number_format($totaldebit, 0, ',', '.') . "</b>
         
 ------------------------------------
     
