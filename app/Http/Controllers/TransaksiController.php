@@ -504,33 +504,56 @@ class TransaksiController extends Controller
         // Ambil payload dari webhook
         $update = $request->all();
 
+        $carbonDateSend = Carbon::create(date('Y'), date('m'), date('d')); // Tanggal sekarang (contoh)
+
+        // Kurangi 1 bulan dari tanggal saat ini dan tetapkan hari ke-16
+        $per_awal = $carbonDateSend->copy()->subMonth()->format('Y-m') . '-16';
+        // Tetapkan hari ke-15 dari bulan saat ini
+        $per_akhir = $carbonDateSend->format('Y-m') . '-15';
+
         // Periksa apakah ada data 'message'
         if (!empty($update['message'])) {
             $message = $update['message'];
             $chatId = $message['chat']['id'] ?? null;
             $text = $message['text'] ?? null;
 
-            if ($chatId && $text) {
-                // Logika penanganan berdasarkan teks
-                if (preg_match('/^\d{10,15}$/', $text)) { // Jika teks berupa nomor telepon
-                    $anggota = DB::table('tb_anggota')->where('no_telp', $text)->first();
 
-                    if ($anggota) {
-                        if ($anggota->chat_id) {
-                            // Jika chat_id sudah ada
-                            $this->sendMessage($chatId, "Nomor telepon sudah terdaftar.");
+                if ($chatId && $text) {
+                    // Logika penanganan berdasarkan teks
+                    if ($text == '/detail'){
+                        $datas = DB::table('tb_anggota as a')->leftJoin('tb_trx_belanja as b','a.no_barcode','=','b.no_barcode')
+                        ->where('a.chat_id',$chatId)->whereBetween('b.tgl_trx', [$per_awal, $per_akhir])->select('b.tgl_trx','b.nominal')->get();
+
+                         // Format hasil query menjadi string
+                                $message1 = "Detail Transaksi:\n
+Tanggal               Nominal \n";
+                                foreach ($datas as $data) {
+                                    $formattedDate = Carbon::parse($data->tgl_trx)->format('d M Y');
+                                        // Format nominal dengan number_format
+                                        $formattedNominal = number_format($data->nominal, 0, ',', '.');
+                                    
+                                    $message1 .= $formattedDate ."      ". $formattedNominal."\n";
+                                }
+                            $this->sendMessage($chatId,$message1);
+                    } else if (preg_match('/^\d{10,15}$/', $text)) { // Jika teks berupa nomor telepon
+                        $anggota = DB::table('tb_anggota')->where('no_telp', $text)->first();
+    
+                        if ($anggota) {
+                            if ($anggota->chat_id) {
+                                // Jika chat_id sudah ada
+                                $this->sendMessage($chatId, "Nomor telepon sudah terdaftar.");
+                            } else {
+                                // Perbarui chat_id jika belum ada
+                                DB::table('tb_anggota')->where('no_telp', $text)->update(['chat_id' => $chatId]);
+                                $this->sendMessage($chatId, "Nomor berhasil terdaftar.");
+                            }
                         } else {
-                            // Perbarui chat_id jika belum ada
-                            DB::table('tb_anggota')->where('no_telp', $text)->update(['chat_id' => $chatId]);
-                            $this->sendMessage($chatId, "Nomor berhasil terdaftar.");
+                            $this->sendMessage($chatId, "Nomor telepon tidak ditemukan di database.");
                         }
                     } else {
-                        $this->sendMessage($chatId, "Nomor telepon tidak ditemukan di database.");
+                        $this->sendMessage($chatId, "Mohon kirimkan nomor telepon yang valid.");
                     }
-                } else {
-                    $this->sendMessage($chatId, "Mohon kirimkan nomor telepon yang valid.");
                 }
-            }
         }
     }
 
