@@ -82,5 +82,10 @@ Route::post('upd_id', 'HomeController@upd_id');
 Route::post('laporan/rekapTransaksi', 'TelegramController@rekapTransaksi');
 Route::post('laporan/manual_sendTelegram', 'TelegramController@manual_sendTelegram');
 
+Route::post('sub/add_masterPO', 'SubController@add_masterPO');
+Route::post('sub/upd_masterPO', 'SubController@upd_masterPO');
+Route::post('sub/l_masterPO', 'SubController@l_masterPO');
+
 Route::post('testsend', 'TelegramController@testsend');
+
 

@@ -1,119 +1,117 @@
 @extends('layout.main')
 @section('content')
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
             <div class="card card-info">
                 <div class="card-header">
                     <h4><b><i class="fas fa-cart-plus"> Purchase Order</i></b>
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form id="frm_tdpo" autocomplete="off">
-                        @csrf
-                        <div class="row">
-                            <input type="hidden" id="role" name="role" value="{{ Auth::user()->name }}">
-                            <input type="hidden" id="role1" name="role1" value="{{ Auth::user()->role }}">
-
-                            {{-- @if (Auth::user()->role == 'Administrator')
-                                <div class="col col-md-6">
-                                    <strong><i class="fas fa-caret-square-down"> Tgl Transaksi</i></strong>
-                                    <input type="date" id="tgl_trx" name="tgl_trx" class="form-control rounded-0">
-                                </div>
-                            @endif --}}
-
-                            <div class="col col-md-2">
-                                <strong><i class="fas fa-caret-square-down"> Nomor PO</i></strong>
-                                <input type="text" id="tdpo_nopo" name="tdpo_nopo" class="form-control rounded-0">
-                            </div>
-
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <strong><i class="fas fa-caret-square-down"> Nomor PO</i></strong>
+                            <input type="text" id="tdpo_nopo" name="tdpo_nopo" class="form-control rounded-0" required>
                         </div>
+                    </div>
+                    <form id="frm_tdpo">
+                        @csrf
+                        <input type="hidden" id="role" name="role" value="{{ Auth::user()->name }}">
+                        <input type="hidden" id="role1" name="role1" value="{{ Auth::user()->role }}">
                         <hr>
                         <div class="row">
-                            <div class="col col-md-2">
+                            <div class="col col-md-6">
                                 <strong><i class="fas fa-caret-square-down"> Item Cd</i></strong>
-                                <input type="text" id="tdpo_itemCd" name="tdpo_itemCd" class="form-control rounded-0">
-                            </div>
-                            <div class="col col-md-2">
-                                <strong><i class="fas fa-caret-square-down"> Nama Barang</i></strong>
-                                <input type="text" id="tdpo_namaBarang" name="tdpo_namaBarang"
-                                    class="form-control rounded-0">
-                            </div>
-                            <div class="col col-md-3">
-                                <strong><i class="fas fa-caret-square-down"> Spesifikasi</i></strong>
-                                <input type="text" id="tdpo_spesifikasi" name="tdpo_spesifikasi"
-                                    class="form-control rounded-0">
-                            </div>
-                            <div class="col col-md-1">
-                                <strong><i class="fas fa-caret-square-down"> Qty</i></strong>
-                                <input type="number" id="tdpo_qty" name="tdpo_qty" class="form-control rounded-0">
-                            </div>
-                            <div class="col col-md-2">
-                                <strong><i class="fas fa-caret-square-down"> Harga</i></strong>
-                                <input type="number" id="tdpo_harga" name="tdpo_harga" class="form-control rounded-0">
-                            </div>
-                            <div class="col col-md-2">
-                                <strong><i class="fas fa-caret-square-down"> Nouki</i></strong>
-                                <input type="date" id="tdpo_nouki" name="tdpo_nouki" class="form-control rounded-0">
+                                <input type="text" id="tdpo_itemCd" name="tdpo_itemCd" class="form-control rounded-0"
+                                    required>
                             </div>
                         </div>
-                        <input type="hidden" name="trx_kategori" id="trx_kategori">
+                        <p>
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <strong><i class="fas fa-caret-square-down"> Nama Barang</i></strong>
+                                <input type="text" id="tdpo_nama" name="tdpo_nama" class="form-control rounded-0"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <strong><i class="fas fa-caret-square-down"> Spesifikasi</i></strong>
+                                <input type="text" id="tdpo_spesifikasi" name="tdpo_spesifikasi"
+                                    class="form-control rounded-0" readonly>
+                            </div>
+                        </div>
+                        <p>
+                        <div class="row">
+                            <div class="col col-md-3">
+                                <strong><i class="fas fa-caret-square-down"> Qty</i></strong>
+                                <input type="number" id="tdpo_qty" name="tdpo_qty" class="form-control rounded-0"
+                                    required>
+                            </div>
+                            <div class="col col-md-4">
+                                <strong><i class="fas fa-caret-square-down"> Harga</i></strong>
+                                <input type="number" id="tdpo_harga" name="tdpo_harga" class="form-control rounded-0"
+                                    readonly>
+                            </div>
+                            <div class="col col-md-5">
+                                <strong><i class="fas fa-caret-square-down"> Nouki</i></strong>
+                                <input type="date" id="tdpo_nouki" name="tdpo_nouki" class="form-control rounded-0"
+                                    required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card-footer text-muted d-flex justify-content-end">
+                            <button type="submit" id="btnUpdate" class="btn btn-success">Update</button>
+                        </div>
                     </form>
                 </div>
-                <div class="card-footer text-muted">
-                    <button type="button" class="btn btn-outline btn-flat float-right" id="btn_detail_trx"
-                        style="color: blue"><u> Detail
-                            Trx</u></button>
-                    <button type="button" class="btn btn-outline btn-flat float-right" id="btn_download_trx"
-                        style="color: blue"><u>Download
-                            Trx</u></button>
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+            <div class="card-header bg-secondary">
+                <i class="fas fa-shopping-cart float-left"> </i>
+                <h3 class="card-title" style="font-weight: bold; margin-left:1%"> List PO
+                </h3>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="row">
+                    <label style="margin-left: 1%">End Stock : </label>
+                    <input type="date" name="endDate" id="endDate" value="{{ date('Y-m-d') }}"
+                        class="form-control col-md-2 rounded-0 ml-2">
+                </div>
+                <br>
+
+                <div class="card-body table-responsive p-0">
+
+                    <table class="table table-hover text-nowrap" id="tb_po">
+                        <thead>
+                            <tr>
+                                <th>Nomor</th>
+                                <th>Item Cd</th>
+                                <th>Nama</th>
+                                <th>Spesifikasi</th>
+                                <th>Qty</th>
+                                <th>Satuan</th>
+                                <th>Harga</th>
+                                <th>Stock</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <br>
+                <div class="row">
+                    <button id="btn_excel" name="btn_excel"
+                        class="form-control btn-success rounded-pill col-md-1">Excel</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="card-header bg-secondary">
-        <i class="fas fa-shopping-cart float-left"> </i>
-        <h3 class="card-title" style="font-weight: bold; margin-left:1%"> List PO
-        </h3>
-    </div>
-
-
-    <div class="modal-body">
-        <div class="row">
-            <label style="margin-left: 1%">End Stock : </label>
-            <input type="date" name="endDate" id="endDate" value="{{ date('Y-m-d') }}"
-                class="form-control col-md-2 rounded-0 ml-2">
-        </div>
-        <br>
-
-        <div class="card-body table-responsive p-0">
-
-            <table class="table table-hover text-nowrap" id="tb_po">
-                <thead>
-                    <tr>
-                        <th>Nomor</th>
-                        <th>Item Cd</th>
-                        <th>Nama</th>
-                        <th>Spesifikasi</th>
-                        <th>Qty</th>
-                        <th>Satuan</th>
-                        <th>Harga</th>
-                        <th>Stock</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <br>
-        <div class="row">
-            <button id="btn_excel" name="btn_excel" class="form-control btn-success rounded-pill col-md-1">Excel</button>
-        </div>
-    </div>
-    <!-- /.card-body -->
-
-    <!-- /.card -->
-    </div>
 
     <!-- Modal Tambah Stock (TS) -->
     <div class="modal fade" id="modal_tambah_stock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -221,16 +219,15 @@
     <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/easy-number-separator/js/easy-number-separator.js') }}"></script>
 
-
     <script type="text/javascript">
         easyNumberSeparator({
             selector: '.number-separator',
             separator: ',',
             resultInput: '#trx_nominal',
-        })
+        });
+
         $(document).ready(function() {
-
-
+            $("#tdpo_nopo").focus();
 
 
         });

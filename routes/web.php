@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('laporan/barang_keluar', 'StockController@barang_keluar');
 
     Route::get('sub/frm_po', 'SubController@frm_po');
+    Route::get('sub/frm_master_po', 'SubController@frm_master_po');
 
     // Route::get('send-wa', function(){
     //     $response = Http::withHeaders([
