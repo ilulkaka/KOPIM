@@ -229,7 +229,56 @@
         $(document).ready(function() {
             $("#tdpo_nopo").focus();
 
+            $("#tdpo_nopo").keypress(function(event) {
+                var nopo = $("#tdpo_nopo").val();
+                if (event.keyCode === 13) {
+                    if (nopo == '' || nopo == null) {
+                        alert("Masukkan Nomor PO .");
+                        return;
+                    } else {
+                        $("#tdpo_itemCd").focus();
+                    }
+                }
+            });
 
+            $("#tdpo_itemCd").keypress(function(event) {
+                var itemCd = $("#tdpo_itemCd").val();
+                if (event.keyCode === 13) {
+                    $.ajax({
+                            type: "POST",
+                            url: APP_URL + '/api/sub/get_datasMasterPO',
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                "datas": itemCd,
+                            },
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+
+                            } else {
+                                alert(resp.message);
+                            }
+                        })
+                }
+            });
+
+            $("#frm_tdpo").submit(function(e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+
+                var nopo = $("#tdpo_nopo").val();
+
+                if (nopo == '' || nopo == null) {
+                    alert("Masukkan Nomor PO .");
+                    return;
+                } else {
+
+                }
+            })
         });
     </script>
 @endsection

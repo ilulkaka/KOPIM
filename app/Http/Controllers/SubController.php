@@ -105,4 +105,9 @@ class SubController extends Controller
              ];
          }
     }
+
+    public function get_datasMasterPO (Request $request){
+        dd($request->all());
+        $getDatas = MasterPOModel::where('item_cd',$request->tdpo_item)->get();
+    }
 }

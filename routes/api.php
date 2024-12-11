@@ -84,6 +84,7 @@ Route::post('laporan/manual_sendTelegram', 'TelegramController@manual_sendTelegr
 
 Route::post('sub/add_masterPO', 'SubController@add_masterPO');
 Route::post('sub/upd_masterPO', 'SubController@upd_masterPO');
+Route::post('sub/get_datasMasterPO', 'SubController@get_datasMasterPO');
 Route::post('sub/l_masterPO', 'SubController@l_masterPO');
 
 Route::post('testsend', 'TelegramController@testsend');
