@@ -257,10 +257,12 @@
                         })
                         .done(function(resp) {
                             if (resp.success) {
-                                alert(resp.message);
-
+                                $("#tdpo_nama").val(resp.datas.nama);
+                                $("#tdpo_spesifikasi").val(resp.datas.spesifikasi);
+                                $("#tdpo_harga").val(resp.datas.harga);
                             } else {
                                 alert(resp.message);
+                                $("#tdpo_itemCd").focus();
                             }
                         })
                 }
@@ -274,6 +276,7 @@
 
                 if (nopo == '' || nopo == null) {
                     alert("Masukkan Nomor PO .");
+                    $("#tdpo_nopo").focus();
                     return;
                 } else {
 

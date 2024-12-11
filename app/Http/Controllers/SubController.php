@@ -107,7 +107,19 @@ class SubController extends Controller
     }
 
     public function get_datasMasterPO (Request $request){
-        dd($request->all());
-        $getDatas = MasterPOModel::where('item_cd',$request->tdpo_item)->get();
+        // dd($request->all());
+        $getDatas = DB::table('tb_master_po')->where('item_cd',$request->datas)->first();
+
+        if(!$getDatas){
+            return [
+                'success' => false,
+                'message' => 'Item Cd tidak ada .',
+            ];
+        } else {
+            return[
+                'success' => true,
+                'datas' => $getDatas,
+            ];
+        }
     }
 }
