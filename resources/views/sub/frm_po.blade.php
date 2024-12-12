@@ -60,10 +60,10 @@
                             </div>
                         </div>
                         <br>
-                        <div class="card-footer text-muted d-flex justify-content-end">
-                            <button type="submit" id="btnUpdate" class="btn btn-success">Update</button>
-                        </div>
                     </form>
+                    <div class="card-footer text-muted d-flex justify-content-end">
+                        <button type="button" id="btn_updPO" class="btn btn-success">Update</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,26 +78,19 @@
 
 
             <div class="modal-body">
-                <div class="row">
-                    <label style="margin-left: 1%">End Stock : </label>
-                    <input type="date" name="endDate" id="endDate" value="{{ date('Y-m-d') }}"
-                        class="form-control col-md-2 rounded-0 ml-2">
-                </div>
-                <br>
-
                 <div class="card-body table-responsive p-0">
 
-                    <table class="table table-hover text-nowrap" id="tb_po">
+                    <table class="table table-hover text-nowrap" width="100%" id="tb_po">
                         <thead>
                             <tr>
-                                <th>Nomor</th>
+                                <th>Id</th>
+                                <th>PO No</th>
                                 <th>Item Cd</th>
                                 <th>Nama</th>
                                 <th>Spesifikasi</th>
                                 <th>Qty</th>
                                 <th>Satuan</th>
                                 <th>Harga</th>
-                                <th>Stock</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -217,26 +210,88 @@
     <script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/assets/plugins/datatables-select/js/dataTables.select.min.js') }}"></script>
-    <script src="{{ asset('/assets/plugins/easy-number-separator/js/easy-number-separator.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/plugins/easy-number-separator/js/easy-number-separator.js') }}"></script> --}}
 
     <script type="text/javascript">
-        easyNumberSeparator({
-            selector: '.number-separator',
-            separator: ',',
-            resultInput: '#trx_nominal',
-        });
-
         $(document).ready(function() {
             $("#tdpo_nopo").focus();
+
+            var l_po = $('#tb_po').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+
+                ajax: {
+                    url: APP_URL + '/api/sub/l_po',
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: function(d) {
+                        d.no_po = $("#tdpo_nopo").val();
+                    },
+                },
+
+                columnDefs: [{
+                        targets: [0],
+                        visible: false,
+                        searchable: false
+                    },
+                    // {
+                    //     targets: [5],
+                    //     data: null,
+                    //     //defaultContent: "<button class='btn btn-success'>Complited</button>"
+                    //     render: function(data, type, row, meta) {
+                    //         return "<a href = '#' style='font-size:14px' class = 'ta_edit'> Edit </a>";
+                    //     }
+                    // }
+                ],
+
+                columns: [{
+                        data: 'id_po',
+                        name: 'id_po'
+                    },
+                    {
+                        data: 'nomor_po',
+                        name: 'nomor_po'
+                    },
+                    {
+                        data: 'item_cd',
+                        name: 'item_cd'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'spesifikasi',
+                        name: 'spesifikasi'
+                    },
+                    {
+                        data: 'qty',
+                        name: 'qty'
+                    },
+                    {
+                        data: 'satuan',
+                        name: 'satuan'
+                    },
+                    {
+                        data: 'harga',
+                        name: 'harga'
+                    },
+                ],
+            });
 
             $("#tdpo_nopo").keypress(function(event) {
                 var nopo = $("#tdpo_nopo").val();
                 if (event.keyCode === 13) {
                     if (nopo == '' || nopo == null) {
                         alert("Masukkan Nomor PO .");
-                        return;
+                        return false;
                     } else {
                         $("#tdpo_itemCd").focus();
+                        l_po.ajax.reload();
                     }
                 }
             });
@@ -244,42 +299,105 @@
             $("#tdpo_itemCd").keypress(function(event) {
                 var itemCd = $("#tdpo_itemCd").val();
                 if (event.keyCode === 13) {
+                    if (itemCd == null || itemCd == '') {
+                        alert('Masukkan Item Cd .');
+                        return false;
+                    } else {
+                        $.ajax({
+                                type: "POST",
+                                url: APP_URL + '/api/sub/get_datasMasterPO',
+                                dataType: "json",
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                data: {
+                                    "datas": itemCd,
+                                },
+                            })
+                            .done(function(resp) {
+                                if (resp.success) {
+                                    $("#tdpo_nama").val(resp.datas.nama);
+                                    $("#tdpo_spesifikasi").val(resp.datas.spesifikasi);
+                                    $("#tdpo_harga").val(resp.datas.harga);
+
+                                    $("#tdpo_qty").focus();
+                                } else {
+                                    alert(resp.message);
+                                    $("#tdpo_itemCd").focus();
+                                }
+                            });
+                    }
+                }
+            });
+
+            $("#tdpo_qty").keypress(function(event) {
+                var qty = $("#tdpo_qty").val();
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+                var sekarang = yyyy + "-" + mm + "-" + dd;
+
+                if (event.keyCode === 13) {
+                    if (qty == '' || qty == null) {
+                        alert("Masukkan Qty .");
+                        $("#tdpo_qty").focus();
+                        return false;
+                    } else {
+                        $("#tdpo_nouki").focus();
+                        $("#tdpo_nouki").val(sekarang);
+                    }
+                }
+            });
+
+            $("#btn_updPO").click(function() {
+                // e.preventDefault();
+                var nopo = $("#tdpo_nopo").val();
+                var itemCd = $("#tdpo_itemCd").val();
+                var qty = $("#tdpo_qty").val();
+                var nouki = $("#tdpo_nouki").val();
+
+                if (nopo == '' || nopo == null) {
+                    alert("Masukkan Nomor PO .");
+                    $("#tdpo_nopo").focus();
+                    return false;
+                } else if (itemCd == '' || itemCd == null) {
+                    alert("Masukkan Item Code .");
+                    $("#tdpo_itemCd").focus();
+                    return false;
+                } else if (qty == '' || qty == null) {
+                    alert("Masukkan Qty .");
+                    $("#tdpo_qty").focus();
+                    return false;
+                } else if (nouki == '' || nouki == null) {
+                    alert("Masukkan Nouki .");
+                    $("#tdpo_nouki").focus();
+                    return false;
+                } else {
                     $.ajax({
                             type: "POST",
-                            url: APP_URL + '/api/sub/get_datasMasterPO',
+                            url: APP_URL + '/api/sub/ins_dataPO',
                             dataType: "json",
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             },
                             data: {
-                                "datas": itemCd,
+                                'nopo': nopo,
+                                'itemCd': itemCd,
+                                'qty': qty,
+                                'nouki': nouki
                             },
                         })
                         .done(function(resp) {
                             if (resp.success) {
-                                $("#tdpo_nama").val(resp.datas.nama);
-                                $("#tdpo_spesifikasi").val(resp.datas.spesifikasi);
-                                $("#tdpo_harga").val(resp.datas.harga);
+                                alert(resp.message);
+                                $("#frm_tdpo").trigger('reset');
+                                $("#tdpo_nopo").focus();
+                                l_po.ajax.reload();
                             } else {
                                 alert(resp.message);
-                                $("#tdpo_itemCd").focus();
                             }
                         })
-                }
-            });
-
-            $("#frm_tdpo").submit(function(e) {
-                e.preventDefault();
-                var data = $(this).serialize();
-
-                var nopo = $("#tdpo_nopo").val();
-
-                if (nopo == '' || nopo == null) {
-                    alert("Masukkan Nomor PO .");
-                    $("#tdpo_nopo").focus();
-                    return;
-                } else {
-
                 }
             })
         });

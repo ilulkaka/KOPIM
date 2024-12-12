@@ -19,7 +19,7 @@ class POModel extends Model
         'spesifikasi',
         'qty',
         'satuan',
-        'harga_po',
+        'harga',
         'nouki',
         'status_po',
     ];

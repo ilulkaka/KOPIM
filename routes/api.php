@@ -86,6 +86,10 @@ Route::post('sub/add_masterPO', 'SubController@add_masterPO');
 Route::post('sub/upd_masterPO', 'SubController@upd_masterPO');
 Route::post('sub/get_datasMasterPO', 'SubController@get_datasMasterPO');
 Route::post('sub/l_masterPO', 'SubController@l_masterPO');
+Route::post('sub/ins_dataPO', 'SubController@ins_dataPO');
+Route::post('sub/l_po', 'SubController@l_po');
+Route::post('sub/inq_openPo', 'SubController@inq_openPo');
+Route::post('sub/upd_kirimPO', 'SubController@upd_kirimPO');
 
 Route::post('testsend', 'TelegramController@testsend');
 
