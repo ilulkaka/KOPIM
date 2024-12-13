@@ -7,6 +7,33 @@
                 <h3 class="card-title" style="font-weight: bold; margin-left:1%"> List PO
                 </h3>
             </div>
+            <br>
+            <div class="col-md-12">
+                <div class="row d-flex align-items-center">
+                    <!-- Nomor Dokument dan Button Ambil Nomor -->
+                    <div class="col-md-6 d-flex">
+                        <input type="text" name="l_noDok" id="l_noDok" class="form-control col-md-4 mr-2"
+                            placeholder="Nomor Dokument" />
+                        <button class="btn btn-primary rounded-pill col-md-3" id="btn_ambilNomor">
+                            <i class="fab fa-pushed"></i> Ambil Nomor
+                        </button>
+                    </div>
+
+                    <!-- Status PO dan Button Reload -->
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <select name="l_statusPO" id="l_statusPO" class="form-control col-md-4 mr-2">
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                        <button class="btn btn-primary rounded-pill col-md-2" id="btn_reload">
+                            <i class="fas fa-sync-alt"></i> Reload
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr>
             <div class="modal-body">
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap" width="100%" id="tb_open_po">
@@ -57,6 +84,10 @@
         $(document).ready(function() {
             $("#tdpo_nopo").focus();
 
+            $("#btn_reload").click(function() {
+                l_po.ajax.reload();
+            });
+
             var l_po = $('#tb_open_po').DataTable({
                 processing: true,
                 serverSide: true,
@@ -69,6 +100,9 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
+                    data: function(d) {
+                        d.statusPO = $("#l_statusPO").val();
+                    },
                 },
 
                 columnDefs: [{
@@ -77,8 +111,16 @@
                         searchable: false
                     },
                     {
-                        targets: 8, // Index kolom qty_plan
+                        targets: 6, // Index kolom qty_plan
                         width: '50px' // Sesuaikan lebar sesuai kebutuhan
+                    },
+                    {
+                        targets: 7,
+                        width: '50px'
+                    },
+                    {
+                        targets: 8,
+                        width: '50px'
                     },
                     {
                         orderable: false,
@@ -132,11 +174,15 @@
                         }
                     },
                     {
-                        data: null,
-                        name: 'qty_plan',
-                        render: function(data, type, row) {
-                            // Menggunakan qty sebagai nilai awal qty_plan
-                            return `<input type="number" class="form-control qty-plan-input" value="${row.qty}" data-id="${row.id}" data-qty="${row.qty}" />`;
+                        data: 'temp_plan',
+                        name: 'temp_plan',
+                        render: function(data, type, row, meta) {
+                            if (type === 'display') {
+                                return '<div contenteditable="true" class="form-control plan-input" data-id="' +
+                                    (row.id_po || '') + '" data-qty="' + (row.qty || 0) + '">' +
+                                    (data || row.qty || 0) + '</div>';
+                            }
+                            return data;
                         }
                     },
                     {
@@ -168,23 +214,44 @@
                 ],
             });
 
-            $('#tb_open_po').on('draw.dt', function() {
-                // Ketika DataTable selesai merender ulang, tambahkan event listener
-                $('.qty-plan-input').on('input', function() {
-                    var inputQtyPlan = $(this); // Input yang sedang diubah
-                    var qtyPlan = parseFloat(inputQtyPlan.val()) ||
-                        0; // Ambil nilai qty_plan yang dimasukkan
-                    var qty = parseFloat(inputQtyPlan.data('qty')) ||
-                        0; // Ambil nilai qty dari data-qty
+            var newPlan = {};
+            $('#tb_open_po').on('blur', '.plan-input[contenteditable="true"]', function() {
+                var $this = $(this);
+                var id = $this.data('id'); // Ambil ID
+                var maxQty = parseFloat($this.data('qty')); // Ambil nilai maksimal dari data-qty
+                var newPlanQty = parseFloat($this.text().trim()); // Ambil nilai input
 
-                    // Periksa apakah qty_plan lebih besar dari qty
-                    if (qtyPlan > qty) {
-                        // Tampilkan alert jika qty_plan lebih besar dari qty
-                        alert("Qty Plan tidak boleh lebih besar dari Qty.");
-                        // Reset nilai qty_plan menjadi qty
-                        inputQtyPlan.val(qty);
+                if (!id) {
+                    console.error('ID tidak ditemukan untuk elemen ini.');
+                    return;
+                }
+
+                l_po.rows().data().each(function(row) {
+                    if (!newPlan[row.id_po]) {
+                        newPlan[row.id_po] = {
+                            temp_plan: row.temp_plan || row.qty ||
+                                0 // Ambil `temp_plan` atau default `qty`
+                        };
                     }
                 });
+
+                // Validasi nilai
+                if (isNaN(newPlanQty) || newPlanQty < 0) {
+                    alert('Nilai tidak boleh kurang dari 0.');
+                    $this.text(0); // Reset ke 0 jika invalid
+                    newPlanQty = 0;
+                } else if (newPlanQty > maxQty) {
+                    alert('Nilai tidak boleh lebih besar dari qty (' + maxQty + ').');
+                    $this.text(maxQty); // Reset ke nilai maksimal
+                    newPlanQty = maxQty;
+                }
+
+                // Perbarui objek `newPlan`
+                if (!newPlan[id]) {
+                    newPlan[id] = {};
+                }
+
+                newPlan[id].temp_plan = newPlanQty;
             });
 
 
@@ -213,49 +280,86 @@
             });
 
             $('#btn_proKirim').on('click', function() {
-                var selectedRows = l_po.rows({
-                    selected: true
-                }).data().toArray();
+                var noDok = $("#l_noDok").val();
 
-                // Ambil nilai id_po dan qty_plan dari baris yang dipilih
-                var selectedData = selectedRows.map(function(row) {
-                    // Cek input qty_plan berdasarkan id_po
-                    var inputQtyPlan = $(`input[data-id="${row.id_po}"]`);
-                    var planQty = parseFloat(inputQtyPlan.val()) || 0; // Ambil qty_plan dari input
+                if (noDok == null || noDok == '') {
+                    alert('Ambil Nomor Dokumen terlebih dahulu .');
+                } else {
+                    var selectedRows = l_po.rows({
+                        selected: true
+                    }).data().toArray();
 
-                    console.log(
-                    `ID: ${row.id_po}, Plan Qty (from input): ${planQty}`); // Pastikan nilai plan_qty diambil
+                    var selectedIDs = selectedRows.map(function(row) {
+                        // Konversi nilai ke angka
+                        var planQty = Number(newPlan[row.id_po] && newPlan[row.id_po].temp_plan ?
+                            newPlan[row.id_po].temp_plan :
+                            row.temp_plan); // Gunakan nilai asli jika belum diperbarui
 
-                    return {
-                        id: row.id_po,
-                        plan_qty: planQty // Tambahkan plan_qty ke data
-                    };
-                });
+                        var qtyOut = Number(row.qty_out); // Konversi ke angka
 
-                // Cek apakah data tidak kosong
-                if (selectedData.length === 0) {
-                    alert("Record tidak ada yang dipilih.");
-                    return;
+                        var qtyOutTotal = qtyOut + planQty; // Penjumlahan angka
+                        var sisa = row.qty - qtyOutTotal;
+
+                        return {
+                            id: row.id_po,
+                            plan_qty: planQty,
+                            sisa: sisa,
+                            status: row.status_po,
+                        };
+                    });
+
+                    if (selectedIDs.length === 0) {
+                        alert("Record tidak ada yang dipilih.");
+                        return;
+                    }
+
+                    // Periksa apakah semua baris yang dipilih memiliki status "Open"
+                    var allStatus = selectedIDs.every(function(row) {
+                        return row.status === 'Open';
+                    });
+
+                    if (!allStatus) {
+                        alert("Status PO Harus Open.");
+                        return;
+                    }
+
+                    $.ajax({
+                            url: APP_URL + '/api/sub/upd_kirimPO',
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                'selectedIDs': selectedIDs,
+                                'noDokumen': noDok,
+                            },
+                        })
+                        .done(function(resp) {
+                            if (resp.success) {
+                                alert(resp.message);
+                                l_po.ajax.reload(null, false); // Refresh DataTable
+                                $("#l_noDok").val('');
+                            } else {
+                                alert(resp.message);
+                            }
+                        })
+                        .fail(function(xhr, status, error) {
+                            alert("Terjadi kesalahan saat mengirim data.");
+                        });
                 }
+            });
 
-                // Debugging untuk memastikan data yang akan dikirim
-                console.log('Data yang akan dikirim:', selectedData);
-
+            $("#btn_ambilNomor").click(function() {
                 $.ajax({
-                        url: APP_URL + '/api/sub/upd_kirimPO',
+                        url: APP_URL + '/api/sub/get_noDok',
                         type: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        data: {
-                            'selectedData': selectedData, // Kirim data id dan plan_qty
-                        },
                     })
                     .done(function(resp) {
                         if (resp.success) {
-                            alert(resp.message);
-                            listMeas.ajax.reload(null, false); // Refresh DataTable
-                            listMove.ajax.reload(null, false); // Refresh DataTable
+                            $("#l_noDok").val(resp.new_dok_nomor);
                         } else {
                             alert(resp.message);
                         }
@@ -263,7 +367,9 @@
                     .fail(function(xhr, status, error) {
                         alert("Terjadi kesalahan saat mengirim data.");
                     });
-            });
+            })
+
+
 
 
 
