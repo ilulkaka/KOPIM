@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\MasterPOModel;
 use App\Models\POModel;
 use App\Models\POOutModel;
+use PDF;
 
 class SubController extends Controller
 {
@@ -322,5 +323,10 @@ class SubController extends Controller
         }
 
         return response()->json(['success' => true, 'message' => 'Data berhasil dikirim']);
+    }
+
+    public function cetak_dokumen ($noDok){
+        $pdf = PDF::loadview('/sub/sj')->setPaper('A4', 'potrait');
+        return $pdf->stream('List Insentif.pdf');
     }
 }

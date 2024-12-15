@@ -14,9 +14,17 @@
                     <div class="col-md-6 d-flex">
                         <input type="text" name="l_noDok" id="l_noDok" class="form-control col-md-4 mr-2"
                             placeholder="Nomor Dokument" />
+                        <input type="hidden" name="l_tgl" id="l_tgl" value="{{ date('Y-m-d') }}"
+                            class="form-control col-md-4 mr-2" />
+                        <input type="hidden" id="l_getNoDok" name="l_getNoDok" class="form-control col-md-2 mr-2">
+
+                        <button class="btn btn-danger rounded-pill col-md-4" id="btn_cetak" hidden>
+                            <i class="fas fa-print"></i> Cetak Dokumen
+                        </button>
                         <button class="btn btn-primary rounded-pill col-md-3" id="btn_ambilNomor">
                             <i class="fab fa-pushed"></i> Ambil Nomor
                         </button>
+
                     </div>
 
                     <!-- Status PO dan Button Reload -->
@@ -31,7 +39,6 @@
                     </div>
                 </div>
             </div>
-
 
             <hr>
             <div class="modal-body">
@@ -84,8 +91,36 @@
         $(document).ready(function() {
             $("#tdpo_nopo").focus();
 
+            $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
+            $("#l_tgl").prop('hidden', true); // Sembunyikan l_tgl
+            $("#l_getNoDok").prop('hidden', true);
+            $("#btn_cetak").prop('hidden', true);
+
             $("#btn_reload").click(function() {
                 l_po.ajax.reload();
+                var l_statusPO = $("#l_statusPO").val();
+
+                // Logika untuk menyembunyikan/memunculkan elemen
+                if (l_statusPO == 'Closed') {
+                    $("#l_noDok").prop('hidden', true); // Sembunyikan l_noDok
+                    $("#btn_ambilNomor").prop('hidden', true);
+
+                    // Ubah input l_tgl menjadi type="date" dan tampilkan
+                    $("#l_tgl").attr('type', 'date');
+                    $("#l_getNoDok").attr('type', 'text');
+                    $("#btn_cetak").attr('type', 'date');
+                    $("#l_tgl").prop('hidden', false);
+                    $("#l_getNoDok").prop('hidden', false);
+                    $("#btn_cetak").prop('hidden', false);
+                } else {
+                    $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
+                    $("#btn_ambilNomor").prop('hidden', false);
+
+                    // Ubah input l_tgl menjadi type="hidden"
+                    $("#l_tgl").attr('type', 'hidden');
+                    $("#l_getNoDok").attr('type', 'hidden');
+                    $("#btn_cetak").prop('hidden', true);
+                }
             });
 
             var l_po = $('#tb_open_po').DataTable({
@@ -109,6 +144,19 @@
                         targets: [0],
                         visible: false,
                         searchable: false
+                    },
+                    {
+                        targets: [12],
+                        data: null,
+                        //defaultContent: "<button class='btn btn-success'>Complited</button>"
+                        render: function(data, type, row, meta) {
+                            if (data.status_po == 'Closed') {
+                                return "<a href = '#' style='font-size:14px' class = 'inq_detail'> Detail </a>";
+                            } else {
+                                return '';
+                            }
+
+                        }
                     },
                     {
                         targets: 6, // Index kolom qty_plan
@@ -369,10 +417,10 @@
                     });
             })
 
-
-
-
-
+            $("#btn_cetak").click(function() {
+                var noDok = $("#l_getNoDok").val();
+                window.open(APP_URL + "/sub/cetak/" + noDok, '_blank');
+            });
 
             $("#tdpo_nopo").keypress(function(event) {
                 var nopo = $("#tdpo_nopo").val();
