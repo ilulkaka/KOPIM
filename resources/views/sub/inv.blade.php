@@ -153,58 +153,64 @@
     </table>
 
     <!-- Informasi Penerima -->
-    <div class="receiver-info" style="margin-top: -2%">
+    <div class="receiver-info" style="margin-top: -3%">
         <table>
             <tr>
-                <td><strong>Bank Transfer,</strong></td>
-            </tr>
-            <tr>
-                <td style="width: 15%"><strong>Bank Account</strong></td>
-                <td style="width:5px">:</td>
-                <td>BRI</td>
+                <td><strong></strong></td>
+                <td></td>
+                <td></td>
                 <td style="width: 10%; text-align:right"><strong>SUBTOTAL</strong></td>
                 <td style="width:5px; text-align:right">:</td>
                 <td style="width:15%; text-align:right">{{ number_format($subtotal, 0, ',', '.') }}</td>
             </tr>
             <tr>
-                <td><strong>Account No</strong></td>
-                <td>:</td>
-                <td> 006501074573500</td>
+                <td><strong>Bank Transfer,</strong></td>
+                <td></td>
+                <td></td>
                 <td style="width: 20%; text-align:right"><strong>TAX</strong></td>
                 <td>:</td>
                 <td style="text-align: right">0</td>
             </tr>
             <tr>
-                <td><strong>Account Name</strong></td>
-                <td>:</td>
-                <td>Nur Khalimah</td>
-                <td style="width: 20%; text-align:right"><strong>SALES TAX</strong></td>
-                <td>:</td>
-                <td style="text-align: right">0</td>
-            </tr>
-            <tr class="line-below">
-                <td><strong></strong></td>
-                <td></td>
-                <td></td>
+                <td style="width: 15%"><strong>Bank Account</strong></td>
+                <td style="width:5px">:</td>
+                <td>BRI</td>
                 <td style="width: 20%; text-align:right; "><strong>OTHER</strong></td>
                 <td>:</td>
                 <td style="text-align: right; border-bottom: 1px solid #000;">0</td>
             </tr>
             <tr>
-                <td><strong></strong></td>
-                <td></td>
-                <td></td>
+                <td><strong>Account No</strong></td>
+                <td>:</td>
+                <td> 006501074573500</td>
                 <td style="width: 20%; text-align:right"><strong>TOTAL</strong></td>
                 <td>:</td>
                 <td style="text-align: right">{{ number_format($subtotal, 0, ',', '.') }}</td>
             </tr>
+            <tr>
+                <td><strong>Account Name</strong></td>
+                <td>:</td>
+                <td>Nur Khalimah</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </table>
     </div>
 
-
-    <div class="footer">
-        <p>Bangil, {{ date('d-M-Y') }}<br>Hormat Kami,<br><br><br><br>Siswatun Navilla</p>
+    <hr>
+    <div style="text-align: center; margin-top: 20px;">
+        <p style="margin: 0; text-align: right; padding-right: 10px;">
+            Bangil, 16 Desember 2024
+        </p>
+        <p style="margin-top: 0px; margin-bottom: 40px; text-align: right;padding-right: 40px">
+            Hormat Kami,
+        </p>
+        <p style="margin: 0; margin-top: 60px; text-align: right;padding-right: 40px">
+            Elis Fitriyani
+        </p>
     </div>
+
 </body>
 
 </html>

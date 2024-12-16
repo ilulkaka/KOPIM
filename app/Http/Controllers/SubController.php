@@ -135,7 +135,7 @@ class SubController extends Controller
             'id_po' => str::uuid(),
             'tgl_po' => date('Y-m-d'),
             'nomor_po' => $request->nopo,
-            'item_cd' => $request->itemCd,
+            'item_cd' => strtoupper($request->itemCd), // Ubah ke huruf besar
             'nama' => $getDatas->nama,
             'spesifikasi' => $getDatas->spesifikasi,
             'qty' => $request->qty,

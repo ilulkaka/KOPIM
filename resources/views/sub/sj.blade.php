@@ -160,14 +160,16 @@
     <div class="footer">
         <div class="sign">
             <br>
-            Penerima,<br><br><br><br><br>
-            (............................)
+            <p>
+            <p> Penerima,<br><br><br><br><br>
+                ..............................
         </div>
 
         <div class="sign city">
-            Bangil, {{ date('d M Y') }}<br>
-            Pengirim,<br><br><br><br><br>
-            (............................)
+            <p style="padding-right:10px; padding-top:-40px"> Bangil, {{ date('d M Y') }}<br>
+            <p style="padding-right:30px; padding-top:-60px">Pengirim,<br><br><br><br>
+            <p>
+                ..............................
         </div>
     </div>
 </body>

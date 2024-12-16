@@ -57,8 +57,8 @@
                             <div class="col col-md-6">
                                 <input type="hidden" id="role" name="role" value="{{ Auth::user()->role }}">
                                 <strong> Item Cd</strong>
-                                <input type="text" id="tmpo_itemCd" name="tmpo_itemCd" class="form-control rounded-0"
-                                    placeholder="Masukkan Kode Barang ." required>
+                                <input type="text" id="tmpo_itemCd" name="tmpo_itemCd" style="text-transform: uppercase;"
+                                    class="form-control rounded-0" placeholder="Masukkan Kode Barang ." required>
                             </div>
                         </div>
                         <div class="row">
@@ -251,6 +251,8 @@
 
             $("#btn_tambah").click(function() {
                 $("#modal_tmpo").modal('show');
+                $("#frm_tmpo").trigger('reset');
+                $("#tmpo_itemCd").focus();
             });
 
 
@@ -318,6 +320,13 @@
                     })
             });
 
+        });
+    </script>
+
+    <script>
+        document.getElementById('frm_tmpo').addEventListener('submit', function() {
+            var input = document.getElementById('tmpo_itemCd');
+            input.value = input.value.toUpperCase();
         });
     </script>
 @endsection

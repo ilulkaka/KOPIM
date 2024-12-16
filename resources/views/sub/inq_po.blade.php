@@ -419,9 +419,17 @@
 
             $("#btn_cetak").click(function() {
                 var noDok = $("#l_getNoDok").val();
-                window.open(APP_URL + "/sub/cetak_sj/" + noDok, '_blank');
-                window.open(APP_URL + "/sub/cetak_inv/" + noDok, '_blank');
+
+                // Membuka kedua tab secara langsung menggunakan variabel
+                var tab1 = window.open(APP_URL + "/sub/cetak_inv/" + noDok, '_blank');
+                var tab2 = window.open(APP_URL + "/sub/cetak_sj/" + noDok, '_blank');
+
+                // Pastikan tab tidak null (dibuka)
+                if (!tab1 || !tab2) {
+                    alert("Pop-up blocker terdeteksi! Harap izinkan pop-up di browser Anda.");
+                }
             });
+
 
             $("#tdpo_nopo").keypress(function(event) {
                 var nopo = $("#tdpo_nopo").val();
