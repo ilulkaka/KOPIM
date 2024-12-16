@@ -66,5 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::get('laporan/frm_sendTelegram', 'TelegramController@frm_sendTelegram');
     Route::get('laporan/lap_transaksi', 'TelegramController@lap_transaksi');
 
-    Route::get('sub/cetak/{doDok}', 'SubController@cetak_dokumen');
+    Route::get('sub/cetak_sj/{doDok}', 'SubController@cetak_sj');
+    Route::get('sub/cetak_inv/{doDok}', 'SubController@cetak_inv');
 });

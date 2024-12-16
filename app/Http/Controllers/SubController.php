@@ -325,8 +325,17 @@ class SubController extends Controller
         return response()->json(['success' => true, 'message' => 'Data berhasil dikirim']);
     }
 
-    public function cetak_dokumen ($noDok){
-        $pdf = PDF::loadview('/sub/sj')->setPaper('A4', 'potrait');
-        return $pdf->stream('List Insentif.pdf');
+    public function cetak_sj ($noDok){
+        $datas = POOutModel::where('no_dokumen',$noDok)->get();
+
+        $pdf = PDF::loadview('/sub/sj',['datas'=>$datas])->setPaper('A4', 'potrait');
+        return $pdf->stream('Surat Jalan.pdf');
+    }
+
+    public function cetak_inv ($noDok){
+        $datas = POOutModel::where('no_dokumen',$noDok)->get();
+
+        $pdf = PDF::loadview('/sub/inv',['datas'=>$datas])->setPaper('A4', 'potrait');
+        return $pdf->stream('Surat Jalan.pdf');
     }
 }

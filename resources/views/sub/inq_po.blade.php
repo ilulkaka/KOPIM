@@ -419,7 +419,8 @@
 
             $("#btn_cetak").click(function() {
                 var noDok = $("#l_getNoDok").val();
-                window.open(APP_URL + "/sub/cetak/" + noDok, '_blank');
+                window.open(APP_URL + "/sub/cetak_sj/" + noDok, '_blank');
+                window.open(APP_URL + "/sub/cetak_inv/" + noDok, '_blank');
             });
 
             $("#tdpo_nopo").keypress(function(event) {
