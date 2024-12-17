@@ -107,27 +107,28 @@
                 <td><strong>Kepada Yth,</strong></td>
             </tr>
             <tr>
-                <td><strong>Nama</strong></td>
-                <td>:</td>
-                <td>PT. NPR Manufacturing Indonesia</td>
-                <td><strong>Nomor</strong></td>
-                <td>:</td>
-                <td style="text-align: right">{{ $datas[0]->no_dokumen }}</td>
+                <td style="line-height: 1.2; padding: 1px 0;"><strong>Nama</strong></td>
+                <td style="line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="line-height: 1.2; padding: 1px 0;">PT. NPR Manufacturing Indonesia</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;"><strong>Nomor</strong></td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">{{ $datas[0]->no_dokumen }}</td>
             </tr>
             <tr>
-                <td><strong>Alamat</strong></td>
-                <td>:</td>
-                <td>Jl. Rembang Industri II No. 24 Pier Pasuruan</td>
-                <td><strong>Tanggal Kirim</strong></td>
-                <td>:</td>
-                <td style="text-align: right">{{ date('d M Y', strtotime($datas[0]->tgl_kirim)) }}</td>
+                <td style="line-height: 1.2; padding: 1px 0;"><strong>Alamat</strong></td>
+                <td style="line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="line-height: 1.2; padding: 1px 0;">Jl. Rembang Industri II No. 24 Pier Pasuruan</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;"><strong>Tanggal Kirim</strong></td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">
+                    {{ date('d M Y', strtotime($datas[0]->tgl_kirim)) }}</td>
             </tr>
             <tr>
-                <td><strong>No. Telp</strong></td>
-                <td>:</td>
-                <td>(0343) 740215</td>
-                <td></td>
-                <td></td>
+                <td style="line-height: 1.2; padding: 1px 0;"><strong>No. Telp</strong></td>
+                <td style="line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="line-height: 1.2; padding: 1px 0;">(0343) 740215</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;"></td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;"></td>
             </tr>
         </table>
     </div>
@@ -144,13 +145,13 @@
             </tr>
         </thead>
         @foreach ($datas as $d)
-            <tbody>
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td style="text-align: left">{{ $d->nama }} {{ $d->spesifikasi }}</td>
-                    <td>{{ $d->nomor_po }}</td>
-                    <td>{{ $d->qty_out }}</td>
-                    <td>{{ $d->satuan }}</td>
+            <tbody style="line-height: 1.2; padding: 2px 0;">
+                <tr style="line-height: 1.2;">
+                    <td style="padding: 4px;">{{ $loop->iteration }}</td>
+                    <td style="text-align: left; padding: 4px;">{{ $d->nama }} {{ $d->spesifikasi }}</td>
+                    <td style="padding: 4px;">{{ $d->nomor_po }}</td>
+                    <td style="padding: 4px;">{{ $d->qty_out }}</td>
+                    <td style="padding: 4px;">{{ $d->satuan }}</td>
                 </tr>
             </tbody>
         @endforeach
@@ -167,9 +168,9 @@
 
         <div class="sign city">
             <p style="padding-right:10px; padding-top:-40px"> Bangil, {{ date('d M Y') }}<br>
-            <p style="padding-right:30px; padding-top:-60px">Pengirim,<br><br><br><br>
-            <p>
-                ..............................
+            <p style="padding-right:35px; padding-top:-60px">Pengirim,<br><br><br><br>
+            <p style="padding-right: 30px">
+                Elis Fitriyani
         </div>
     </div>
 </body>

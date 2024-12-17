@@ -107,19 +107,20 @@
                 <td><strong>BILL TO,</strong></td>
             </tr>
             <tr>
-                <td>PT. NPR Manufacturing Indonesia</td>
-                <td style="text-align: right"><strong>Nomor</strong></td>
-                <td style="text-align: right">:</td>
-                <td style="text-align: right">{{ $datas[0]->no_dokumen }}</td>
+                <td style="line-height: 1.2; padding: 1px 0;">PT. NPR Manufacturing Indonesia</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;"><strong>Nomor</strong></td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">{{ $datas[0]->no_dokumen }}</td>
             </tr>
             <tr>
-                <td>Jl. Rembang Industri II No. 24 Pier Pasuruan</td>
-                <td style="text-align: right"><strong>Tanggal Kirim</strong></td>
-                <td style="text-align: right">:</td>
-                <td style="text-align: right">{{ date('d M Y', strtotime($datas[0]->tgl_kirim)) }}</td>
+                <td style="line-height: 1.2; padding: 1px 0;">Jl. Rembang Industri II No. 24 Pier Pasuruan</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;"><strong>Tanggal Kirim</strong></td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">:</td>
+                <td style="text-align: right; line-height: 1.2; padding: 1px 0;">
+                    {{ date('d M Y', strtotime($datas[0]->tgl_kirim)) }}</td>
             </tr>
             <tr>
-                <td>(0343) 740215</td>
+                <td style="line-height: 1.2; padding: 1px 0;">(0343) 740215</td>
             </tr>
         </table>
     </div>
@@ -139,14 +140,14 @@
         </thead>
         @foreach ($datas as $d)
             <?php $subtotal += $d->total; ?>
-            <tbody>
-                <tr>
-                    <td>{{ $d->nomor_po }}</td>
-                    <td style="text-align: left">{{ $d->nama }} {{ $d->spesifikasi }}</td>
-                    <td>{{ $d->qty_out }}</td>
-                    <td>{{ $d->satuan }}</td>
-                    <td style="text-align: right">{{ number_format($d->harga, 0, ',', '.') }}</td>
-                    <td style="text-align: right">{{ number_format($d->total, 0, ',', '.') }}</td>
+            <tbody style="line-height: 1.2; padding: 2px 0;">
+                <tr style="line-height: 1.2;">
+                    <td style="padding: 4px;">{{ $d->nomor_po }}</td>
+                    <td style="text-align: left; padding: 4px;">{{ $d->nama }} {{ $d->spesifikasi }}</td>
+                    <td style="padding: 4px;">{{ $d->qty_out }}</td>
+                    <td style="padding: 4px;">{{ $d->satuan }}</td>
+                    <td style="text-align: right; padding: 4px;">{{ number_format($d->harga, 0, ',', '.') }}</td>
+                    <td style="text-align: right; padding: 4px;">{{ number_format($d->total, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         @endforeach
@@ -201,9 +202,9 @@
     <hr>
     <div style="text-align: center; margin-top: 20px;">
         <p style="margin: 0; text-align: right; padding-right: 10px;">
-            Bangil, 16 Desember 2024
+            Bangil, {{ date('d M Y') }}
         </p>
-        <p style="margin-top: 0px; margin-bottom: 40px; text-align: right;padding-right: 40px">
+        <p style="margin-top: 0px; margin-bottom: 40px; text-align: right;padding-right: 35px">
             Hormat Kami,
         </p>
         <p style="margin: 0; margin-top: 60px; text-align: right;padding-right: 40px">

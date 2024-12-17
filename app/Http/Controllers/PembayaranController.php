@@ -132,11 +132,7 @@ class PembayaranController extends Controller
         )
         SELECT no_pinjaman, nama, jml_angsuran, angsuran_ke, status_angsuran
         FROM RankedData
-        WHERE row_num = 1 and $arrStatus and (no_pinjaman like '%$search%' or nama like '%$search%') LIMIT  $length OFFSET $start");
-        // $Datas = DB::select(
-        //     "SELECT no_pinjaman, nama, max(jml_angsuran)as jml_angsuran, max(angsuran_ke)as angsuran_ke, status_angsuran FROM tb_pembayaran where (no_pinjaman like '%$search%')group by no_pinjaman, nama, status_angsuran
-        //     LIMIT  $length OFFSET $start  "
-        // );
+        WHERE row_num = 1 and $arrStatus and (no_pinjaman like '%$search%' or nama like '%$search%') LIMIT $length OFFSET $start");
 
         $co = DB::select(
             "WITH RankedData AS (
@@ -146,7 +142,7 @@ class PembayaranController extends Controller
         )
         SELECT no_pinjaman, nama, jml_angsuran, angsuran_ke, status_angsuran
         FROM RankedData
-        WHERE row_num = 1 and $arrStatus and (no_pinjaman like '%$search%' or nama like '%$search%') LIMIT  $length OFFSET $start");
+        WHERE row_num = 1 and $arrStatus and (no_pinjaman like '%$search%' or nama like '%$search%')");
         $count = count($co);
 
         return [

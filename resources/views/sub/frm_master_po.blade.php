@@ -90,6 +90,7 @@
                                     <option value="Unit">Unit</option>
                                     <option value="Rim">Rim</option>
                                     <option value="Psg">Pasang</option>
+                                    <option value="Set">Set</option>
                                 </select>
                             </div>
                         </div>
@@ -163,6 +164,7 @@
                                     <option value="Unit">Unit</option>
                                     <option value="Rim">Rim</option>
                                     <option value="Psg">Pasang</option>
+                                    <option value="Set">Set</option>
                                 </select>
                             </div>
                         </div>

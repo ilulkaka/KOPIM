@@ -127,7 +127,7 @@
                 processing: true,
                 serverSide: true,
                 searching: true,
-                ordering: false,
+                ordering: true,
 
                 ajax: {
                     url: APP_URL + '/api/sub/inq_openPo',

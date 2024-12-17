@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/assets/img/NPMI_Logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/assets/img/BM-logo.png') }}">
     <title>KOPIM</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,10 +75,9 @@
         <aside class="main-sidebar  sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ url('/') }}" class="brand-link">
-                <!--<img src="{{ asset('/dist/img/NPMI_Logo.png') }}" alt="NPMI Logo"
+                <!--<img src="{{ asset('/dist/img/BM-logo.png') }}" alt="NPMI Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">-->
-                <span class="brand-text font-weight-light" style="text-center"><b> -- Koperasi Insan Mandiri
-                        --</b></span>
+                <span class="brand-text font-weight-light" style="text-center"><b> Koperasi Insan Mandiri </b></span>
             </a>
 
             <!-- Sidebar -->
@@ -188,15 +187,35 @@
                                         <!-- <span class="badge badge-info right">6</span> -->
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ url('sub/po') }}"
-                                            class="nav-link {{ Request::is('sub/po') ? 'active' : '' }}">
-                                            <i class="fas fa-directions nav-icon"></i>
-                                            <p>PO</p>
-                                        </a>
-                                    </li>
-                                </ul>
+                                @if (Auth::user()->email == 'admin@gmail.com')
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ url('sub/frm_master_po') }}"
+                                                class="nav-link {{ Request::is('sub/frm_master_po') ? 'active' : '' }}">
+                                                <i class="fas fa-directions nav-icon"></i>
+                                                <p>Master PO</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ url('sub/frm_po') }}"
+                                                class="nav-link {{ Request::is('sub/frm_po') ? 'active' : '' }}">
+                                                <i class="fas fa-directions nav-icon"></i>
+                                                <p>Purchase Order</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ url('sub/inq_po') }}"
+                                                class="nav-link {{ Request::is('sub/inq_po') ? 'active' : '' }}">
+                                                <i class="fas fa-directions nav-icon"></i>
+                                                <p>PO Kirim</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @endif
                             </li>
 
                             <li class="nav-item has-treeview {{ Request::is('laporan/*') ? 'menu-open' : '' }}">

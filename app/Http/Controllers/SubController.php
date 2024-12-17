@@ -215,10 +215,10 @@ class SubController extends Controller
         (select * FROM tb_po where status_po = '$statusPO' )a 
         left join
         (select id_po, SUM(qty_out)as qty_out FROM tb_po_out group by id_po)b on a.id_po = b.id_po
-        where (a.item_cd like '%$search%' or a.nomor_po like '%$search%') LIMIT  $length OFFSET $start");
+        where (a.item_cd like '%$search%' or a.nomor_po like '%$search%') LIMIT $length OFFSET $start");
 
 
-        $co = $Datas = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total FROM
+        $co = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total FROM
         (select * FROM tb_po where status_po = '$statusPO' )a 
         left join
         (select id_po, SUM(qty_out)as qty_out FROM tb_po_out group by id_po)b on a.id_po = b.id_po");

@@ -229,6 +229,7 @@
                 processing: true,
                 serverSide: true,
                 searching: true,
+                ordering: true,
 
                 ajax: {
                     url: APP_URL + '/api/transaksi/pembayaran/list_ang',
