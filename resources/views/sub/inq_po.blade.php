@@ -14,9 +14,7 @@
                     <div class="col-md-6 d-flex">
                         <input type="text" name="l_noDok" id="l_noDok" class="form-control col-md-4 mr-2"
                             placeholder="Nomor Dokument" />
-                        <input type="hidden" name="l_tgl" id="l_tgl" value="{{ date('Y-m-d') }}"
-                            class="form-control col-md-4 mr-2" />
-                        <input type="hidden" id="l_getNoDok" name="l_getNoDok" class="form-control col-md-2 mr-2">
+                        <input type="hidden" id="l_getNoDok" name="l_getNoDok" class="form-control col-md-4 mr-2">
 
                         <button class="btn btn-danger rounded-pill col-md-4" id="btn_cetak" hidden>
                             <i class="fas fa-print"></i> Cetak Dokumen
@@ -29,7 +27,8 @@
 
                     <!-- Status PO dan Button Reload -->
                     <div class="col-md-6 d-flex justify-content-end">
-                        <select name="l_statusPO" id="l_statusPO" class="form-control col-md-4 mr-2">
+                        <input type="date" name="l_tgl" id="l_tgl" class="form-control col-md-4 mr-2">
+                        <select name="l_statusPO" id="l_statusPO" class="form-control col-md-3 mr-2">
                             <option value="Open">Open</option>
                             <option value="Closed">Closed</option>
                         </select>
@@ -58,6 +57,7 @@
                                 <th>Satuan</th>
                                 <th>Harga</th>
                                 <th>Total</th>
+                                <th>Nouki</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -92,7 +92,6 @@
             $("#tdpo_nopo").focus();
 
             $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
-            $("#l_tgl").prop('hidden', true); // Sembunyikan l_tgl
             $("#l_getNoDok").prop('hidden', true);
             $("#btn_cetak").prop('hidden', true);
 
@@ -106,10 +105,8 @@
                     $("#btn_ambilNomor").prop('hidden', true);
 
                     // Ubah input l_tgl menjadi type="date" dan tampilkan
-                    $("#l_tgl").attr('type', 'date');
                     $("#l_getNoDok").attr('type', 'text');
                     $("#btn_cetak").attr('type', 'date');
-                    $("#l_tgl").prop('hidden', false);
                     $("#l_getNoDok").prop('hidden', false);
                     $("#btn_cetak").prop('hidden', false);
                 } else {
@@ -117,7 +114,6 @@
                     $("#btn_ambilNomor").prop('hidden', false);
 
                     // Ubah input l_tgl menjadi type="hidden"
-                    $("#l_tgl").attr('type', 'hidden');
                     $("#l_getNoDok").attr('type', 'hidden');
                     $("#btn_cetak").prop('hidden', true);
                 }
@@ -146,7 +142,7 @@
                         searchable: false
                     },
                     {
-                        targets: [12],
+                        targets: [13],
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
@@ -257,6 +253,22 @@
                                 style: 'decimal',
                                 minimumFractionDigits: 0
                             }).format(data);
+                        }
+                    },
+                    {
+                        data: 'nouki',
+                        name: 'nouki',
+                        render: function(data, type, row) {
+                            if (data) {
+                                var date = new Date(data);
+                                var day = date.getDate().toString().padStart(2,
+                                    '0'); // Tanggal (2 digit)
+                                var month = (date.getMonth() + 1).toString().padStart(2,
+                                    '0'); // Bulan (2 digit)
+                                var year = date.getFullYear(); // Tahun (4 digit)
+                                return day + '-' + month + '-' + year;
+                            }
+                            return ''; // Jika data kosong
                         }
                     },
                 ],
