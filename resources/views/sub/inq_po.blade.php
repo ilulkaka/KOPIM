@@ -7,8 +7,9 @@
                 <h3 class="card-title" style="font-weight: bold; margin-left:1%"> List PO
                 </h3>
             </div>
-            <br>
+
             <div class="col-md-12">
+                <strong id="lastNumber">No Terakhir hari ini : <b style="color: red"> {{ $lastNumber }}</b></strong>
                 <div class="row d-flex align-items-center">
                     <!-- Nomor Dokument dan Button Ambil Nomor -->
                     <div class="col-md-6 d-flex">
@@ -22,7 +23,6 @@
                         <button class="btn btn-primary rounded-pill col-md-3" id="btn_ambilNomor">
                             <i class="fab fa-pushed"></i> Ambil Nomor
                         </button>
-
                     </div>
 
                     <!-- Status PO dan Button Reload -->
@@ -96,6 +96,7 @@
             $("#btn_cetak").prop('hidden', true);
 
             $("#btn_reload").click(function() {
+                var f_tgl = $("#l_tgl").val();
                 l_po.ajax.reload();
                 var l_statusPO = $("#l_statusPO").val();
 
@@ -133,6 +134,7 @@
                     },
                     data: function(d) {
                         d.statusPO = $("#l_statusPO").val();
+                        d.f_tgl = $("#l_tgl").val();
                     },
                 },
 
