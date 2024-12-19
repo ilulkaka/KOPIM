@@ -225,27 +225,26 @@ class SubController extends Controller
             $tgl = '';
             $asc = 'order by nouki asc';
         } else if($statusPO == 'Open' && $f_tgl != null) {
-            $tgl = "and nouki <='$f_tgl'";
-            $asc = 'order by nouki asc';
+            $tgl = "where a.nouki <='$f_tgl'";
+            $asc = 'order by a.nouki asc';
         } else if($statusPO == 'Closed' && $f_tgl == null){
             $tgl = '';
-            $asc = 'order by nouki desc';
-        } else {
-            $tgl = "and nouki ='$f_tgl'";
-            $asc = 'order by nouki desc';
+            $asc = 'order by a.nouki desc';
+        } else if($statusPO == 'Closed' && $f_tgl != null) {
+            $tgl = "where b.tgl_kirim ='$f_tgl'";
+            $asc = 'order by a.nouki desc';
         }
         // dd($tgl);
-        $Datas = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total FROM
-        (select * FROM tb_po where status_po = '$statusPO' $tgl )a 
+        $Datas = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total, b.tgl_kirim FROM
+        (select * FROM tb_po where status_po = '$statusPO' )a 
         left join
-        (select id_po, SUM(qty_out)as qty_out FROM tb_po_out group by id_po)b on a.id_po = b.id_po
-        where (a.item_cd like '%$search%' or a.nomor_po like '%$search%') $asc LIMIT $length OFFSET $start");
+        (select id_po, SUM(qty_out)as qty_out, tgl_kirim FROM tb_po_out group by id_po, tgl_kirim)b on a.id_po = b.id_po
+        $tgl and (a.item_cd like '%$search%' or a.nomor_po like '%$search%') $asc LIMIT $length OFFSET $start");
 
-
-        $co = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total FROM
-        (select * FROM tb_po where status_po = '$statusPO' $tgl)a 
+        $co = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total, b.tgl_kirim FROM
+        (select * FROM tb_po where status_po = '$statusPO')a 
         left join
-        (select id_po, SUM(qty_out)as qty_out FROM tb_po_out group by id_po)b on a.id_po = b.id_po");
+        (select id_po, SUM(qty_out)as qty_out, tgl_kirim FROM tb_po_out group by id_po, tgl_kirim)b on a.id_po = b.id_po $tgl");
         $count = count($co);
 
         return [
