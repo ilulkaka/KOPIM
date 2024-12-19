@@ -54,6 +54,7 @@
                                 <th>Qty In</th>
                                 <th>Qty Out</th>
                                 <th>Plan Qty</th>
+                                <th>Stock</th>
                                 <th>Satuan</th>
                                 <th>Harga</th>
                                 <th>Total</th>
@@ -144,7 +145,7 @@
                         searchable: false
                     },
                     {
-                        targets: [13],
+                        targets: [14],
                         data: null,
                         //defaultContent: "<button class='btn btn-success'>Complited</button>"
                         render: function(data, type, row, meta) {
@@ -166,6 +167,10 @@
                     },
                     {
                         targets: 8,
+                        width: '50px'
+                    },
+                    {
+                        targets: 9,
                         width: '50px'
                     },
                     {
@@ -230,6 +235,10 @@
                             }
                             return data;
                         }
+                    },
+                    {
+                        data: 'stock',
+                        name: 'stock'
                     },
                     {
                         data: 'satuan',

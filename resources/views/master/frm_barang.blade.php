@@ -1,7 +1,19 @@
 @extends('layout.main')
 @section('content')
+    <style>
+        .disabled-link {
+            pointer-events: none;
+            /* Menonaktifkan klik */
+            cursor: not-allowed;
+            /* Mengubah cursor menjadi ikon 'not-allowed' */
+            color: gray;
+            /* Mengubah warna teks agar terlihat nonaktif */
+            text-decoration: none;
+        }
+    </style>
     <div>
-        <a href="#" id="btn_tambah" name="btn_tambah" style="size: 18px"><i class="fab fa-codepen"> Tambah Master
+        <a href="#" id="btn_tambah" name="btn_tambah" style="size: 18px" class="disabled-link"><i class="fab fa-codepen">
+                Tambah Master
                 Barang</i></a>
         <br>
     </div>
@@ -18,7 +30,7 @@
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
 
-                    <table class="table table-hover text-nowrap" id="tb_barang">
+                    <table class="table table-hover text-nowrap" id="tb_barang_xxx">
                         <thead>
                             <tr>
                                 <th>id</th>
@@ -39,8 +51,8 @@
     </div>
 
     <!-- Modal Tambah Barang (TB) -->
-    <div class="modal fade" id="modal_tambah_barang" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modal_tambah_barang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
@@ -70,20 +82,21 @@
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong> Nama Barang</strong>
-                                <input name="tb_nama" id="tb_nama" class="form-control rounded-0" placeholder="Masukkan Nama Barang ." required>
+                                <input name="tb_nama" id="tb_nama" class="form-control rounded-0"
+                                    placeholder="Masukkan Nama Barang ." required>
                             </div>
                         </div>
                         <p></p>
                         <div class="row">
                             <div class="col col-md-7">
                                 <strong> Spesifikasi</strong>
-                                <input type="type" id="tb_spesifikasi" name="tb_spesifikasi" class="form-control rounded-0"
-                                    placeholder="Masukkan Spesifikasi Barang ." required>
+                                <input type="type" id="tb_spesifikasi" name="tb_spesifikasi"
+                                    class="form-control rounded-0" placeholder="Masukkan Spesifikasi Barang ." required>
                             </div>
                             <div class="col col-md-5">
                                 <strong> Harga</strong>
                                 <input type="type" id="tb_harga" name="tb_harga" class="form-control rounded-0"
-                                    placeholder="Masukkan Harga Barang ." >
+                                    placeholder="Masukkan Harga Barang .">
                             </div>
                         </div>
                         <p></p>
@@ -130,11 +143,11 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-low-vision"> Nama Barang</i></strong>
-                                <input type="text" id="eb_nama" name="eb_nama"
-                                    class="form-control rounded-0" required disabled>
+                                <input type="text" id="eb_nama" name="eb_nama" class="form-control rounded-0"
+                                    required disabled>
                             </div>
                             <div class="col col-md-6">
-                            <strong><i class="fas fa-low-vision"> Spesifikasi</i></strong>
+                                <strong><i class="fas fa-low-vision"> Spesifikasi</i></strong>
                                 <input type="text" id="eb_spesifikasi" name="eb_spesifikasi"
                                     class="form-control rounded-0" required>
                             </div>
@@ -142,13 +155,13 @@
                         <div class="row">
                             <div class="col col-md-6">
                                 <strong><i class="fas fa-low-vision"> Supplier</i></strong>
-                                <input type="text" id="eb_supplier" name="eb_supplier"
-                                    class="form-control rounded-0" required disabled>
+                                <input type="text" id="eb_supplier" name="eb_supplier" class="form-control rounded-0"
+                                    required disabled>
                             </div>
                             <div class="col col-md-6">
-                            <strong><i class="fas fa-low-vision"> Harga</i></strong>
-                                <input type="text" id="eb_harga" name="eb_harga"
-                                    class="form-control rounded-0" required>
+                                <strong><i class="fas fa-low-vision"> Harga</i></strong>
+                                <input type="text" id="eb_harga" name="eb_harga" class="form-control rounded-0"
+                                    required>
                             </div>
                         </div>
                         <p></p>

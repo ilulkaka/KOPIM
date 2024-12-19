@@ -1,46 +1,49 @@
 @extends('layout.main')
 @section('content')
-
-<div class="card">
-<div class="card-header bg-secondary">
+    <div class="card">
+        <div class="card-header bg-secondary">
             <i class="fas fa-shopping-cart float-left"> </i>
             <h3 class="card-title" style="font-weight: bold; margin-left:1%"> List Stock Barang
             </h3>
         </div>
 
 
-            <div class="modal-body">
-                        <div class="row">
-                            <label style="margin-left: 1%">End Stock : </label>
-                            <input type="date" name="endDate" id="endDate" value="{{date('Y-m-d')}}" class="form-control col-md-2 rounded-0 ml-2">
-                        </div>
-        <br>
-     
-                <div class="card-body table-responsive p-0">
-
-                    <table class="table table-hover text-nowrap" id="tb_stock">
-                        <thead>
-                            <tr>
-                                <th>Kode</th>
-                                <th>Nama</th>
-                                <th>Spesifikasi</th>
-                                <!-- <th>Supplier</th> -->
-                                <th>In</th>
-                                <th>Out</th>
-                                <th>Stock Qty</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <br>
-                <div class="row">
-                    <button id="btn_bm" name="btn_bm" class="form-control rounded-pill col-md-2">Detail Barang Masuk</button>
-                    <button id="btn_bk" name="btn_bk" class="form-control rounded-pill col-md-2">Detail Barang Keluar</button>
-                    <button id="btn_excel" name="btn_excel" class="form-control btn-success rounded-pill col-md-1">Excel</button>
-                </div>
+        <div class="modal-body">
+            <div class="row">
+                <label style="margin-left: 1%">End Stock : </label>
+                <input type="date" name="endDate" id="endDate" value="{{ date('Y-m-d') }}"
+                    class="form-control col-md-2 rounded-0 ml-2">
             </div>
-            <!-- /.card-body -->
+            <br>
+
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover text-nowrap" id="tb_stock">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Spesifikasi</th>
+                            <!-- <th>Supplier</th> -->
+                            <th>In</th>
+                            <th>Out</th>
+                            <th>Stock Qty</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <br>
+            <div class="row">
+                <button id="btn_bm" name="btn_bm" class="form-control rounded-pill col-md-2">Detail Barang
+                    Masuk</button>
+                <button id="btn_bk" name="btn_bk" class="form-control rounded-pill col-md-2">Detail Barang
+                    Keluar</button>
+                <button id="btn_excel" name="btn_excel"
+                    class="form-control btn-success rounded-pill col-md-1">Excel</button>
+            </div>
+        </div>
+        <!-- /.card-body -->
 
         <!-- /.card -->
     </div>
@@ -198,8 +201,8 @@
                 ],
 
                 columns: [{
-                        data: 'kode',
-                        name: 'kode'
+                        data: 'item_cd',
+                        name: 'item_cd'
                     },
                     {
                         data: 'nama',
@@ -241,8 +244,8 @@
 
             $('#tb_stock').on('click', '.ts_tambah', function() {
                 var data = list_stock.row($(this).parents('tr')).data();
-                $("#ts_kode").val(data.kode);
-                $("#ts_kode1").val(data.kode);
+                $("#ts_kode").val(data.item_cd);
+                $("#ts_kode1").val(data.item_cd);
                 get_ts();
                 $("#modal_tambah_stock").modal('show');
             });
@@ -296,8 +299,8 @@
 
             $('#tb_stock').on('click', '.ts_kurang', function() {
                 var data = list_stock.row($(this).parents('tr')).data();
-                $("#ks_kode").val(data.kode);
-                $("#ks_kode1").val(data.kode);
+                $("#ks_kode").val(data.item_cd);
+                $("#ks_kode1").val(data.item_cd);
                 $("#ks_stock").val(data.stock);
                 get_ks();
                 $("#modal_kurang_stock").modal('show');
@@ -352,7 +355,7 @@
             });
 
             $("#btn_excel").click(function() {
-               var endDate = $("#endDate").val();
+                var endDate = $("#endDate").val();
                 $.ajax({
                     url: APP_URL + '/api/laporan/stock_excel',
                     headers: {
@@ -360,7 +363,7 @@
                     },
                     type: 'POST',
                     dataType: 'json',
-                    data:  {
+                    data: {
                         'endDate': endDate
                     },
 

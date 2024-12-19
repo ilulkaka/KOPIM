@@ -235,16 +235,20 @@ class SubController extends Controller
             $asc = 'order by a.nouki desc';
         }
         // dd($tgl);
-        $Datas = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total, b.tgl_kirim FROM
+        $Datas = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total, b.tgl_kirim, c.stock FROM
         (select * FROM tb_po where status_po = '$statusPO' )a 
         left join
         (select id_po, SUM(qty_out)as qty_out, tgl_kirim FROM tb_po_out group by id_po, tgl_kirim)b on a.id_po = b.id_po
+        left join
+        (select * from v_stock)c on a.item_cd = c.item_cd
         $tgl and (a.item_cd like '%$search%' or a.nomor_po like '%$search%') $asc LIMIT $length OFFSET $start");
 
-        $co = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total, b.tgl_kirim FROM
+        $co = DB::select("SELECT a.*, b.qty_out, a.qty - b.qty_out as temp_plan, a.qty * a.harga as total, b.tgl_kirim, c.stock FROM
         (select * FROM tb_po where status_po = '$statusPO')a 
         left join
-        (select id_po, SUM(qty_out)as qty_out, tgl_kirim FROM tb_po_out group by id_po, tgl_kirim)b on a.id_po = b.id_po $tgl");
+        (select id_po, SUM(qty_out)as qty_out, tgl_kirim FROM tb_po_out group by id_po, tgl_kirim)b on a.id_po = b.id_po
+        left join
+        (select * from v_stock)c on a.item_cd = c.item_cd $tgl");
         $count = count($co);
 
         return [

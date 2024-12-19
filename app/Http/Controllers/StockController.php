@@ -27,24 +27,24 @@ class StockController extends Controller
         $endDate = $request->endDate;
 
         $Datas = DB::select(
-            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
-             (SELECT * FROM tb_barang)a
+            "SELECT a.item_cd, a.nama, a.spesifikasi, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
+             (SELECT * FROM tb_master_po)a
              LEFT JOIN
-             (SELECT kode, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY kode)b on b.kode=a.kode
+             (SELECT item_cd, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY item_cd)b on b.item_cd=a.item_cd
              LEFT JOIN
-             (SELECT kode, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY kode)c on c.kode=a.kode
-             where (a.kode like '%$search%' or a.nama like '%$search%')
+             (SELECT item_cd, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY item_cd)c on c.item_cd=a.item_cd
+             where (a.item_cd like '%$search%' or a.nama like '%$search%')
              LIMIT  $length OFFSET $start  "
         );
 
         $co = DB::select(
-            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
-            (SELECT * FROM tb_barang)a
-            LEFT JOIN
-            (SELECT kode, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY kode)b on b.kode=a.kode
-            LEFT JOIN
-            (SELECT kode, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY kode)c on c.kode=a.kode
-            where (a.kode like '%$search%' or a.nama like '%$search%') "
+            "SELECT a.item_cd, a.nama, a.spesifikasi, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
+             (SELECT * FROM tb_master_po)a
+             LEFT JOIN
+             (SELECT item_cd, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY item_cd)b on b.item_cd=a.item_cd
+             LEFT JOIN
+             (SELECT item_cd, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY item_cd)c on c.item_cd=a.item_cd
+             where (a.item_cd like '%$search%' or a.nama like '%$search%')"
         );
         $count = count($co);
 
@@ -62,7 +62,7 @@ class StockController extends Controller
             $idin = Str::uuid();
             $tambah_stock = InModel::create([
                 'id_in' => $idin,
-                'kode' => $request->ts_kode,
+                'item_cd' => $request->ts_kode,
                 'tgl_in' => $request->ts_tglmsk,
                 'qty_in' => $request->ts_qty,
             ]);
@@ -91,7 +91,7 @@ class StockController extends Controller
                 $idout = Str::uuid();
                 $kurang_stock = OutModel::create([
                     'id_out' => $idout,
-                    'kode' => $request->ks_kode,
+                    'item_cd' => $request->ks_kode,
                     'tgl_out' => $request->ks_tglklr,
                     'qty_out' => $request->ks_qty,
                 ]);
@@ -124,20 +124,20 @@ class StockController extends Controller
         $tgl_akhir = $request->input('tgl_akhir');
 
         $Datas = DB::select(
-            "SELECT a.tgl_in, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
+            "SELECT a.tgl_in, a.item_cd, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
             (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
             LEFT JOIN
-            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
-            where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
+            (SELECT item_cd, nama, spesifikasi FROM tb_master_po)b on b.item_cd=a.item_cd
+            where (a.item_cd like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%')
             LIMIT  $length OFFSET $start  "
         );
 
         $co = DB::select(
-            "SELECT a.tgl_in, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
+            "SELECT a.tgl_in, a.item_cd, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
             (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
             LEFT JOIN
-            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
-            where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%') "
+            (SELECT item_cd, nama, spesifikasi FROM tb_master_po)b on b.item_cd=a.item_cd
+            where (a.item_cd like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%') "
         );
         $count = count($co);
 
@@ -165,20 +165,20 @@ class StockController extends Controller
         $tgl_akhir = $request->input('tgl_akhir');
 
         $Datas = DB::select(
-            "SELECT a.tgl_out, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_out,0)as qty_out FROM
+            "SELECT a.tgl_out, a.item_cd, b.nama, b.spesifikasi, COALESCE(a.qty_out,0)as qty_out FROM
             (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
             LEFT JOIN
-            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
-            where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')
+            (SELECT item_cd, nama, spesifikasi FROM tb_master_po)b on b.kode=a.kode
+            where (a.item_cd like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%')
             LIMIT  $length OFFSET $start  "
         );
 
         $co = DB::select(
-            "SELECT a.tgl_out, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_out,0)as qty_out FROM
+            "SELECT a.tgl_out, a.item_cd, b.nama, b.spesifikasi, COALESCE(a.qty_out,0)as qty_out FROM
             (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
             LEFT JOIN
-            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode
-                where (a.kode like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%'or b.supplier like '%$search%')  "
+            (SELECT item_cd, nama, spesifikasi FROM tb_master_po)b on b.kode=a.kode
+            where (a.item_cd like '%$search%' or b.nama like '%$search%' or b.spesifikasi like '%$search%')  "
         );
 
         $count = count($co);
@@ -196,19 +196,19 @@ class StockController extends Controller
         // dd($request->all());
         $endDate = $request->endDate;
         $Datas = DB::select(
-            "SELECT a.kode, a.nama, a.spesifikasi, a.supplier, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
-            (SELECT * FROM tb_barang)a 
+            "SELECT a.item_cd, a.nama, a.spesifikasi, COALESCE(b.qty_in,0)as qty_in, COALESCE(c.qty_out,0)as qty_out, coalesce((b.qty_in) - ifnull(c.qty_out,0),0) as stock FROM
+            (SELECT * FROM tb_master_po)a 
             LEFT JOIN
-            (SELECT kode, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY kode)b on b.kode=a.kode
+            (SELECT item_cd, sum(qty_in)as qty_in FROM tb_in where tgl_in <= '$endDate' GROUP BY item_cd)b on b.item_cd=a.item_cd
             LEFT JOIN
-            (SELECT kode, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY kode)c on c.kode=a.kode"
+            (SELECT item_cd, sum(qty_out)as qty_out FROM tb_out where tgl_out <= '$endDate' GROUP BY item_cd)c on c.item_cd=a.item_cd"
         );
 
         if (count($Datas) > 0) {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setCellValue('A1', 'No');
-            $sheet->setCellValue('B1', 'KODE');
+            $sheet->setCellValue('B1', 'Item Cd');
             $sheet->setCellValue('C1', 'NAMA');
             $sheet->setCellValue('D1', 'Spesifikasi');
             $sheet->setCellValue('E1', 'Stock');
@@ -217,7 +217,7 @@ class StockController extends Controller
             $no = 1;
             foreach ($Datas as $data) {
                 $sheet->setCellValue('A' . $line, $no++);
-                $sheet->setCellValue('B' . $line, $data->kode);
+                $sheet->setCellValue('B' . $line, $data->item_cd);
                 $sheet->setCellValue('C' . $line, $data->nama);
                 $sheet->setCellValue('D' . $line, $data->spesifikasi);
                 $sheet->setCellValue('E' . $line, $data->stock);
@@ -241,17 +241,17 @@ class StockController extends Controller
         $tgl_akhir = $request->input('tgl_akhir');
 
         $Datas = DB::select(
-            "SELECT a.tgl_out, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_out,0)as qty_out FROM
+            "SELECT a.tgl_out, a.item_cd, b.nama, b.spesifikasi, COALESCE(a.qty_out,0)as qty_out FROM
             (SELECT * FROM tb_out where tgl_out >= '$tgl_awal' and tgl_out <= '$tgl_akhir')a 
             LEFT JOIN
-            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode"
+            (SELECT item_cd, nama, spesifikasi FROM tb_master_po)b on b.item_cd=a.item_cd"
         );
 
         if (count($Datas) > 0) {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setCellValue('A1', 'No');
-            $sheet->setCellValue('B1', 'KODE');
+            $sheet->setCellValue('B1', 'Item Cd');
             $sheet->setCellValue('C1', 'NAMA');
             $sheet->setCellValue('D1', 'Spesifikasi');
             $sheet->setCellValue('E1', 'Qty Out');
@@ -261,7 +261,7 @@ class StockController extends Controller
             $no = 1;
             foreach ($Datas as $data) {
                 $sheet->setCellValue('A' . $line, $no++);
-                $sheet->setCellValue('B' . $line, $data->kode);
+                $sheet->setCellValue('B' . $line, $data->item_cd);
                 $sheet->setCellValue('C' . $line, $data->nama);
                 $sheet->setCellValue('D' . $line, $data->spesifikasi);
                 $sheet->setCellValue('E' . $line, $data->qty_out);
@@ -286,10 +286,10 @@ class StockController extends Controller
         $tgl_akhir = $request->input('tgl_akhir');
 
         $Datas = DB::select(
-            "SELECT a.tgl_in, a.kode, b.nama, b.spesifikasi, b.supplier, COALESCE(a.qty_in,0)as qty_in FROM
+            "SELECT a.tgl_in, a.item_cd, b.nama, b.spesifikasi, COALESCE(a.qty_in,0)as qty_in FROM
             (SELECT * FROM tb_in where tgl_in >= '$tgl_awal' and tgl_in <= '$tgl_akhir')a 
             LEFT JOIN
-            (SELECT kode, nama, spesifikasi, supplier FROM tb_barang)b on b.kode=a.kode"
+            (SELECT item_cd, nama, spesifikasi FROM tb_barang)b on b.item_cd=a.item_cd"
         );
 
         if (count($Datas) > 0) {
@@ -306,7 +306,7 @@ class StockController extends Controller
             $no = 1;
             foreach ($Datas as $data) {
                 $sheet->setCellValue('A' . $line, $no++);
-                $sheet->setCellValue('B' . $line, $data->kode);
+                $sheet->setCellValue('B' . $line, $data->item_cd);
                 $sheet->setCellValue('C' . $line, $data->nama);
                 $sheet->setCellValue('D' . $line, $data->spesifikasi);
                 $sheet->setCellValue('E' . $line, $data->qty_in);
