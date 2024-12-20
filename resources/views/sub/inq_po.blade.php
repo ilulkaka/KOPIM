@@ -16,12 +16,12 @@
                         <input type="text" name="l_noDok" id="l_noDok" class="form-control col-md-4 mr-2"
                             placeholder="Nomor Dokument" />
                         <input type="hidden" id="l_getNoDok" name="l_getNoDok" class="form-control col-md-4 mr-2">
-
-                        <button class="btn btn-danger rounded-pill col-md-4" id="btn_cetak" hidden>
-                            <i class="fas fa-print"></i> Cetak Dokumen
-                        </button>
-                        <button class="btn btn-primary rounded-pill col-md-3" id="btn_ambilNomor">
+                        <button class="btn btn-primary rounded-pill col-md-3 mr-2" id="btn_ambilNomor">
                             <i class="fab fa-pushed"></i> Ambil Nomor
+                        </button>
+                        {{-- <button class="btn btn-danger rounded-pill col-md-4" id="btn_cetak" hidden> --}}
+                        <button class="btn btn-danger rounded-pill col-md-3" id="btn_cetak">
+                            <i class="fas fa-print"></i> Cetak Dokumen
                         </button>
                     </div>
 
@@ -94,7 +94,7 @@
 
             $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
             $("#l_getNoDok").prop('hidden', true);
-            $("#btn_cetak").prop('hidden', true);
+            // $("#btn_cetak").prop('hidden', true);
 
             $("#btn_reload").click(function() {
                 var f_tgl = $("#l_tgl").val();
@@ -108,16 +108,16 @@
 
                     // Ubah input l_tgl menjadi type="date" dan tampilkan
                     $("#l_getNoDok").attr('type', 'text');
-                    $("#btn_cetak").attr('type', 'date');
+                    // $("#btn_cetak").attr('type', 'date');
                     $("#l_getNoDok").prop('hidden', false);
-                    $("#btn_cetak").prop('hidden', false);
+                    // $("#btn_cetak").prop('hidden', false);
                 } else {
                     $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
                     $("#btn_ambilNomor").prop('hidden', false);
 
                     // Ubah input l_tgl menjadi type="hidden"
                     $("#l_getNoDok").attr('type', 'hidden');
-                    $("#btn_cetak").prop('hidden', true);
+                    // $("#btn_cetak").prop('hidden', true);
                 }
             });
 

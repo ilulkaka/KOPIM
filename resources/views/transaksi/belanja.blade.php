@@ -82,6 +82,11 @@
             background-color: rgb(255, 255, 255);
             text-transform: uppercase;
         }
+
+        .custom-margin {
+            margin-left: 50px;
+            /* Sesuaikan nilai sesuai kebutuhan */
+        }
     </style>
 
     <div class="row">
@@ -105,27 +110,33 @@
                                 </div>
                             @endif
                             <!--<div class="col col-md-6">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="">Kategori ...</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Anggota">Anggota</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <option value="Umum">Umum</option>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </select>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <strong><i class="fas fa-caret-square-down"> Kategori</i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <select id="trx_kategori" name="trx_kategori" class="form-control rounded-0" required>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="">Kategori ...</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="Anggota">Anggota</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option value="Umum">Umum</option>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </select>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>-->
                         </div>
                         <!-- radio -->
                         <br>
                         <div class="form-group">
-                            <div class="form-check">
-                                <b>
-                                    <input class="form-check-input" type="radio" name="r1" id="r_ang" checked>
-                                    <label class="form-check-label col col-md-4">Anggota</label>
-                                    <input class="form-check-input" type="radio" name="r1" id="r_non">
-                                    <label class="form-check-label" style="padding-left: 1%">Non Anggota</label>
-                                    <input type="hidden" name="fil" id="fil" value="">
-                                </b>
+                            <label class="form-label fw-bold mb-2">Status Anggota:</label>
+                            <div class="form-check d-flex align-items-center">
+                                <div class="me-4">
+                                    <input class="form-check-input" type="radio" name="r1" id="r_ang"
+                                        value="Anggota" checked>
+                                    <label class="form-check-label" for="r_ang">Anggota</label>
+                                </div>
+                                <div class="custom-margin">
+                                    <input class="form-check-input" type="radio" name="r1" id="r_non"
+                                        value="Non Anggota">
+                                    <label class="form-check-label" for="r_non">Non Anggota</label>
+                                </div>
                             </div>
+                            <input type="hidden" name="fil" id="fil" value="">
                         </div>
+                        <hr>
                         <input type="hidden" name="trx_kategori" id="trx_kategori">
                         <div class="row">
                             <div class="col col-md-12">
@@ -136,6 +147,7 @@
                                     class="form-control rounded-0" placeholder="Masukkan No Barcode ." required>
                             </div>
                         </div>
+                        <p></p>
                         <div class="row">
                             <div class="col col-md-12">
                                 <strong disabled><i class="fas fa-quote-left"> Nama</i></strong>
@@ -159,11 +171,18 @@
                             </div>
                             <div class="col col-md-6">
                                 <br>
-                                <button type="button" class="btn btn-danger rounded-pill btn-lg float-right"
-                                    id="btn_cancel_trx">Cancel</button>
-                                <button type="button" class="btn btn-success rounded-pill btn-lg float-right"
-                                    id="btn_simpan_trx">Simpan</button>
+                                <a class="btn btn-app float-right" id="btn_cancel_trx">
+                                    <i class="far fa-window-close"></i> Cancel
+                                </a>
+                                <a class="btn btn-app float-right" id="btn_simpan_trx">
+                                    <i class="fas fa-save"></i> Save
+                                </a>
+                                {{-- <button type="button" class="btn btn-danger btn-flat float-right"
+                                    id="btn_cancel_trx">Cancel</button> --}}
+                                {{-- <button type="button" class="btn btn-success btn-flat float-right mr-2"
+                                    id="btn_simpan_trx">Simpan</button> --}}
                             </div>
+
                         </div>
                         <p></p>
                         <!--<div class="modal-footer">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div>-->

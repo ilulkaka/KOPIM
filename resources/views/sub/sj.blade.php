@@ -167,7 +167,8 @@
         </div>
 
         <div class="sign city">
-            <p style="padding-right:10px; padding-top:-40px"> Bangil, {{ date('d M Y') }}<br>
+            <p style="padding-right:10px; padding-top:-40px"> Bangil,
+                {{ date('d M Y', strtotime($datas[0]->tgl_kirim)) }}<br>
             <p style="padding-right:35px; padding-top:-60px">Pengirim,<br><br><br><br>
             <p style="padding-right: 30px">
                 Elis Fitriyani

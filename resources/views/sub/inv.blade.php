@@ -202,7 +202,7 @@
     <hr>
     <div style="text-align: center; margin-top: 20px;">
         <p style="margin: 0; text-align: right; padding-right: 10px;">
-            Bangil, {{ date('d M Y') }}
+            Bangil, {{ date('d M Y', strtotime($datas[0]->tgl_kirim)) }}
         </p>
         <p style="margin-top: 0px; margin-bottom: 40px; text-align: right;padding-right: 35px">
             Hormat Kami,
