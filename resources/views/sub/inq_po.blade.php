@@ -92,8 +92,8 @@
         $(document).ready(function() {
             $("#tdpo_nopo").focus();
 
-            $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
-            $("#l_getNoDok").prop('hidden', true);
+            // $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
+            // $("#l_getNoDok").prop('hidden', true);
             // $("#btn_cetak").prop('hidden', true);
 
             $("#btn_reload").click(function() {
@@ -103,20 +103,20 @@
 
                 // Logika untuk menyembunyikan/memunculkan elemen
                 if (l_statusPO == 'Closed') {
-                    $("#l_noDok").prop('hidden', true); // Sembunyikan l_noDok
+                    // $("#l_noDok").prop('hidden', true); // Sembunyikan l_noDok
                     $("#btn_ambilNomor").prop('hidden', true);
 
                     // Ubah input l_tgl menjadi type="date" dan tampilkan
-                    $("#l_getNoDok").attr('type', 'text');
+                    // $("#l_getNoDok").attr('type', 'text');
                     // $("#btn_cetak").attr('type', 'date');
-                    $("#l_getNoDok").prop('hidden', false);
+                    // $("#l_getNoDok").prop('hidden', false);
                     // $("#btn_cetak").prop('hidden', false);
                 } else {
-                    $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
+                    // $("#l_noDok").prop('hidden', false); // Tampilkan l_noDok
                     $("#btn_ambilNomor").prop('hidden', false);
 
                     // Ubah input l_tgl menjadi type="hidden"
-                    $("#l_getNoDok").attr('type', 'hidden');
+                    // $("#l_getNoDok").attr('type', 'hidden');
                     // $("#btn_cetak").prop('hidden', true);
                 }
             });
@@ -441,7 +441,7 @@
             })
 
             $("#btn_cetak").click(function() {
-                var noDok = $("#l_getNoDok").val();
+                var noDok = $("#l_noDok").val();
 
                 // Membuka kedua tab secara langsung menggunakan variabel
                 var tab1 = window.open(APP_URL + "/sub/cetak_inv/" + noDok, '_blank');
