@@ -223,10 +223,10 @@ class SubController extends Controller
 
         if($statusPO == 'Open' && $f_tgl == null){
             $tgl = '';
-            $asc = 'order by created_at desc';
+            $asc = 'order by created_at asc';
         } else if($statusPO == 'Open' && $f_tgl != null) {
             $tgl = "where a.nouki <='$f_tgl'";
-            $asc = 'order by a.created_at desc';
+            $asc = 'order by a.created_at asc';
         } else if($statusPO == 'Closed' && $f_tgl == null){
             $tgl = '';
             $asc = 'order by a.nouki desc';
