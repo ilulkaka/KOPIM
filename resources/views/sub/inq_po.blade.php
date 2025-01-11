@@ -16,11 +16,11 @@
                         <input type="text" name="l_noDok" id="l_noDok" class="form-control col-md-4 mr-2"
                             placeholder="Nomor Dokument" />
                         <input type="hidden" id="l_getNoDok" name="l_getNoDok" class="form-control col-md-4 mr-2">
-                        <button class="btn btn-primary rounded-pill col-md-3 mr-2" id="btn_ambilNomor">
+                        <button class="btn btn-primary rounded-pill col-md-4 mr-2" id="btn_ambilNomor">
                             <i class="fab fa-pushed"></i> Ambil Nomor
                         </button>
                         {{-- <button class="btn btn-danger rounded-pill col-md-4" id="btn_cetak" hidden> --}}
-                        <button class="btn btn-danger rounded-pill col-md-3" id="btn_cetak">
+                        <button class="btn btn-danger rounded-pill col-md-4" id="btn_cetak">
                             <i class="fas fa-print"></i> Cetak Dokumen
                         </button>
                     </div>

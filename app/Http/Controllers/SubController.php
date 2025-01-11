@@ -270,12 +270,13 @@ class SubController extends Controller
         // Parse nomor terakhir (jika ada) dan increment
         if ($lastDokNomor) {
             // Ambil tahun dari nomor terakhir (asumsi format: 0002122024)
-            $lastYear = substr($lastDokNomor, -4);
+            $lastYear = substr($lastDokNomor,0, 4);
 
             if ($lastYear == $tahun) {
                 // Tahun sama, ambil angka terakhir dan increment
-                $lastNumber = (int)substr($lastDokNomor, 0, 3);
+                $lastNumber = (int)substr($lastDokNomor, -3);
                 $nextNumber = $lastNumber + 1;
+     
             } else {
                 // Tahun berbeda, reset nomor ke 1
                 $nextNumber = 1;
@@ -289,7 +290,7 @@ class SubController extends Controller
         $formattedNumber = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
         // Gabungkan menjadi nomor PO baru
-        $newDokNomor = $formattedNumber . $bulan . $tahun;
+        $newDokNomor = $tahun. $bulan .$formattedNumber   ;
 
         // Return data ke client
         return response()->json([
