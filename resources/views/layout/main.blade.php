@@ -216,6 +216,15 @@
                                         </li>
                                     </ul>
                                 @endif
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('sub/inq_dok') }}"
+                                            class="nav-link {{ Request::is('sub/inq_dok') ? 'active' : '' }}">
+                                            <i class="fas fa-list nav-icon"></i>
+                                            <p>List Dokument</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
 
                             <li class="nav-item has-treeview {{ Request::is('laporan/*') ? 'menu-open' : '' }}">

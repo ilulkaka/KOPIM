@@ -91,6 +91,7 @@ Route::post('sub/l_po', 'SubController@l_po');
 Route::post('sub/inq_openPo', 'SubController@inq_openPo');
 Route::post('sub/upd_kirimPO', 'SubController@upd_kirimPO');
 Route::post('sub/get_noDok', 'SubController@get_noDok');
+Route::post('sub/inq_noDok', 'SubController@inq_noDok');
 
 Route::post('testsend', 'TelegramController@testsend');
 

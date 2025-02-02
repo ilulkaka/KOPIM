@@ -366,4 +366,43 @@ class SubController extends Controller
         $pdf = PDF::loadview('/sub/inv',['datas'=>$datas])->setPaper('A4', 'potrait');
         return $pdf->stream('Surat Jalan.pdf');
     }
+
+    public function inq_Dok (){
+        return view ('sub/inq_dok');
+    }
+
+    public function inq_noDok (Request $request){
+        $draw = $request->input('draw');
+        $search = $request->input('search')['value'];
+        $start = (int) $request->input('start');
+        $length = (int) $request->input('length');
+
+        $Datas = POOutModel::select('tgl_kirim','no_dokumen')
+        ->where(function ($q) use ($search) {
+            $q
+                ->where('tgl_kirim', 'like', '%' . $search . '%')
+                ->orwhere('no_dokumen', 'like', '%' . $search . '%');
+        })
+        ->groupBy('no_dokumen', 'tgl_kirim')
+        ->orderBy('no_dokumen', 'desc')
+        ->skip($start)
+        ->take($length)
+        ->get();
+
+        $count = POOutModel::selectRaw('COUNT(*) as total')
+        ->where(function ($q) use ($search) {
+            $q->where('tgl_kirim', 'like', '%' . $search . '%')
+              ->orWhere('no_dokumen', 'like', '%' . $search . '%');
+        })
+        ->groupBy('no_dokumen', 'tgl_kirim')
+        ->get()
+        ->count();
+
+        return [
+            'draw' => $draw,
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $Datas,
+        ];
+    }
 }
