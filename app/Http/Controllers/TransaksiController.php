@@ -118,61 +118,61 @@ class TransaksiController extends Controller
 
         if ($insert_trx) {
             // Validasi nomor telepon
-            // if (empty($chatId)) {
-            //     return response()->json([
-            //         'message' => "Transaksi berhasil ! \nChat ID tidak tersedia untuk anggota ini.",
-            //         'success' => true,
-            //     ]);
-            // } else {
-            //     $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
-            //     $formattedNominal = 'Rp ' . number_format($request->trx_nominal, 0, ',', '.');  // Format nominal menjadi Rupiah
-            //     Http::post($url, [
-            //         'chat_id' => $chatId,
-            //         'text' => "Halo, <b>".$datas[0]->nama."</b> ! \nTransaksi anda sebesar <b>".$formattedNominal."</b> \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih.",
-            //         'parse_mode' => 'HTML' // Gunakan 'HTML' atau 'Markdown'
-            //     ]); 
+            if (empty($chatId)) {
+                return response()->json([
+                    'message' => "Transaksi berhasil ! \nChat ID tidak tersedia untuk anggota ini.",
+                    'success' => true,
+                ]);
+            } else {
+                $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
+                $formattedNominal = 'Rp ' . number_format($request->trx_nominal, 0, ',', '.');  // Format nominal menjadi Rupiah
+                Http::post($url, [
+                    'chat_id' => $chatId,
+                    'text' => "Halo, <b>".$datas[0]->nama."</b> ! \nTransaksi anda sebesar <b>".$formattedNominal."</b> \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih.",
+                    'parse_mode' => 'HTML' // Gunakan 'HTML' atau 'Markdown'
+                ]); 
 
     
-            //     return response()->json([
-            //         'message' => 'Transaksi berhasil!',
-            //         'success' => true,
-            //     ]);
-            // }
+                return response()->json([
+                    'message' => 'Transaksi berhasil!',
+                    'success' => true,
+                ]);
+            }
              //whatsapp
-             $noTelp = $datas[0]->no_telp;
-             if (substr($noTelp, 0, 1) === '0') {
-                 $noTelp = '62' . substr($noTelp, 1);
-             }
+            //  $noTelp = $datas[0]->no_telp;
+            //  if (substr($noTelp, 0, 1) === '0') {
+            //      $noTelp = '62' . substr($noTelp, 1);
+            //  }
 
-             $formattedNominal = 'Rp ' . number_format($request->trx_nominal, 0, ',', '.');  // Format nominal menjadi Rupiah
+            //  $formattedNominal = 'Rp ' . number_format($request->trx_nominal, 0, ',', '.');  // Format nominal menjadi Rupiah
  
-             $token = env('FONNTE_TOKEN');
-             $target = "$noTelp";
-             $curl = curl_init();
+            //  $token = env('FONNTE_TOKEN');
+            //  $target = "$noTelp";
+            //  $curl = curl_init();
  
-             curl_setopt_array($curl, array(
-             CURLOPT_URL => 'https://api.fonnte.com/send',
-             CURLOPT_RETURNTRANSFER => true,
-             CURLOPT_ENCODING => '',
-             CURLOPT_MAXREDIRS => 10,
-             CURLOPT_TIMEOUT => 0,
-             CURLOPT_FOLLOWLOCATION => true,
-             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-             CURLOPT_CUSTOMREQUEST => 'POST',
-             CURLOPT_POSTFIELDS => array(
-             'target' => $target,
-             'message' => "Halo, *".$datas[0]->nama."* ! \nTransaksi anda sebesar *".$formattedNominal."* \npada tanggal ".date('d-m-Y H:i:s'). " \n\nTerima Kasih \nKOPIM PT. NPMI", 
-             ),
-             CURLOPT_HTTPHEADER => array(
-                 "Authorization: $token" //change TOKEN to your actual token
-             ),
-             ));
+            //  curl_setopt_array($curl, array(
+            //  CURLOPT_URL => 'https://api.fonnte.com/send',
+            //  CURLOPT_RETURNTRANSFER => true,
+            //  CURLOPT_ENCODING => '',
+            //  CURLOPT_MAXREDIRS => 10,
+            //  CURLOPT_TIMEOUT => 0,
+            //  CURLOPT_FOLLOWLOCATION => true,
+            //  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //  CURLOPT_CUSTOMREQUEST => 'POST',
+            //  CURLOPT_POSTFIELDS => array(
+            //  'target' => $target,
+            //  'message' => "Halo, *".$datas[0]->nama."* ! \nTransaksi anda sebesar *".$formattedNominal."* \npada tanggal ".date('d-m-Y H:i:s'). " \n\nTerima Kasih \nKOPIM PT. NPMI", 
+            //  ),
+            //  CURLOPT_HTTPHEADER => array(
+            //      "Authorization: $token" //change TOKEN to your actual token
+            //  ),
+            //  ));
              
-             $response = curl_exec($curl);
-             if (curl_errno($curl)) {
-             $error_msg = curl_error($curl);
-             }
-             curl_close($curl);
+            //  $response = curl_exec($curl);
+            //  if (curl_errno($curl)) {
+            //  $error_msg = curl_error($curl);
+            //  }
+            //  curl_close($curl);
  
      
                  return response()->json([
