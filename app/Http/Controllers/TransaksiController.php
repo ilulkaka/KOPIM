@@ -138,7 +138,7 @@ class TransaksiController extends Controller
                 $noTelp = '62' . substr($noTelp, 1);
             }
 
-            $token = "LMjyNNhxuSK8pDpa4Z9n";
+            $token = env('FONNTE_TOKEN');
             $target = "$noTelp";
             $curl = curl_init();
     
@@ -153,7 +153,7 @@ class TransaksiController extends Controller
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array(
             'target' => $target,
-            'message' => "Halo, *".$datas[0]->nama."* ! \nTransaksi anda sebesar *".$formattedNominal."* \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih.", 
+            'message' => "Halo, *".$datas[0]->nama."* ! \nTransaksi anda sebesar *".$formattedNominal."* \npada tanggal ".date('d-m-Y H:i:s'). " \n\n Terima Kasih \nKOPIM PT. NPMI", 
             ),
             CURLOPT_HTTPHEADER => array(
                 "Authorization: $token" //change TOKEN to your actual token
